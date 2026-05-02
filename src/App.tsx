@@ -316,10 +316,10 @@ const Home = () => {
               100% Done-For-You Automation
             </div>
             <h1 className="text-5xl md:text-7xl font-display font-bold text-slate-900 leading-[1.1]">
-              Turn WhatsApp Leads into Customers — <span className="text-primary italic">Automatically.</span>
+              Convert 3x More WhatsApp Leads Into Paying Customers — <span className="text-primary italic">Without Hiring Staff</span>
             </h1>
             <p className="text-xl text-slate-600 leading-relaxed max-w-lg">
-              We help Indian local businesses reply instantly, follow up automatically, and convert more leads on WhatsApp — without you lifting a finger.
+              Perfect for salons, clinics, and local service businesses that lose leads due to slow replies. We help you convert more WhatsApp leads automatically.
             </p>
             
             <div className="flex flex-col gap-4">
@@ -337,29 +337,35 @@ const Home = () => {
               ))}
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center gap-4">
-              <a 
-                href="https://wa.me/917410711563?text=Hi%20I%20want%20to%20automate%20my%20WhatsApp%20leads" 
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full sm:w-auto bg-primary text-white px-8 py-5 rounded-2xl text-lg font-bold shadow-xl shadow-primary/20 hover:scale-105 transition-transform flex items-center justify-center gap-2 cursor-pointer"
-                id="hero-cta-main"
-              >
-                Get Free Setup Call
-                <ArrowRight size={20} />
-              </a>
-              <a 
-                href="https://wa.me/917410711563?text=Hi%20I%20want%20to%20automate%20my%20WhatsApp%20leads" 
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full sm:w-auto bg-white text-slate-800 border-2 border-slate-100 px-8 py-5 rounded-2xl text-lg font-bold hover:bg-slate-50 transition-colors flex items-center justify-center gap-2 cursor-pointer"
-                id="hero-cta-whatsapp"
-              >
-                <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white">
-                  <MessageSquare size={14} className="fill-white" />
-                </div>
-                Chat on WhatsApp
-              </a>
+            <div className="flex flex-col gap-6">
+              <div className="flex flex-col sm:flex-row items-center gap-4">
+                <a 
+                  href="https://wa.me/917410711563?text=Hi%20I%20want%20to%20automate%20my%20WhatsApp%20leads" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto bg-primary text-white px-8 py-5 rounded-2xl text-lg font-bold shadow-xl shadow-primary/20 hover:scale-105 transition-transform flex items-center justify-center gap-2 cursor-pointer"
+                  id="hero-cta-main"
+                >
+                  Get More Customers on WhatsApp
+                  <ArrowRight size={20} />
+                </a>
+                <a 
+                  href="https://wa.me/917410711563?text=Hi%20I%20want%20to%20automate%20my%20WhatsApp%20leads" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto bg-white text-slate-800 border-2 border-slate-100 px-8 py-5 rounded-2xl text-lg font-bold hover:bg-slate-50 transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                  id="hero-cta-whatsapp"
+                >
+                  <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white">
+                    <MessageSquare size={14} className="fill-white" />
+                  </div>
+                  Chat on WhatsApp
+                </a>
+              </div>
+              <p className="text-primary font-bold text-sm flex items-center justify-center sm:justify-start gap-2">
+                <Zap size={16} className="fill-current" />
+                ⚡ Free setup for first 10 businesses this month
+              </p>
             </div>
           </motion.div>
 
@@ -370,8 +376,49 @@ const Home = () => {
             className="hidden md:block relative lg:scale-110"
           >
             <div className="absolute inset-0 bg-blue-100 rounded-[3rem] rotate-3 blur-2xl -z-10 opacity-60"></div>
+            <div className="absolute -top-12 -right-12 bg-white p-4 rounded-2xl shadow-xl border border-slate-100 z-20 max-w-[160px] animate-bounce-slow hidden lg:block">
+              <p className="text-[10px] font-bold text-slate-800 leading-tight">
+                "Example: Instant reply sent within 2 seconds"
+              </p>
+            </div>
             <WhatsAppDemo />
+            <div className="mt-6 text-center">
+              <p className="text-sm font-bold text-primary italic">Businesses using this see up to 3x higher response rates</p>
+            </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Trust Section */}
+      <section className="py-12 bg-white/50 border-y border-slate-50" id="trust">
+        <div className="max-w-7xl mx-auto px-6">
+          <h2 className="text-center text-slate-400 font-bold uppercase tracking-widest text-sm mb-12">Trusted by Growing Local Businesses</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                text: "Got 2x more bookings in 2 weeks. Customers love instant replies.",
+                author: "Rahul, Salon Owner"
+              },
+              {
+                text: "We stopped missing leads completely. Huge improvement.",
+                author: "Priya, Clinic Manager"
+              },
+              {
+                text: "Our response time went from hours to seconds.",
+                author: "Amit, Real Estate Agent"
+              }
+            ].map((item, i) => (
+              <div key={i} className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm flex flex-col gap-4">
+                <div className="flex gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Zap key={i} size={14} className="fill-accent text-accent" />
+                  ))}
+                </div>
+                <p className="text-slate-600 font-medium italic">"{item.text}"</p>
+                <div className="text-sm font-bold text-slate-900">— {item.author}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -486,32 +533,32 @@ const Home = () => {
         </div>
       </section>
 
-      {/* How It Works Visual Section */}
-      <section className="py-24 bg-slate-900 text-white" id="how-it-works-visual">
+      {/* How It Works Section */}
+      <section className="py-24 bg-slate-900 text-white" id="how-it-works">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-display font-bold mb-4">How It Works in 3 Steps</h2>
-            <p className="text-slate-400">Our seamless process to transform your lead management</p>
+            <h2 className="text-3xl md:text-5xl font-display font-bold mb-4">How It Works</h2>
+            <p className="text-slate-400">Simple, effective automation in 3 steps</p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                step: "Step 1",
-                title: "Lead Sends Message",
-                desc: "A potential customer reaches out on WhatsApp requesting pricing or details.",
+                step: "01",
+                title: "Customer sends message",
+                desc: "A lead reaches out on WhatsApp requesting pricing or details about your services.",
                 icon: <MessageSquare size={32} className="text-blue-400" />
               },
               {
-                step: "Step 2",
-                title: "Auto Reply + Qualification",
-                desc: "Our system replies instantly and asks qualifying questions to filter high-intent leads.",
+                step: "02",
+                title: "Remorix replies instantly",
+                desc: "Our automation handles the inquiry immediately with personalized, accurate information.",
                 icon: <Zap size={32} className="text-accent" />
               },
               {
-                step: "Step 3",
-                title: "Follow-up + Conversion",
-                desc: "Automated follow-ups keep the lead warm until they book or purchase.",
+                step: "03",
+                title: "You convert more leads",
+                desc: "Fast replies build trust, helping you close more bookings and sales automatically.",
                 icon: <TrendingUp size={32} className="text-blue-400" />
               }
             ].map((item, i) => (
@@ -531,13 +578,6 @@ const Home = () => {
                 <p className="text-slate-400 leading-relaxed">{item.desc}</p>
               </motion.div>
             ))}
-          </div>
-          
-          <div className="mt-12 text-center">
-            <div className="inline-flex items-center gap-3 bg-white/5 px-6 py-3 rounded-full border border-white/10 text-sm font-medium text-slate-300">
-              <CheckCircle2 size={16} className="text-accent" />
-              Fully automated. No manual effort required.
-            </div>
           </div>
         </div>
       </section>
@@ -653,15 +693,18 @@ const Home = () => {
                 <h4 className="text-2xl font-bold mb-4">Start your automation journey today.</h4>
                 <p className="opacity-80 leading-relaxed mb-8">We take care of the tech, you take care of the new customers.</p>
               </div>
-              <a 
-                href="https://wa.me/917410711563?text=Hi%20I%20want%20to%20automate%20my%20WhatsApp%20leads" 
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-white text-primary text-center py-4 rounded-xl font-bold hover:scale-105 transition-transform flex items-center justify-center gap-2 cursor-pointer"
-              >
-                Book Setup Call
-                <ArrowRight size={18} />
-              </a>
+              <div className="flex flex-col gap-3">
+                <a 
+                  href="https://wa.me/917410711563?text=Hi%20I%20want%20to%20automate%20my%20WhatsApp%20leads" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-white text-primary text-center py-4 rounded-xl font-bold hover:scale-105 transition-transform flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  Get More Customers on WhatsApp
+                  <ArrowRight size={18} />
+                </a>
+                <p className="text-[10px] text-white/80 font-bold text-center uppercase tracking-wider">Free setup available this month</p>
+              </div>
             </div>
           </div>
         </div>
@@ -810,6 +853,7 @@ const Home = () => {
                    ))}
                 </div>
 
+              <div className="flex flex-col gap-3">
                 <a 
                   href="https://wa.me/917410711563?text=Hi%20I%20want%20to%20automate%20my%20WhatsApp%20leads" 
                   target="_blank"
@@ -819,6 +863,9 @@ const Home = () => {
                 >
                   Start Automation Now
                 </a>
+                <p className="text-sm text-primary font-bold">Limit: Free setup for first 10 businesses</p>
+                <p className="text-xs text-slate-400 font-medium italic">No technical setup required by you.</p>
+              </div>
                 <p className="mt-4 text-sm text-slate-400 font-medium italic">Costs way less than hiring even ONE half-trained employee.</p>
              </div>
           </div>
