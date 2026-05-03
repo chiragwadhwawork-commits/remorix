@@ -275,26 +275,47 @@ const FAQItem = ({ question, answer }: { question: string; answer: string }) => 
   );
 };
 
+const SCRIPT_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEBHOOK_URL_HERE";
+
 const Home = () => {
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleFormSubmit = (e: FormEvent) => {
+  const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsSubmitting(true);
     
     // Get form data
-    const nameInput = document.getElementById('form-name') as HTMLInputElement;
-    const phoneInput = document.getElementById('form-phone') as HTMLInputElement;
-    const typeInput = document.getElementById('form-type') as HTMLInputElement;
+    const formData = new FormData(e.currentTarget);
+    const name = formData.get('name') as string;
+    const phone = formData.get('phone') as string;
+    const business = formData.get('business') as string;
 
-    if (nameInput && phoneInput && typeInput) {
-      const name = nameInput.value;
-      const phone = phoneInput.value;
-      const business = typeInput.value;
+    const data = {
+      name,
+      phone,
+      business,
+      timestamp: new Date().toISOString()
+    };
+
+    try {
+      // Send to Google Sheets
+      if (SCRIPT_URL !== "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEBHOOK_URL_HERE") {
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+      }
 
       const message = `New Lead:%0AName: ${encodeURIComponent(name)}%0APhone: ${encodeURIComponent(phone)}%0ABusiness: ${encodeURIComponent(business)}`;
-      
       window.open(`https://wa.me/917410711563?text=${message}`, '_blank');
       setFormSubmitted(true);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -316,10 +337,10 @@ const Home = () => {
               100% Done-For-You Automation
             </div>
             <h1 className="text-5xl md:text-7xl font-display font-bold text-slate-900 leading-[1.1]">
-              Convert 3x More WhatsApp Leads Into Paying Customers — <span className="text-primary italic">Without Hiring Staff</span>
+              Convert 3x More WhatsApp Leads Into Paying Customers — <span className="text-primary italic">Automatically</span>
             </h1>
             <p className="text-xl text-slate-600 leading-relaxed max-w-lg">
-              Perfect for salons, clinics, and local service businesses that lose leads due to slow replies. We help you convert more WhatsApp leads automatically.
+              Never miss a lead again. Remorix instantly replies, follows up, and converts your WhatsApp inquiries into real customers — even while you sleep.
             </p>
             
             <div className="flex flex-col gap-4">
@@ -362,9 +383,14 @@ const Home = () => {
                   Chat on WhatsApp
                 </a>
               </div>
-              <p className="text-primary font-bold text-sm flex items-center justify-center sm:justify-start gap-2">
-                <Zap size={16} className="fill-current" />
-                ⚡ Free setup for first 10 businesses this month
+              <p className="text-primary font-bold text-sm flex flex-col gap-2 items-center sm:items-start">
+                <span className="flex items-center gap-2">
+                  <Zap size={16} className="fill-current" />
+                  ⚡ Free setup for first 10 businesses this month
+                </span>
+                <span className="text-slate-400 text-[10px] uppercase tracking-wider font-semibold">
+                  No tech skills needed • Setup done for you • Works in 24 hours
+                </span>
               </p>
             </div>
           </motion.div>
@@ -376,7 +402,7 @@ const Home = () => {
             className="hidden md:block relative lg:scale-110"
           >
             <div className="absolute inset-0 bg-blue-100 rounded-[3rem] rotate-3 blur-2xl -z-10 opacity-60"></div>
-            <div className="absolute -top-12 -right-12 bg-white p-4 rounded-2xl shadow-xl border border-slate-100 z-20 max-w-[160px] animate-bounce-slow hidden lg:block">
+            <div className="absolute -top-12 -right-12 bg-white p-4 rounded-2xl shadow-xl border border-slate-100 z-20 max-w-[200px] animate-bounce-slow hidden lg:block">
               <p className="text-[10px] font-bold text-slate-800 leading-tight">
                 "Example: Instant reply sent within 2 seconds"
               </p>
@@ -435,8 +461,16 @@ const Home = () => {
       <section className="py-24 bg-slate-50 overflow-hidden" id="problem">
         <div className="max-w-7xl mx-auto px-6">
           <div className="max-w-3xl mx-auto text-center mb-20">
-            <h2 className="text-3xl md:text-5xl font-display font-bold mb-6 text-slate-900">Why Most Leads Go Cold</h2>
-            <p className="text-xl text-slate-600 font-medium italic">"A lead ignored for 5 minutes is already 80% lost."</p>
+            <h2 className="text-3xl md:text-5xl font-display font-bold mb-6 text-slate-900">You’re Losing Customers Every Day</h2>
+            <div className="space-y-4 mb-8">
+              <p className="text-xl text-slate-600 font-medium">Most businesses lose 30–50% of leads due to slow replies.</p>
+              <div className="flex flex-wrap justify-center gap-4 text-sm font-semibold text-red-500">
+                <span>• Customers message but you reply late</span>
+                <span>• Leads don’t get follow-ups</span>
+                <span>• Interested buyers disappear</span>
+              </div>
+            </div>
+            <p className="text-slate-500 italic">"A lead ignored for 5 minutes is already 80% lost."</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-10">
@@ -492,7 +526,7 @@ const Home = () => {
                 </div>
                 <h3 className="text-4xl font-display font-bold leading-tight">We handle everything <br/><span className="text-primary italic">so you don't have to.</span></h3>
                 <p className="text-slate-600 text-lg leading-relaxed">
-                  No software to learn. No dashboards to manage. We build your flows, set up your triggers, and keep your automation running 24/7.
+                  You don’t get software — you get a done-for-you system. No software to learn. No dashboards to manage. We build your flows, set up your triggers, and keep your automation running 24/7.
                 </p>
                 <div className="space-y-4 pt-4">
                   <div className="flex gap-4 items-start">
@@ -515,7 +549,7 @@ const Home = () => {
                   <Bot size={24} />
                 </div>
                 <div>
-                  <h4 className="text-xl font-bold mb-2 text-slate-900">Custom Smart Replies</h4>
+                  <h4 className="text-xl font-bold mb-2 text-slate-900">Instant replies to every lead</h4>
                   <p className="text-slate-600 leading-relaxed">Our system understands customer intent and replies with pricing, slots, or details instantly.</p>
                 </div>
               </div>
@@ -524,7 +558,7 @@ const Home = () => {
                   <TrendingUp size={24} />
                 </div>
                 <div>
-                  <h4 className="text-xl font-bold mb-2 text-slate-900">Lead Health Monitoring</h4>
+                  <h4 className="text-xl font-bold mb-2 text-slate-900">Automatic Lead Qualification</h4>
                   <p className="text-slate-600 leading-relaxed">We automatically categorize leads so you know exactly who is ready to buy right now.</p>
                 </div>
               </div>
@@ -646,18 +680,18 @@ const Home = () => {
             {[
               {
                 icon: <MessageSquare size={32} className="text-primary" />,
-                title: "WhatsApp Auto Reply Setup",
+                title: "Instant WhatsApp Replies",
                 desc: "Never miss a greeting. We set up instant smart responses for common queries like pricing, address, and timings."
               },
               {
                 icon: <Bot size={32} className="text-primary" />,
-                title: "Lead Qualification Flows",
-                desc: "Ask the right questions automatically. Find out if the lead is looking for individual or commercial services before you get involved."
+                title: "Auto Lead Qualification",
+                desc: "Ask the right questions automatically. Find out if the lead is ready to book before you even get involved."
               },
               {
                 icon: <Clock size={32} className="text-primary" />,
-                title: "Automated Follow-Ups",
-                desc: "The fortune is in the follow-up. We set up subtle, helpful nudges to bring leads back into the conversation."
+                title: "Done-For-You Follow-Ups",
+                desc: "The fortune is in the follow-up. We set up subtle, helpful nudges to bring leads back into the conversation automatically."
               },
               {
                 icon: <Calendar size={32} className="text-primary" />,
@@ -763,28 +797,72 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-6">
            <div className="flex flex-col md:flex-row items-center justify-between gap-12 mb-20">
               <div className="max-w-2xl">
-                 <h2 className="text-4xl md:text-6xl font-display font-bold mb-6">Built for local <br/><span className="bg-gradient-to-r from-blue-400 to-accent bg-clip-text text-transparent italic">powerhouses in India.</span></h2>
+                 <h2 className="text-4xl md:text-6xl font-display font-bold mb-4">Built for local businesses that <br/><span className="bg-gradient-to-r from-blue-400 to-accent bg-clip-text text-transparent italic">depend on fast replies.</span></h2>
+                 <p className="text-lg opacity-80">From first message to confirmed booking — automated on WhatsApp.</p>
               </div>
               <div className="bg-slate-800 p-6 rounded-3xl border border-white/10 text-center">
-                 <div className="text-accent font-bold text-2xl mb-1 italic">Limted Slots</div>
-                 <p className="text-sm opacity-60">We only onboard 10 businesses per month to ensure quality.</p>
+                 <div className="text-accent font-bold text-lg mb-1 italic uppercase tracking-wider">Limited onboarding slots</div>
+                 <p className="text-xs opacity-60">We onboard only 10 businesses per month to ensure high-quality setup and results.</p>
               </div>
            </div>
+            <div className="mb-8 text-center md:text-left">
+              <p className="text-primary font-bold text-sm uppercase tracking-widest">See how it works for your business — click a category below</p>
+            </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
               {[
-                { name: "Salons & Clinics", icon: <Users size={20} />, href: "/salon-demo", image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=50&h=50&fit=crop" },
-                { name: "Gyms & Fitness", icon: <TrendingUp size={20} />, href: "/gym-demo", image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=50&h=50&fit=crop" },
-                { name: "Real Estate Agents", icon: <Users size={20} />, href: "/realestate-demo", image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=50&h=50&fit=crop" },
-                { name: "Coaching Institutes", icon: <Zap size={20} />, href: "/coaching-demo", image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=50&h=50&fit=crop" },
-                { name: "Healthcare Providers", icon: <Check size={20} />, href: "/healthcare-demo", image: "https://images.unsplash.com/photo-1505751172876-019669bf6910?w=50&h=50&fit=crop" }
+                { 
+                  name: "Salons and Parlours", 
+                  desc: "Auto-reply to enquiries → Book appointments instantly",
+                  example: "“Hi, haircut today?” → Available slots + booking link",
+                  icon: <Users size={20} />, 
+                  href: "/salon-demo" 
+                },
+                { 
+                  name: "Real Estate Agents", 
+                  desc: "Capture leads → Follow up automatically → Close faster",
+                  example: "“Price & location?” → Details + site visit follow-up",
+                  icon: <Users size={20} />, 
+                  href: "/realestate-demo" 
+                },
+                { 
+                  name: "Coaching & Education", 
+                  desc: "Answer FAQs → Share details → Convert enquiries to admissions",
+                  example: "“Fees?” → Full info + enrollment link",
+                  icon: <Zap size={20} />, 
+                  href: "/coaching-demo" 
+                },
+                { 
+                  name: "Gyms & Fitness", 
+                  desc: "Handle trial requests → Send reminders → Reduce drop-offs",
+                  example: "“Trial available?” → Schedule + reminder sent",
+                  icon: <TrendingUp size={20} />, 
+                  href: "/gym-demo" 
+                },
+                { 
+                  name: "Other Local Services", 
+                  desc: "Reply in seconds → Qualify leads → Turn chats into customers",
+                  example: "“Available tomorrow?” → Instant confirmation",
+                  icon: <Check size={20} />, 
+                  href: "/healthcare-demo" 
+                }
               ].map((item, i) => {
                 const CardContent = (
                   <>
                     <div className="p-3 bg-white/5 rounded-2xl group-hover:bg-primary/20 transition-colors">
                       {item.icon}
                     </div>
-                    <span className="font-bold text-sm leading-tight text-white">{item.name}</span>
+                    <div className="flex flex-col gap-2">
+                       <span className="font-bold text-sm h-10 md:h-12 flex items-center justify-center leading-tight text-white group-hover:text-primary transition-colors">{item.name}</span>
+                       <p className="text-[10px] text-slate-400 leading-tight">{item.desc}</p>
+                       <div className="flex flex-col gap-1 mt-1">
+                          <p className="text-[8px] text-slate-500 uppercase tracking-widest font-bold">Live demo:</p>
+                          <p className="text-[10px] text-accent font-medium leading-tight italic">{item.example}</p>
+                       </div>
+                       <p className="text-[9px] text-primary font-bold mt-2 opacity-80 group-hover:opacity-100 group-hover:translate-x-1 transition-all flex items-center justify-center gap-1">
+                          Click to view live demo →
+                       </p>
+                    </div>
                   </>
                 );
 
@@ -942,9 +1020,14 @@ const Home = () => {
               {/* Contact Form */}
               <div className="bg-white/5 p-12 md:p-20 backdrop-blur-sm border-l border-white/10">
                 <AnimatePresence mode="wait">
+                  <div className="mb-8 text-center md:text-left">
+                    <h3 className="text-2xl font-bold text-white mb-4">Start converting more WhatsApp leads into customers today.</h3>
+                    <p className="text-blue-100 opacity-80">Setup takes less than 24 hours. Limited onboarding slots available this month.</p>
+                  </div>
                   {!formSubmitted ? (
                     <motion.form 
                       key="form"
+                      id="lead-form"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
@@ -954,6 +1037,7 @@ const Home = () => {
                       <div className="flex flex-col gap-2">
                         <label className="text-white text-sm font-bold opacity-80 pl-1 uppercase tracking-wider">Your Name</label>
                         <input 
+                          name="name"
                           type="text" 
                           required
                           placeholder="e.g. Rahul Sharma" 
@@ -964,6 +1048,7 @@ const Home = () => {
                        <div className="flex flex-col gap-2">
                         <label className="text-white text-sm font-bold opacity-80 pl-1 uppercase tracking-wider">Business Phone</label>
                         <input 
+                          name="phone"
                           type="tel" 
                           required
                           placeholder="+91 00000 00000" 
@@ -974,6 +1059,7 @@ const Home = () => {
                       <div className="flex flex-col gap-2">
                         <label className="text-white text-sm font-bold opacity-80 pl-1 uppercase tracking-wider">Business Type</label>
                         <input 
+                          name="business"
                           type="text" 
                           required
                           placeholder="e.g. Yoga Gym, Dental Clinic" 
@@ -981,8 +1067,12 @@ const Home = () => {
                           id="form-type"
                         />
                       </div>
-                      <button type="submit" className="bg-white text-blue-600 w-full py-5 rounded-2xl font-bold text-xl hover:bg-slate-50 transition-colors shadow-lg shadow-black/10 mt-4 active:scale-95 cursor-pointer">
-                        Save My Spot
+                      <button 
+                        type="submit" 
+                        disabled={isSubmitting}
+                        className="bg-white text-blue-600 w-full py-5 rounded-2xl font-bold text-xl hover:bg-slate-50 transition-colors shadow-lg shadow-black/10 mt-4 active:scale-95 cursor-pointer disabled:opacity-50"
+                      >
+                        {isSubmitting ? "Saving..." : "Save My Spot"}
                       </button>
                       <p className="text-white/40 text-[10px] text-center uppercase tracking-widest font-bold">Safe & Secure Interaction</p>
                     </motion.form>
@@ -996,9 +1086,9 @@ const Home = () => {
                       <div className="w-20 h-20 bg-accent text-slate-900 rounded-full flex items-center justify-center mb-6 shadow-xl shadow-accent/20">
                         <Check size={40} strokeWidth={3} />
                       </div>
-                      <h3 className="text-3xl font-display font-bold text-white mb-4">Thanks!</h3>
+                      <h3 className="text-3xl font-display font-bold text-white mb-4">You're on the list!</h3>
                       <p className="text-blue-50 text-lg leading-relaxed">
-                        We'll contact you shortly to schedule your free WhatsApp Setup Call.
+                        ✅ Your spot is reserved. We’ll contact you within 24 hours.
                       </p>
                       <button 
                         onClick={() => setFormSubmitted(false)}
