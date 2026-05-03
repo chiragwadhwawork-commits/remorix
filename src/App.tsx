@@ -27,6 +27,55 @@ import {
 
 // --- Components ---
 
+const Logo = ({ variant = 'full', className = "" }: { variant?: 'full' | 'icon' | 'white', className?: string }) => {
+  const isWhite = variant === 'white';
+  const showText = variant === 'full' || variant === 'white';
+  
+  return (
+    <div className={`flex items-center gap-2.5 ${className}`}>
+      {/* SVG Icon - Premium SaaS Signal */}
+      <svg width="36" height="36" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="flex-shrink-0">
+        {/* Background Base */}
+        <rect width="40" height="40" rx="10" fill={isWhite ? "white" : "url(#logo-gradient-saas)"} />
+        
+        {/* Modern Chat Bubble Geometric Base */}
+        <path 
+          d="M10 26V14C10 11.7909 11.7909 10 14 10H26C28.2091 10 30 11.7909 30 14V22C30 24.2091 28.2091 26 26 26H14L10 30" 
+          stroke={isWhite ? "#2563EB" : "white"} 
+          strokeWidth="3" 
+          strokeLinecap="round" 
+          strokeLinejoin="round"
+          className="opacity-25"
+        />
+
+        {/* The Conversion Spark - Growth + Automation */}
+        <path 
+          d="M16 24L21 19L17 19L24 12V17L28 17L19 26" 
+          fill={isWhite ? "#2563EB" : "white"} 
+          className="drop-shadow-sm"
+        />
+
+        {!isWhite && (
+          <defs>
+            <linearGradient id="logo-gradient-saas" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+              <stop stopColor="#2563EB" />
+              <stop offset="1" stopColor="#10B981" />
+            </linearGradient>
+          </defs>
+        )}
+      </svg>
+
+      {/* Modern SaaS Typography */}
+      {showText && (
+        <div className={`flex items-baseline tracking-[-0.05em] ${isWhite ? 'text-white' : 'text-slate-900'}`}>
+          <span className="text-2xl font-extrabold">Remo</span>
+          <span className="text-2xl font-medium opacity-70">rix</span>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -51,11 +100,8 @@ const Navbar = () => {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-        <a href="#hero" className="flex items-center gap-2 group cursor-pointer">
-          <span className="text-2xl font-display font-bold tracking-tight">
-            <span className="bg-gradient-to-br from-primary to-blue-700 bg-clip-text text-transparent group-hover:opacity-80 transition-opacity">R</span>
-            emorix
-          </span>
+        <a href="#hero" className="group cursor-pointer">
+          <Logo variant="full" />
         </a>
 
         {/* Desktop Nav */}
@@ -194,7 +240,7 @@ const WhatsAppDemo = () => {
     <div className="bg-[#E5DDD5] rounded-3xl overflow-hidden shadow-2xl border-8 border-slate-900 w-full max-w-[340px] mx-auto aspect-[9/16] relative flex flex-col">
       {/* Header */}
       <div className="bg-[#075E54] p-4 flex items-center gap-3 text-white">
-        <div className="w-10 h-10 bg-slate-400 rounded-full flex items-center justify-center font-bold">R</div>
+        <Logo variant="icon" className="scale-75 -ml-1" />
         <div>
           <div className="text-sm font-bold">Remorix Automation</div>
           <div className="text-[10px] flex items-center gap-1">
@@ -275,7 +321,7 @@ const FAQItem = ({ question, answer }: { question: string; answer: string }) => 
   );
 };
 
-const SCRIPT_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEBHOOK_URL_HERE";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxzFRqcDEpQ9xeoNan2RSZgvHV6PwoaEGSMkEhzAnvfbi0omA0dQzkv3xZNmDpcXtDPrQ/exec";
 
 const Home = () => {
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -295,25 +341,25 @@ const Home = () => {
       name,
       phone,
       business,
+      plan: "Website Lead",
       timestamp: new Date().toISOString()
     };
 
     try {
       // Send to Google Sheets
-      if (SCRIPT_URL !== "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEBHOOK_URL_HERE") {
-        await fetch(SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
-        });
-      }
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
 
-      const message = `New Lead:%0AName: ${encodeURIComponent(name)}%0APhone: ${encodeURIComponent(phone)}%0ABusiness: ${encodeURIComponent(business)}`;
-      window.open(`https://wa.me/917410711563?text=${message}`, '_blank');
       setFormSubmitted(true);
     } catch (error) {
       console.error('Error submitting form:', error);
+      alert("Something went wrong. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -415,35 +461,132 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Trust Section */}
-      <section className="py-12 bg-white/50 border-y border-slate-50" id="trust">
+      {/* Infrastructure Trust Section */}
+      <section className="py-24 bg-white border-y border-slate-50" id="trust">
         <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-center text-slate-400 font-bold uppercase tracking-widest text-sm mb-12">Trusted by Growing Local Businesses</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                text: "Got 2x more bookings in 2 weeks. Customers love instant replies.",
-                author: "Rahul, Salon Owner"
-              },
-              {
-                text: "We stopped missing leads completely. Huge improvement.",
-                author: "Priya, Clinic Manager"
-              },
-              {
-                text: "Our response time went from hours to seconds.",
-                author: "Amit, Real Estate Agent"
-              }
-            ].map((item, i) => (
-              <div key={i} className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm flex flex-col gap-4">
-                <div className="flex gap-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Zap key={i} size={14} className="fill-accent text-accent" />
-                  ))}
-                </div>
-                <p className="text-slate-600 font-medium italic">"{item.text}"</p>
-                <div className="text-sm font-bold text-slate-900">— {item.author}</div>
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-3xl md:text-5xl font-display font-bold mb-6 text-slate-900 leading-tight">
+                Built on the same infrastructure <br/>
+                <span className="bg-gradient-to-r from-blue-600 to-accent bg-clip-text text-transparent italic">trusted by thousands of businesses</span>
+              </h2>
+              <p className="text-xl text-slate-600 leading-relaxed mb-8">
+                We use official WhatsApp API platforms like <span className="font-bold text-slate-900">Interakt</span> and <span className="font-bold text-slate-900">AiSensy</span> to ensure secure, reliable, and scalable automation.
+              </p>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-8 mb-10">
+                {[
+                  "No unofficial tools",
+                  "No risk of number bans",
+                  "Fully compliant with WhatsApp API"
+                ].map((text, i) => (
+                  <div key={i} className="flex items-center gap-3 text-slate-700 font-bold text-sm uppercase tracking-wide">
+                    <div className="w-6 h-6 bg-green-100 text-green-600 rounded-full flex items-center justify-center flex-shrink-0">
+                      <Check size={14} strokeWidth={4} />
+                    </div>
+                    {text}
+                  </div>
+                ))}
               </div>
-            ))}
+
+              <div className="space-y-4 p-6 bg-slate-50 rounded-2xl border border-slate-100">
+                <p className="text-slate-900 font-bold flex items-center gap-3">
+                  <Zap size={20} className="text-primary fill-primary" />
+                  You get enterprise-level automation
+                </p>
+                <p className="text-slate-900 font-bold flex items-center gap-3">
+                  <Zap size={20} className="text-primary fill-primary" />
+                  Without dealing with setup, tech, or complexity
+                </p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="space-y-8"
+            >
+               {/* WhatsApp Chat Demo */}
+               <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xl relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-20 h-20 bg-primary/5 rounded-full -mr-10 -mt-10 group-hover:scale-150 transition-transform duration-700"></div>
+                  <div className="flex flex-col gap-3 mb-6 relative">
+                     <div className="bg-slate-100 self-end p-3 rounded-2xl rounded-tr-none text-xs font-medium shadow-sm max-w-[85%] text-slate-700">
+                       Hi, is slot available for haircut?
+                     </div>
+                     <div className="bg-[#DCF8C6] self-start p-3 rounded-2xl rounded-tl-none text-xs font-medium shadow-sm max-w-[85%] text-slate-800 flex flex-col gap-1">
+                        <span>Yes! We have a slot at 4:30 PM today. Would you like me to book it for you?</span>
+                        <div className="flex gap-2 mt-2">
+                           <span className="bg-white/50 px-3 py-1 rounded-full text-[10px] font-bold">Book Now</span>
+                           <span className="bg-white/50 px-3 py-1 rounded-full text-[10px] font-bold">Full Price List</span>
+                        </div>
+                     </div>
+                  </div>
+                  <div className="flex items-center justify-center gap-2 py-2 border-t border-slate-50">
+                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest text-center">
+                      “Live automation example — replies sent within seconds”
+                    </p>
+                  </div>
+               </div>
+
+               {/* Automation Flow Diagram */}
+               <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-lg">
+                  <div className="grid grid-cols-4 gap-2 items-center">
+                    {[
+                      { label: "User Message", icon: <MessageSquare size={16} /> },
+                      { label: "Instant Reply", icon: <Zap size={16} /> },
+                      { label: "Follow-up", icon: <Clock size={16} /> },
+                      { label: "Booking", icon: <CheckCircle2 size={16} /> }
+                    ].map((step, i, arr) => (
+                      <div key={i} className="flex items-center gap-1 group">
+                        <div className="flex flex-col items-center gap-2 flex-1">
+                           <div className="w-10 h-10 bg-blue-50 text-primary rounded-full flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                             {step.icon}
+                           </div>
+                           <span className="text-[9px] font-bold text-slate-500 uppercase tracking-tighter text-center">{step.label}</span>
+                        </div>
+                        {i < arr.length - 1 && (
+                          <div className="text-slate-300">
+                             <ArrowRight size={12} />
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+               </div>
+
+               {/* Stats Preview */}
+               <div className="bg-slate-900 p-6 rounded-3xl text-white shadow-2xl relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-transparent"></div>
+                  <div className="flex justify-between items-center mb-6 relative">
+                     <div>
+                        <div className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1">Official API Status</div>
+                        <div className="flex items-center gap-2">
+                           <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                           <span className="text-sm font-bold">Systems Operational</span>
+                        </div>
+                     </div>
+                     <Logo variant="icon" className="scale-75 opacity-50" />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4 relative">
+                     <div className="bg-white/5 p-4 rounded-2xl border border-white/5">
+                        <div className="text-[10px] opacity-50 mb-1 font-bold uppercase">Automated Replies</div>
+                        <div className="text-2xl font-display font-bold">48,291</div>
+                     </div>
+                     <div className="bg-white/5 p-4 rounded-2xl border border-white/5">
+                        <div className="text-[10px] opacity-50 mb-1 font-bold uppercase">Conversion Rate</div>
+                        <div className="text-2xl font-display font-bold text-accent">+124%</div>
+                     </div>
+                  </div>
+                  <p className="text-[9px] text-white/30 mt-6 text-center font-medium uppercase tracking-widest">
+                    Automation running on official WhatsApp API platforms
+                  </p>
+               </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -900,52 +1043,117 @@ const Home = () => {
             <p className="text-slate-600">Simpler than hiring an employee, more effective than manual labor.</p>
           </div>
 
-          <div className="max-w-2xl mx-auto relative">
-             <div className="absolute inset-0 bg-blue-600 rounded-[3rem] rotate-2 -z-10 blur-xl opacity-10"></div>
-             <div className="bg-white border-2 border-slate-100 rounded-[3rem] p-12 text-center shadow-xl">
-                <div className="w-20 h-20 bg-blue-50 text-primary rounded-full flex items-center justify-center mx-auto mb-8">
-                  <TrendingUp size={40} />
-                </div>
-                <h3 className="text-2xl font-bold mb-2">Automated Lead System</h3>
-                <p className="text-slate-600 mb-8">Full custom professional setup & automation maintenance.</p>
-                
-                <div className="mb-10 p-8 bg-slate-50 rounded-[2rem] inline-block w-full">
-                  <div className="text-5xl font-display font-bold text-slate-900 mb-2">₹5,000<span className="text-xl font-sans text-slate-400 font-medium"> / month</span></div>
-                  <div className="text-sm font-bold text-slate-400 uppercase tracking-widest">Fixed Monthly Partnership</div>
-                </div>
-
-                <div className="flex flex-col gap-4 mb-10 text-left max-w-sm mx-auto">
-                   {[
-                    "Everything set up from scratch",
-                    "Unlimited automated messages",
-                    "Customized follow-up strategy",
-                    "Monthly optimization call",
-                    "No technical work needed by you"
-                   ].map((item, i) => (
-                    <div key={i} className="flex gap-4 items-center">
-                      <div className="w-5 h-5 bg-green-500 text-white rounded-full flex items-center justify-center flex-shrink-0">
-                        <Check size={12} strokeWidth={4} />
-                      </div>
-                      <span className="font-medium text-slate-700">{item}</span>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                title: "Lead Capture System",
+                badge: "🔹 Starter",
+                setup: "₹999 Setup | ",
+                price: "₹3,000",
+                desc: "Never miss a customer inquiry. Automated 24/7 capture.",
+                features: [
+                  "Instant reply to every message (24/7)",
+                  "Never miss a customer inquiry",
+                  "Capture name, number & requirements",
+                  "Step in and reply manually anytime"
+                ],
+                footnote: "Perfect if you're currently missing or delaying responses. Best for businesses with daily inquiries.",
+                icon: <MessageSquare size={32} />
+              },
+              {
+                title: "Conversion Booster System",
+                badge: "🔥 Growth",
+                price: "₹5,000",
+                popular: true,
+                desc: "Designed to help increase conversions by 10–30%.",
+                features: [
+                  "Everything in Starter",
+                  "Automated follow-ups",
+                  "Re-engage customers automatically",
+                  "Broadcast offers & reminders",
+                  "Step in and reply manually anytime"
+                ],
+                footnote: "Best Value: This is where most businesses start seeing real revenue growth.",
+                icon: <TrendingUp size={32} />
+              },
+              {
+                title: "Sales Autopilot System",
+                badge: "⚡ Pro",
+                price: "₹8,000",
+                desc: "Built for businesses serious about scaling.",
+                features: [
+                  "Everything in Growth",
+                  "Customized business automation",
+                  "End-to-end sales journey handling",
+                  "Smart lead nurturing sequences",
+                  "Priority support & optimization",
+                  "Step in and reply manually anytime"
+                ],
+                footnote: "Built for businesses serious about scaling.",
+                icon: <Zap size={32} />
+              }
+            ].map((plan, i) => (
+              <div key={i} className={`relative group ${plan.popular ? 'scale-105 z-10' : ''}`}>
+                {plan.popular && (
+                  <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-accent text-slate-900 px-6 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest shadow-xl">
+                    Most Popular
+                  </div>
+                )}
+                <div className={`h-full bg-white border-2 ${plan.popular ? 'border-primary' : 'border-slate-100'} rounded-[2.5rem] p-8 flex flex-col shadow-xl hover:shadow-2xl transition-all duration-300`}>
+                  <div className={`w-14 h-14 ${plan.popular ? 'bg-primary text-white' : 'bg-blue-50 text-primary'} rounded-2xl flex items-center justify-center mb-6`}>
+                    {plan.icon}
+                  </div>
+                  
+                  <div className="text-primary font-bold text-sm mb-2 uppercase tracking-wider">{plan.badge}</div>
+                  <h3 className="text-xl font-bold mb-4 leading-tight">{plan.title}</h3>
+                  
+                  <div className="mb-6">
+                    <div className="text-4xl font-display font-bold text-slate-900 mb-1">
+                      <span className="text-lg font-sans text-slate-400 font-medium">{plan.setup}</span>
+                      {plan.price}
+                      <span className="text-lg font-sans text-slate-400 font-medium">/mo</span>
                     </div>
-                   ))}
-                </div>
+                  </div>
 
-              <div className="flex flex-col gap-3">
-                <a 
-                  href="https://wa.me/917410711563?text=Hi%20I%20want%20to%20automate%20my%20WhatsApp%20leads" 
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full block bg-primary text-white py-6 rounded-2xl text-xl font-bold hover:shadow-2xl hover:shadow-primary/30 transition-all active:scale-[0.98] cursor-pointer"
-                  id="pricing-cta"
-                >
-                  Start Automation Now
-                </a>
-                <p className="text-sm text-primary font-bold">Limit: Free setup for first 10 businesses</p>
-                <p className="text-xs text-slate-400 font-medium italic">No technical setup required by you.</p>
+                  <div className="flex flex-col gap-3 mb-8 flex-grow">
+                    {plan.features.map((feature, idx) => (
+                      <div key={idx} className="flex gap-3 items-start">
+                        <div className="w-5 h-5 bg-green-500 text-white rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <Check size={12} strokeWidth={4} />
+                        </div>
+                        <span className="text-sm font-medium text-slate-600 leading-tight">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="bg-slate-50 p-4 rounded-xl mb-6">
+                    <p className="text-[11px] text-slate-500 font-medium italic leading-relaxed">
+                      {plan.footnote}
+                    </p>
+                  </div>
+
+                  <a 
+                    href={`https://wa.me/917410711563?text=Hi%20I%27m%20interested%20in%20the%20${encodeURIComponent(plan.title)}`} 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`w-full block py-4 rounded-xl text-center font-bold transition-all active:scale-[0.98] cursor-pointer ${
+                      plan.popular 
+                        ? 'bg-primary text-white shadow-lg shadow-primary/25 hover:bg-blue-700' 
+                        : 'bg-slate-900 text-white hover:bg-slate-800'
+                    }`}
+                  >
+                    Select Plan
+                  </a>
+                </div>
               </div>
-                <p className="mt-4 text-sm text-slate-400 font-medium italic">Costs way less than hiring even ONE half-trained employee.</p>
-             </div>
+            ))}
+          </div>
+
+          <div className="mt-12 text-center">
+            <p className="text-sm text-slate-400 font-bold flex items-center justify-center gap-2">
+              <Check size={16} className="text-green-500" strokeWidth={3} />
+              Includes ongoing monitoring, updates, and optimization
+            </p>
           </div>
         </div>
       </section>
@@ -1109,11 +1317,8 @@ const Home = () => {
       <footer className="py-20 bg-slate-50 border-t border-slate-100" id="footer">
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12">
           <div className="md:col-span-1">
-             <a href="#hero" className="flex items-center gap-2 mb-6 cursor-pointer">
-                <span className="text-2xl font-display font-bold tracking-tight">
-                  <span className="bg-gradient-to-br from-primary to-blue-700 bg-clip-text text-transparent">R</span>
-                  emorix
-                </span>
+             <a href="#hero" className="mb-6 block cursor-pointer">
+                <Logo variant="full" />
               </a>
               <p className="text-slate-500 text-sm leading-relaxed mb-6">
                 Redefining sales for Indian local businesses through seamless WhatsApp automation. Built with ❤️ for Bharat.
