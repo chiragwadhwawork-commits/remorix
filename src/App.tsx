@@ -388,18 +388,6 @@ const Home = () => {
                   Get More Customers on WhatsApp
                   <ArrowRight size={20} />
                 </a>
-                <a 
-                  href="https://wa.me/917410711563?text=Hi%20I%20want%20to%20automate%20my%20WhatsApp%20leads" 
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full sm:w-auto bg-white text-slate-800 border-2 border-slate-100 px-8 py-5 rounded-2xl text-lg font-bold hover:bg-slate-50 transition-colors flex items-center justify-center gap-2 cursor-pointer"
-                  id="hero-cta-whatsapp"
-                >
-                  <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white">
-                    <MessageSquare size={14} className="fill-white" />
-                  </div>
-                  Chat on WhatsApp
-                </a>
               </div>
               <p className="text-primary font-bold text-sm flex flex-col gap-2 items-center sm:items-start">
                 <span className="flex items-center gap-2">
@@ -1456,8 +1444,8 @@ const IndustryDemo = ({ type }: { type: string }) => {
              setTimeout(() => {
                 setMessageQueue(prev => [...prev, {
                   sender: 'bot',
-                  text: "Ready to automate your business? Click below to book a free setup call! 👇",
-                  options: ["Yes, Book Free Call", "Chat on WhatsApp"],
+                  text: "Ready to automate your business? Let's chat on WhatsApp to get started! 👇",
+                  options: ["Chat on WhatsApp"],
                   isConversion: true
                 }]);
              }, 3500);
