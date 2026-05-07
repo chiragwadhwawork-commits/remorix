@@ -173,68 +173,44 @@ const Navbar = () => {
 };
 
 const WhatsAppDemo = () => {
-  const [step, setStep] = useState(1);
+  const [messages, setMessages] = useState<{ sender: 'user' | 'bot' | 'staff'; text: string; time: string }[]>([]);
   const [isTyping, setIsTyping] = useState(false);
+  const [step, setStep] = useState(0);
 
   const demoSteps = [
-    {
-      id: 1,
-      sender: 'user',
-      msg: 'Hi, is cleaning service available tomorrow 10am?',
-      time: '10:00 AM'
-    },
-    {
-      id: 2,
-      sender: 'auto',
-      msg: 'Hi! Yes, we have a slot available. Which service are you looking for? \n1. Deep Cleaning\n2. Sofa Cleaning\n3. Kitchen Cleaning',
-      time: '10:00 AM',
-      delay: 800
-    },
-    {
-      id: 3,
-      sender: 'user',
-      msg: 'Deep cleaning for a 2BHK.',
-      time: '10:01 AM'
-    },
-    {
-      id: 4,
-      sender: 'auto',
-      msg: 'Great! The 2BHK Deep Cleaning package is ₹4,999. Should I book your slot for tomorrow 10 AM? \n(Reply with YES to confirm)',
-      time: '10:01 AM',
-      delay: 1200
-    },
-    {
-      id: 5,
-      sender: 'user',
-      msg: 'YES',
-      time: '10:02 AM'
-    },
-    {
-      id: 6,
-      sender: 'auto',
-      msg: '✅ Confirmed! Our team will reach at 10 AM tomorrow. \nTotal: ₹4,999 (Pay on visit). \nAddress details requested...',
-      time: '10:02 AM',
-      delay: 1000
-    }
+    { sender: 'user', text: 'Hi, available for deep cleaning tomorrow?', time: '10:00 AM', delay: 1000 },
+    { sender: 'bot', text: 'Hi! Yes, we have a slot at 10 AM. Would you like to book it?', time: '10:00 AM', delay: 800 },
+    { sender: 'user', text: 'Yes, please book it for me.', time: '10:01 AM', delay: 1500 },
+    { sender: 'bot', text: 'Great! Confirming with our team...', time: '10:01 AM', delay: 800 },
+    { sender: 'staff', text: 'Hi, I am Rahul. Your deep cleaning slot is confirmed for 10 AM tomorrow! ✅', time: '10:02 AM', delay: 2000 },
   ];
 
-  const currentMessages = demoSteps.slice(0, step);
-
-  const nextStep = () => {
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
     if (step < demoSteps.length) {
-      if (demoSteps[step].sender === 'auto') {
-        setIsTyping(true);
-        setTimeout(() => {
+      const current = demoSteps[step];
+      timer = setTimeout(() => {
+        if (current.sender === 'user') {
+          setMessages(prev => [...prev, current]);
           setStep(s => s + 1);
-          setIsTyping(false);
-        }, demoSteps[step].delay || 1000);
-      } else {
-        setStep(s => s + 1);
-      }
+        } else {
+          setIsTyping(true);
+          const typingTimer = setTimeout(() => {
+            setIsTyping(false);
+            setMessages(prev => [...prev, current]);
+            setStep(s => s + 1);
+          }, 1500);
+          return () => clearTimeout(typingTimer);
+        }
+      }, current.delay);
     } else {
-      setStep(1);
+      timer = setTimeout(() => {
+        setMessages([]);
+        setStep(0);
+      }, 6000);
     }
-  };
+    return () => clearTimeout(timer);
+  }, [step]);
 
   return (
     <div className="bg-[#E5DDD5] rounded-3xl overflow-hidden shadow-2xl border-8 border-slate-900 w-full max-w-[340px] mx-auto aspect-[9/16] relative flex flex-col">
@@ -252,39 +228,35 @@ const WhatsAppDemo = () => {
 
       {/* Chat Area */}
       <div className="flex-1 p-4 overflow-y-auto flex flex-col gap-3 custom-scrollbar">
-        {currentMessages.map((m) => (
+        {messages.map((m, idx) => (
           <motion.div 
             initial={{ opacity: 0, scale: 0.9, x: m.sender === 'user' ? 20 : -20 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
-            key={m.id}
+            key={idx}
             className={`max-w-[85%] p-2.5 rounded-xl shadow-sm text-sm relative ${
               m.sender === 'user' 
                 ? 'bg-[#DCF8C6] self-end rounded-tr-none' 
+                : m.sender === 'staff'
+                ? 'bg-blue-50 border border-blue-100 self-start rounded-tl-none'
                 : 'bg-white self-start rounded-tl-none text-slate-800'
             }`}
           >
-            <p className="whitespace-pre-line">{m.msg}</p>
-            <div className="text-[10px] text-slate-400 text-right mt-1">{m.time}</div>
+            {m.sender === 'staff' && <div className="text-[8px] font-bold text-blue-600 mb-1">Business Verified</div>}
+            <p className="whitespace-pre-line text-[13px]">{m.text}</p>
+            <div className="text-[9px] text-slate-400 text-right mt-1">{m.time}</div>
           </motion.div>
         ))}
         {isTyping && (
           <div className="bg-white self-start rounded-xl rounded-tl-none p-2 shadow-sm flex gap-1">
             <div className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce"></div>
-            <div className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce delay-75"></div>
-            <div className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce delay-150"></div>
+            <div className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce [animation-delay:0.2s]"></div>
+            <div className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce [animation-delay:0.4s]"></div>
           </div>
         )}
       </div>
 
-      {/* Footer / Input */}
-      <div className="p-3 bg-[#F0F2F5] flex items-center gap-2">
-        <button 
-          onClick={nextStep}
-          className="bg-accent text-white w-full py-2.5 rounded-lg text-xs font-bold shadow-md hover:bg-green-600 transition-colors"
-          id="demo-next-btn"
-        >
-          {step === demoSteps.length ? 'Restart Demo' : 'Next Interaction →'}
-        </button>
+      <div className="p-3 bg-white/50 border-t border-slate-200">
+         <div className="bg-white rounded-full px-4 py-2 text-slate-400 text-xs shadow-inner">Type a message...</div>
       </div>
       
       <div className="absolute top-2 left-1/2 -translate-x-1/2 w-20 h-4 bg-slate-900 rounded-full"></div>
@@ -366,7 +338,7 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen selection:bg-primary/10 selection:text-primary">
+    <div className="min-h-screen selection:bg-primary selection:text-white">
       <Navbar />
 
       {/* Hero Section */}
@@ -1126,24 +1098,11 @@ const Home = () => {
                     ))}
                   </div>
 
-                  <div className="bg-slate-50 p-4 rounded-xl mb-6">
+                  <div className="bg-slate-50 p-4 rounded-xl">
                     <p className="text-[11px] text-slate-500 font-medium italic leading-relaxed">
                       {plan.footnote}
                     </p>
                   </div>
-
-                  <a 
-                    href={`https://wa.me/917410711563?text=Hi%20I%27m%20interested%20in%20the%20${encodeURIComponent(plan.title)}`} 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`w-full block py-4 rounded-xl text-center font-bold transition-all active:scale-[0.98] cursor-pointer ${
-                      plan.popular 
-                        ? 'bg-primary text-white shadow-lg shadow-primary/25 hover:bg-blue-700' 
-                        : 'bg-slate-900 text-white hover:bg-slate-800'
-                    }`}
-                  >
-                    Select Plan
-                  </a>
                 </div>
               </div>
             ))}
@@ -1384,46 +1343,133 @@ const Home = () => {
   );
 };
 
-const demoConfigs: Record<string, { name: string; welcome: string; image: string; firstOptions: string[] }> = {
+const demoConfigs: any = {
   salon: {
     name: "Glow & Grace Salon",
-    welcome: "Hi! Welcome to Glow & Grace Salon 💇‍♀️\nHow can we help you today?",
+    welcome: "Hi! Welcome to Glow & Grace Salon 💇‍♀️",
     image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=50&h=50&fit=crop",
-    firstOptions: ["Book Appointment", "View Services", "Pricing"]
+    firstOptions: ["Book Appointment", "View Prices"],
+    flows: {
+      "Book Appointment": [
+        { sender: 'bot', text: "Great! Let me check our availability for today... 📅" },
+        { sender: 'staff', text: "Hi! I'm Priya. We have a slot open at 5:30 PM with our lead stylist. Does that work for you?", options: ["Yes, Book it", "Talk to Staff"] }
+      ],
+      "View Prices": [
+        { sender: 'bot', text: "Here are our starting prices 💇‍♀️\n• Haircut: ₹500\n• Global Coloring: ₹2499\n• Hydrafacial: ₹1999" },
+        { sender: 'staff', text: "I'm Reema! If you book any service today, you'll get a free head massage. Want to check a slot?", options: ["Yes, Book Now", "Maybe later"] }
+      ],
+      "Yes, Book it": [
+        { sender: 'staff', text: "Perfect! I've reserved your slot for 5:30 PM today. See you at the salon! ✨", isConversion: true }
+      ],
+      "Yes, Book Now": [
+        { sender: 'staff', text: "Excellent! I've reserved that slot for you. See you soon! ✂️", isConversion: true }
+      ]
+    }
   },
   gym: {
-    name: "FitZone Gym",
-    welcome: "Welcome to FitZone Gym 💪\nHow can we help you?",
+    name: "Iron Paradise Gym",
+    welcome: "Welcome to Iron Paradise Gym! 💪 Ready to reach your goals?",
     image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=50&h=50&fit=crop",
-    firstOptions: ["Join Membership", "Personal Training", "Pricing"]
+    firstOptions: ["Free Trial Class", "Membership Plans"],
+    flows: {
+      "Free Trial Class": [
+        { sender: 'bot', text: "Awesome! We have a HIIT class tomorrow at 7 AM or a Yoga session at 6 PM." },
+        { sender: 'staff', text: "Hey! Coach Amit here. I'll be leading the HIIT session. Can I put your name down for the 7 AM trial?", options: ["Yes, Book HIIT", "Tell me about Yoga"] }
+      ],
+      "Membership Plans": [
+        { sender: 'bot', text: "We have flexible plans:\n\n🔥 Monthly - ₹1,500\n💎 Quarterly - ₹4,000\n🌟 Annual - ₹12,000 (Best Value)" },
+        { sender: 'staff', text: "Hi! I'm Neha from front desk. If you join today, we'll waive the registration fee (₹500). Which plan interests you?", options: ["Annual Plan", "Monthly Plan"] }
+      ],
+      "Yes, Book HIIT": [{ sender: 'staff', text: "Done! I've added you to the HIIT class for 7 AM tomorrow. Bring a towel and get ready to sweat! 🔥", isConversion: true }],
+      "Annual Plan": [{ sender: 'staff', text: "Exciting! I've reserved the 20% discount slot for you. Come by today to activate your membership! 🌟", isConversion: true }]
+    }
   },
   realestate: {
-    name: "Elite Realty",
-    welcome: "Welcome! Looking for a property? 🏡",
+    name: "Skyline Properties",
+    welcome: "Welcome to Skyline Properties! 🏘️ Looking for your dream home?",
     image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=50&h=50&fit=crop",
-    firstOptions: ["Buy Property", "Rent Property", "Budget Range"]
-  },
-  coaching: {
-    name: "Bright Academy",
-    welcome: "Welcome to Bright Academy 📚\nHow can we help you?",
-    image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=50&h=50&fit=crop",
-    firstOptions: ["Course Details", "Fees", "Book Demo Class"]
+    firstOptions: ["View 2BHK Listings", "Book Site Visit"],
+    flows: {
+      "View 2BHK Listings": [
+        { sender: 'bot', text: "Sure! We have 3 premium 2BHK units available in the city center starting from ₹85L. 🏢" },
+        { sender: 'staff', text: "Hi, I'm Rajesh. I've sent the detailed brochure and floor plans to your WhatsApp. Would you like to see a video tour?", options: ["Watch Video", "Book Visit"] }
+      ],
+      "Book Site Visit": [
+        { sender: 'bot', text: "Excellent choice. Personal visits are the best way to feel the space." },
+        { sender: 'staff', text: "Hi, I'm Pooja. I'm at the property site right now. I can show you around tomorrow at 11 AM or 4 PM. Which works?", options: ["11 AM Tomorrow", "4 PM Tomorrow"] }
+      ],
+      "Watch Video": [{ sender: 'bot', text: "Sending tour video... 🎥 Let me know if you'd like to schedule a physical visit after watching!", isConversion: true }],
+      "11 AM Tomorrow": [{ sender: 'staff', text: "Great! I've scheduled your visit for 11 AM. I'll send the location pin 1 hour before the visit. See you! 📍", isConversion: true }]
+    }
   },
   healthcare: {
-    name: "Care Clinic",
-    welcome: "Welcome to Care Clinic 🏥\nHow can we assist you?",
+    name: "City Care Clinic",
+    welcome: "Welcome to City Care Clinic 🏥 How can we assist you?",
     image: "https://images.unsplash.com/photo-1505751172876-019669bf6910?w=50&h=50&fit=crop",
-    firstOptions: ["Book Appointment", "Doctor Availability", "Consultation Fees"]
+    firstOptions: ["Book Appointment", "Consult Doctor Online"],
+    flows: {
+      "Book Appointment": [
+        { sender: 'bot', text: "I can help with that. Which department are you looking for?" },
+        { sender: 'staff', text: "Hi, I'm Nurse Anjali. We have Dr. Mehta (General Physician) available today at 6 PM. Shall I confirm your slot?", options: ["Confirm 6 PM", "Talk to Staff"] }
+      ],
+      "Consult Doctor Online": [
+        { sender: 'bot', text: "Connecting you to our online consultation portal... 💻" },
+        { sender: 'staff', text: "Hi, Dr. Rohan here. I'm available for a quick chat now. Please share your symptoms briefly.", isConversion: true }
+      ],
+      "Confirm 6 PM": [{ sender: 'staff', text: "Confirmed! ✅ Please arrive 10 minutes early. Take care!", isConversion: true }]
+    }
   }
 };
 
 const IndustryDemo = ({ type }: { type: string }) => {
-  const config = demoConfigs[type] || demoConfigs.salon;
-  const [messages, setMessages] = useState<{ id: number; sender: 'user' | 'bot'; text: string; options?: string[]; isConversion?: boolean }[]>([]);
+  const config = demoConfigs[type as keyof typeof demoConfigs] || demoConfigs.salon;
+  const [messages, setMessages] = useState<{ id: number; sender: 'user' | 'bot' | 'staff'; text: string; options?: string[]; isConversion?: boolean }[]>([]);
+  const [messageQueue, setMessageQueue] = useState<{ sender: 'bot' | 'staff'; text: string; options?: string[]; isConversion?: boolean }[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const [hasFollowedUp, setHasFollowedUp] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Sequential message processing
+  useEffect(() => {
+    if (messageQueue.length > 0 && !isTyping) {
+      const nextMessage = messageQueue[0];
+      const timer = setTimeout(() => {
+        setIsTyping(true);
+        // Simulate human-like typing speed
+        const typingDuration = Math.min(Math.max(nextMessage.text.length * 20, 1000), 2000);
+        
+        const typingTimer = setTimeout(() => {
+          setIsTyping(false);
+          setMessages(prev => [...prev, {
+            id: Date.now(),
+            sender: nextMessage.sender,
+            text: nextMessage.text,
+            options: nextMessage.options,
+            isConversion: nextMessage.isConversion
+          }]);
+          setMessageQueue(prev => prev.slice(1));
+
+          // Global conversion follow-up logic
+          if (nextMessage.isConversion && !hasFollowedUp) {
+             setHasFollowedUp(true);
+             setTimeout(() => {
+                setMessageQueue(prev => [...prev, {
+                  sender: 'bot',
+                  text: "Ready to automate your business? Click below to book a free setup call! 👇",
+                  options: ["Yes, Book Free Call", "Chat on WhatsApp"],
+                  isConversion: true
+                }]);
+             }, 3500);
+          }
+        }, typingDuration);
+        
+        return () => clearTimeout(typingTimer);
+      }, 600); // Natural pause between messages
+      
+      return () => clearTimeout(timer);
+    }
+  }, [messageQueue, isTyping, hasFollowedUp]);
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -1435,160 +1481,60 @@ const IndustryDemo = ({ type }: { type: string }) => {
     }
   }, [messages, isTyping]);
 
-  // Idle follow-up logic
-  useEffect(() => {
-    if (messages.length > 0 && messages.length < 10 && !isTyping) {
-      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
-      
-      idleTimerRef.current = setTimeout(() => {
-        if (!hasFollowedUp) {
-          setIsTyping(true);
-          setTimeout(() => {
-            setIsTyping(false);
-            setMessages(prev => [...prev, {
-              id: Date.now(),
-              sender: 'bot',
-              text: "Hi, just following up on your enquiry! 😊 Anything else I can help you with?"
-            }]);
-            setHasFollowedUp(true);
-          }, 1500);
-        }
-      }, 15000); // 15 seconds idle
-    }
-    return () => { if (idleTimerRef.current) clearTimeout(idleTimerRef.current); };
-  }, [messages, isTyping, hasFollowedUp]);
-
-  const addBotMessage = (msgs: { text: string; options?: string[]; isConversion?: boolean }[]) => {
-    msgs.forEach((msg, idx) => {
-      setTimeout(() => {
-        setIsTyping(true);
-        setTimeout(() => {
-          setIsTyping(false);
-          setMessages(prev => [...prev, {
-            id: Date.now() + idx,
-            sender: 'bot',
-            text: msg.text,
-            options: msg.options,
-            isConversion: msg.isConversion
-          }]);
-
-          // If it's a final message, trigger the "Setup call" follow-up after 6 seconds
-          if (!msg.options && !msg.isConversion) {
-            setTimeout(() => {
-              setIsTyping(true);
-              setTimeout(() => {
-                setIsTyping(false);
-                setMessages(prev => [...prev, {
-                  id: Date.now() + 99,
-                  sender: 'bot',
-                  text: "Would you like to set this up for your business? 🚀",
-                  options: ["Yes, Book Free Call", "Chat on WhatsApp"],
-                  isConversion: true
-                }]);
-              }, 1200);
-            }, 6000);
-          }
-        }, 1200);
-      }, idx * 2500); // Stagger multiple messages
-    });
+  const addToQueue = (msgs: { sender: 'bot' | 'staff'; text: string; options?: string[]; isConversion?: boolean }[]) => {
+    setMessageQueue(prev => [...prev, ...msgs]);
   };
 
   const startDemo = () => {
-    const userMsg = { id: Date.now(), sender: 'user' as const, text: 'Hi' };
-    setMessages([userMsg]);
-    setIsTyping(true);
-    setTimeout(() => {
-      setIsTyping(false);
-      setMessages(prev => [...prev, { 
-        id: Date.now() + 1, 
-        sender: 'bot', 
-        text: config.welcome, 
-        options: config.firstOptions 
-      }]);
-    }, 1500);
+    setMessages([]);
+    setMessageQueue([]);
+    setHasFollowedUp(false);
+    addToQueue([{ sender: 'bot', text: config.welcome, options: config.firstOptions }]);
   };
 
   const handleOptionClick = (option: string) => {
-    // Clear idle timer
     if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
 
-    // If it's the final conversion buttons
     if (option === "Yes, Book Free Call" || option === "Chat on WhatsApp") {
       window.open(`https://wa.me/917410711563?text=Hi%20I%20want%20to%20automate%20my%20WhatsApp%20leads%20for%20my%20${type}%20business`, '_blank');
       return;
     }
 
-    // 1. Show user bubble first
     const userMsg = { id: Date.now(), sender: 'user' as const, text: option };
     setMessages(prev => [...prev.map(m => ({ ...m, options: undefined })), userMsg]);
 
-    // 2. Trigger Bot Responses based on industry
-    let nextMessages: { text: string; options?: string[] }[] = [];
+    const nextMessages: { sender: 'bot' | 'staff'; text: string; options?: string[]; isConversion?: boolean }[] = [];
 
-    // Industry Logic
+    // Simple industry routing
     if (type === 'salon') {
-      if (option === "Book Appointment" || option === "Book Now") {
-        nextMessages = [{ text: "Great! What service are you looking for? 😊", options: ["Haircut", "Facial", "Hair Spa"] }];
-      } else if (option === "Pricing") {
-        nextMessages = [{ text: "Here are our starting prices 💇‍♀️" }, { text: "• Haircut: ₹299+\n• Facial: ₹799+\n• Hair Spa: ₹999+" }, { text: "Would you like to book an appointment?", options: ["Book Now", "Talk to Staff"] }];
-      } else if (["Haircut", "Facial", "Hair Spa"].includes(option)) {
-        nextMessages = [{ text: "Perfect! Please choose a time slot:", options: ["Today", "Tomorrow", "This Weekend"] }];
-      } else if (["Today", "Tomorrow", "This Weekend"].includes(option)) {
-        nextMessages = [{ text: "You're all set! Our team will confirm your booking shortly. ✅" }];
+      if (option === "Book Appointment" || option === "Pricing") {
+        nextMessages.push({ sender: 'bot', text: "Let me check available slots... 📅" });
+        nextMessages.push({ sender: 'staff', text: "Hi! I'm Priya. We have a slot open at 5 PM today. Should I book it?", options: ["Yes, Book Now", "Talk to Staff"] });
+      } else if (option === "Yes, Book Now") {
+        nextMessages.push({ sender: 'staff', text: "Perfect! I've reserved the 5 PM slot for you. See you soon! ✨", isConversion: true });
       }
     } else if (type === 'gym') {
-      if (option === "Join Membership" || option === "Book Now") {
-        nextMessages = [{ text: "Awesome! Which plan interests you? 💪", options: ["Monthly Plan", "Annual Plan (20% OFF)", "3 Month Trial"] }];
-      } else if (option === "Pricing") {
-        nextMessages = [{ text: "Monthly plans start at ₹1,999!" }, { text: "Would you like to visit the gym or talk to our trainer?", options: ["Book Visit", "Talk to Trainer"] }];
-      } else if (option === "Personal Training") {
-        nextMessages = [{ text: "Our trainers help you reach goals 2x faster! Request a free trial?", options: ["Yes, Book Trial", "View Pricing"] }];
-      } else if (["Monthly Plan", "Annual Plan (20% OFF)", "3 Month Trial", "Book Visit", "Yes, Book Trial"].includes(option)) {
-        nextMessages = [{ text: "Great! Please share your name and preferred visit time below. 🏋️‍♂️" }];
-      }
-    } else if (type === 'realestate') {
-       if (option === "Buy Property" || option === "Rent Property") {
-        nextMessages = [{ text: "Excellent choice! Which location are you interested in? 🏡", options: ["South Mumbai", "Navi Mumbai", "Thane"] }];
-      } else if (option === "Budget Range") {
-        nextMessages = [{ text: "What's your preferred budget range?", options: ["Under 50 Lacs", "50 Lacs - 1 Cr", "Above 1 Cr"] }];
-      } else if (["South Mumbai", "Navi Mumbai", "Thane", "Under 50 Lacs", "50 Lacs - 1 Cr", "Above 1 Cr"].includes(option)) {
-        nextMessages = [{ text: "Noted! One of our agents will share matching properties with you shortly. 📈" }];
-      }
-    } else if (type === 'coaching') {
-      if (option === "Course Details") {
-        nextMessages = [{ text: "We offer top-tier preparation for:\n• JEE/NEET\n• Foundation (8-10th)\n• Olympiads", options: ["JEE/NEET", "Foundation", "Fees"] }];
-      } else if (option === "Fees") {
-        nextMessages = [{ text: "Our courses start from ₹5,000 per month. 📚" }, { text: "Would you like to attend a free demo class?", options: ["Book Demo Class", "Talk to Counselor"] }];
-      } else if (option === "Book Demo Class") {
-        nextMessages = [{ text: "Demo class request received! Please choose a date:", options: ["This Saturday", "Next Monday"] }];
-      } else if (["This Saturday", "Next Monday", "JEE/NEET", "Foundation"].includes(option)) {
-         nextMessages = [{ text: "Registration complete! You'll receive the joining link shortly. 🎓" }];
-      }
-    } else if (type === 'healthcare') {
-      if (option === "Book Appointment") {
-        nextMessages = [{ text: "Please select your preferred specialty: 🏥", options: ["General Physician", "Pediatrician", "Dentist"] }];
-      } else if (option === "Consultation Fees") {
-        nextMessages = [{ text: "Consultation starts at ₹499 per visit. 🩺" }, { text: "Would you like to check availability?", options: ["Check Availability", "Book Appointment"] }];
-      } else if (["General Physician", "Pediatrician", "Dentist", "Check Availability"].includes(option)) {
-        nextMessages = [{ text: "Please select a preferred time:", options: ["Today", "Tomorrow morning", "Tomorrow evening"] }];
-      } else if (["Today", "Tomorrow morning", "Tomorrow evening"].includes(option)) {
-        nextMessages = [{ text: "Appointment request sent! Our staff will confirm the final slot in 10 mins. ✅" }];
+      if (option === "Join Membership") {
+        nextMessages.push({ sender: 'bot', text: "Awesome choice! Muscle building starts here. 💪" });
+        nextMessages.push({ sender: 'staff', text: "Hey! Coach Amit here. We have a 20% discount on Annual plans this week. Interested?", options: ["Yes, Tell me more", "View Pricing"] });
+      } else if (option === "Yes, Tell me more") {
+        nextMessages.push({ sender: 'staff', text: "Annual plans include 2 free sessions with me! Want me to reserve a spot?", isConversion: true });
       }
     }
-
-    if (option === "Talk to Staff" || option === "Talk to Trainer" || option === "Talk to Counselor" || option === "Talk to Staff") {
-      nextMessages = [{ text: "Sure! One of our team members will reach out to you on this chat in 2-5 minutes. 🕒" }];
-    } else if (option === "View Services" && !nextMessages.length) {
-      nextMessages = [{ text: "Loading our full service menu... 📄", options: config.firstOptions.filter(o => o !== "View Services") }];
-    }
-
+    
     if (nextMessages.length > 0) {
-      addBotMessage(nextMessages);
+      addToQueue(nextMessages);
+    } else if (option !== "Talk to Staff") {
+      addToQueue([{ sender: 'bot', text: "Noted! One of our experts will get back to you shortly. 🚀", isConversion: true }]);
+    }
+
+    if (option === "Talk to Staff") {
+      addToQueue([{ sender: 'staff', text: "Hi! I'm here. How can I help you today? 😊" }]);
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex flex-col items-center justify-center p-6 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] overflow-hidden">
+    <div className="min-h-screen bg-[#f8fafc] flex flex-col items-center justify-center p-6 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] overflow-hidden selection:bg-primary selection:text-white">
       <div className="fixed inset-0 pointer-events-none opacity-40">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-100 blur-[100px] rounded-full"></div>
         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-accent/20 blur-[100px] rounded-full"></div>
@@ -1634,7 +1580,8 @@ const IndustryDemo = ({ type }: { type: string }) => {
             <>
               {messages.map((m) => (
                 <div key={m.id} className="flex flex-col gap-2">
-                  <motion.div initial={{ opacity: 0, scale: 0.95, y: 10 }} animate={{ opacity: 1, scale: 1, y: 0 }} className={`max-w-[85%] p-3 rounded-2xl shadow-sm text-sm relative group ${m.sender === 'user' ? 'bg-[#DCF8C6] self-end rounded-tr-none' : 'bg-white self-start rounded-tl-none text-slate-800'}`}>
+                  <motion.div initial={{ opacity: 0, scale: 0.95, y: 10 }} animate={{ opacity: 1, scale: 1, y: 0 }} className={`max-w-[85%] p-3 rounded-2xl shadow-sm text-sm relative group ${m.sender === 'user' ? 'bg-[#DCF8C6] self-end rounded-tr-none' : m.sender === 'staff' ? 'bg-blue-50 border border-blue-100 self-start rounded-tl-none' : 'bg-white self-start rounded-tl-none text-slate-800'}`}>
+                    {m.sender === 'staff' && <div className="text-[10px] font-bold text-blue-600 mb-1 flex items-center gap-1.5"><ShieldCheck size={12}/> Verified Business Account</div>}
                     <p className="whitespace-pre-line leading-relaxed">{m.text}</p>
                     <div className="text-[9px] text-slate-400 text-right mt-1.5 flex items-center justify-end gap-1">
                       {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
