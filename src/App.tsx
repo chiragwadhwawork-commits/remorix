@@ -116,7 +116,7 @@ const Navbar = () => {
             </a>
           ))}
           <a 
-            href="https://wa.me/917410711563?text=Hi%20I%20want%20to%20automate%20my%20WhatsApp%20leads" 
+            href="https://wa.me/918265011563?text=Hi%20I%20want%20to%20automate%20my%20WhatsApp%20leads" 
             target="_blank"
             rel="noopener noreferrer"
             className="bg-primary text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:shadow-lg hover:shadow-primary/30 transition-all active:scale-95 cursor-pointer"
@@ -156,7 +156,7 @@ const Navbar = () => {
                 </a>
               ))}
               <a 
-                href="https://wa.me/917410711563?text=Hi%20I%20want%20to%20automate%20my%20WhatsApp%20leads" 
+                href="https://wa.me/918265011563?text=Hi%20I%20want%20to%20automate%20my%20WhatsApp%20leads" 
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setIsMobileMenuOpen(false)}
@@ -379,7 +379,7 @@ const Home = () => {
             <div className="flex flex-col gap-6">
               <div className="flex flex-col sm:flex-row items-center gap-4">
                 <a 
-                  href="https://wa.me/917410711563?text=Hi%20I%20want%20to%20automate%20my%20WhatsApp%20leads" 
+                  href="https://wa.me/918265011563?text=Hi%20I%20want%20to%20automate%20my%20WhatsApp%20leads" 
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full sm:w-auto bg-primary text-white px-8 py-5 rounded-2xl text-lg font-bold shadow-xl shadow-primary/20 hover:scale-105 transition-transform flex items-center justify-center gap-2 cursor-pointer"
@@ -832,7 +832,7 @@ const Home = () => {
               </div>
               <div className="flex flex-col gap-3">
                 <a 
-                  href="https://wa.me/917410711563?text=Hi%20I%20want%20to%20automate%20my%20WhatsApp%20leads" 
+                  href="https://wa.me/918265011563?text=Hi%20I%20want%20to%20automate%20my%20WhatsApp%20leads" 
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-white text-primary text-center py-4 rounded-xl font-bold hover:scale-105 transition-transform flex items-center justify-center gap-2 cursor-pointer"
@@ -1145,11 +1145,11 @@ const Home = () => {
               <div className="p-12 md:p-20 text-white flex flex-col justify-center">
                 <h2 className="text-4xl md:text-6xl font-display font-bold mb-8 leading-tight">Ready to win <br/>back your time?</h2>
                 <div className="space-y-6 mb-12">
-                   <a href="tel:+917410711563" className="flex items-center gap-4 text-xl font-bold hover:text-accent transition-colors">
+                   <a href="tel:+918265011563" className="flex items-center gap-4 text-xl font-bold hover:text-accent transition-colors">
                       <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center">
                         <Phone size={24} />
                       </div>
-                      +91 7410711563
+                      +91 8265011563
                    </a>
                    <a href="mailto:info@remorix.in" className="flex items-center gap-4 text-xl font-bold hover:text-accent transition-colors">
                       <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center">
@@ -1160,7 +1160,7 @@ const Home = () => {
                 </div>
                 <div className="flex items-center gap-4">
                   <a 
-                    href="https://wa.me/917410711563?text=Hi%20I%20want%20to%20automate%20my%20WhatsApp%20leads" 
+                    href="https://wa.me/918265011563?text=Hi%20I%20want%20to%20automate%20my%20WhatsApp%20leads" 
                     target="_blank"
                     rel="noopener noreferrer"
                     className="bg-accent text-slate-900 px-8 py-5 rounded-2xl font-bold text-lg hover:bg-green-400 transition-colors flex items-center gap-2 cursor-pointer"
@@ -1293,8 +1293,8 @@ const Home = () => {
           <div>
              <h5 className="font-bold mb-6 text-slate-900">Contact Details</h5>
              <div className="flex flex-col gap-4">
-                <a href="tel:+917410711563" className="flex items-center gap-3 text-slate-500 text-sm hover:text-primary transition-colors cursor-pointer">
-                  <Phone size={16} /> +91 7410711563
+                <a href="tel:+918265011563" className="flex items-center gap-3 text-slate-500 text-sm hover:text-primary transition-colors cursor-pointer">
+                  <Phone size={16} /> +91 8265011563
                 </a>
                  <a href="mailto:info@remorix.in" className="flex items-center gap-3 text-slate-500 text-sm hover:text-primary transition-colors cursor-pointer">
                   <Mail size={16} /> info@remorix.in
@@ -1308,7 +1308,7 @@ const Home = () => {
           <div>
             <h5 className="font-bold mb-6 text-slate-900">Quick Connection</h5>
             <a 
-              href="https://wa.me/917410711563?text=Hi%20I%20want%20to%20automate%20my%20WhatsApp%20leads" 
+              href="https://wa.me/918265011563?text=Hi%20I%20want%20to%20automate%20my%20WhatsApp%20leads" 
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-3 bg-accent text-slate-900 px-6 py-4 rounded-2xl font-bold hover:shadow-lg transition-all text-sm cursor-pointer"
@@ -1484,7 +1484,7 @@ const IndustryDemo = ({ type }: { type: string }) => {
     if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
 
     if (option === "Yes, Book Free Call" || option === "Chat on WhatsApp") {
-      window.open(`https://wa.me/917410711563?text=Hi%20I%20want%20to%20automate%20my%20WhatsApp%20leads%20for%20my%20${type}%20business`, '_blank');
+      window.open(`https://wa.me/918265011563?text=Hi%20I%20want%20to%20automate%20my%20WhatsApp%20leads%20for%20my%20${type}%20business`, '_blank');
       return;
     }
 
