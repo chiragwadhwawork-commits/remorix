@@ -31,9 +31,9 @@ const Logo = ({ variant = 'full', className = "" }: { variant?: 'full' | 'icon' 
   return (
     <div className={`flex items-center ${className}`}>
       <img 
-        src="remorix_logo.png" 
+        src="https://i.postimg.cc/RVjnxwfZ/remorix-logo.png" 
         alt="Remorix Automation Logo" 
-        className={`${variant === 'icon' ? 'h-8 w-8 object-cover object-left' : 'h-8 md:h-10 w-auto object-contain'}`}
+        className={`${variant === 'icon' ? 'h-8 w-8 object-cover object-left' : 'h-10 md:h-16 w-auto object-contain'}`}
       />
     </div>
   );
@@ -858,105 +858,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Target Users */}
-      <section className="py-24 bg-primary-text text-white overflow-hidden" id="target-users">
-        <div className="max-w-7xl mx-auto px-6">
-           <div className="flex flex-col md:flex-row items-center justify-between gap-12 mb-20">
-              <div className="max-w-2xl">
-                 <h2 className="text-4xl md:text-6xl font-display font-bold mb-4 text-white">Built for local businesses that <br/><span className="text-primary italic">depend on fast replies.</span></h2>
-                 <p className="text-lg opacity-80">From first message to confirmed booking — automated on WhatsApp.</p>
-              </div>
-              <div className="bg-white/5 p-6 rounded-3xl border border-white/10 text-center">
-                 <div className="text-primary font-bold text-lg mb-1 italic uppercase tracking-wider">Limited onboarding slots</div>
-                 <p className="text-xs opacity-60">We onboard only 10 businesses per month to ensure high-quality setup and results.</p>
-              </div>
-           </div>
-            <div className="mb-8 text-center md:text-left">
-              <p className="text-primary font-bold text-sm uppercase tracking-widest">See how it works for your business — click a category below</p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
-              {[
-                { 
-                  name: "Salons and Parlours", 
-                  desc: "Auto-reply to enquiries → Book appointments instantly",
-                  example: "“Hi, haircut today?” → Available slots + booking link",
-                  icon: <Users size={20} />, 
-                  href: "/salon-demo" 
-                },
-                { 
-                  name: "Real Estate Agents", 
-                  desc: "Capture leads → Follow up automatically → Close faster",
-                  example: "“Price & location?” → Details + site visit follow-up",
-                  icon: <Users size={20} />, 
-                  href: "/realestate-demo" 
-                },
-                { 
-                  name: "Coaching & Education", 
-                  desc: "Answer FAQs → Share details → Convert enquiries to admissions",
-                  example: "“Fees?” → Full info + enrollment link",
-                  icon: <Zap size={20} />, 
-                  href: "/coaching-demo" 
-                },
-                { 
-                  name: "Gyms & Fitness", 
-                  desc: "Handle trial requests → Send reminders → Reduce drop-offs",
-                  example: "“Trial available?” → Schedule + reminder sent",
-                  icon: <TrendingUp size={20} />, 
-                  href: "/gym-demo" 
-                },
-                { 
-                  name: "Other Local Services", 
-                  desc: "Reply in seconds → Qualify leads → Turn chats into customers",
-                  example: "“Available tomorrow?” → Instant confirmation",
-                  icon: <Check size={20} />, 
-                  href: "/healthcare-demo" 
-                }
-              ].map((item, i) => {
-                const CardContent = (
-                  <>
-                    <div className="p-3 bg-white/5 rounded-2xl group-hover:bg-primary/20 transition-colors text-white">
-                      {item.icon}
-                    </div>
-                    <div className="flex flex-col gap-2">
-                       <span className="font-bold text-sm h-10 md:h-12 flex items-center justify-center leading-tight text-white group-hover:text-primary transition-colors">{item.name}</span>
-                       <p className="text-[10px] text-white/50 leading-tight">{item.desc}</p>
-                       <div className="flex flex-col gap-1 mt-1">
-                          <p className="text-[8px] text-white/30 uppercase tracking-widest font-bold">Live demo:</p>
-                          <p className="text-[10px] text-primary font-medium leading-tight italic">{item.example}</p>
-                       </div>
-                       <p className="text-[9px] text-primary font-bold mt-2 opacity-80 group-hover:opacity-100 group-hover:translate-x-1 transition-all flex items-center justify-center gap-1">
-                          Click to view live demo →
-                       </p>
-                    </div>
-                  </>
-                );
-
-                if (item.href) {
-                  return (
-                    <Link 
-                      key={i}
-                      to={item.href}
-                      className="bg-white/5 hover:bg-white/10 p-8 rounded-3xl border border-white/5 text-center flex flex-col items-center gap-4 transition-all hover:scale-105 cursor-pointer group"
-                    >
-                      {CardContent}
-                    </Link>
-                  );
-                }
-
-                return (
-                  <div 
-                    key={i} 
-                    className="bg-white/5 hover:bg-white/10 p-8 rounded-3xl border border-white/5 text-center flex flex-col items-center gap-4 transition-all hover:scale-105 cursor-default group"
-                    id={`target-${i}`}
-                  >
-                    {CardContent}
-                  </div>
-                );
-              })}
-           </div>
-        </div>
-      </section>
 
       {/* Pricing Section */}
       <section className="py-32 bg-white" id="pricing">
@@ -1298,7 +1199,7 @@ const demoConfigs: any = {
   salon: {
     name: "Glow & Grace Salon",
     welcome: "Hi! Welcome to Glow & Grace Salon 💇‍♀️",
-    image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=50&h=50&fit=crop",
+    image: "https://i.postimg.cc/RVjnxwfZ/remorix-logo.png",
     firstOptions: ["Book Appointment", "View Prices"],
     flows: {
       "Book Appointment": [
@@ -1320,7 +1221,7 @@ const demoConfigs: any = {
   gym: {
     name: "Iron Paradise Gym",
     welcome: "Welcome to Iron Paradise Gym! 💪 Ready to reach your goals?",
-    image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=50&h=50&fit=crop",
+    image: "https://i.postimg.cc/RVjnxwfZ/remorix-logo.png",
     firstOptions: ["Free Trial Class", "Membership Plans"],
     flows: {
       "Free Trial Class": [
@@ -1338,7 +1239,7 @@ const demoConfigs: any = {
   realestate: {
     name: "Skyline Properties",
     welcome: "Welcome to Skyline Properties! 🏘️ Looking for your dream home?",
-    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=50&h=50&fit=crop",
+    image: "https://i.postimg.cc/RVjnxwfZ/remorix-logo.png",
     firstOptions: ["View 2BHK Listings", "Book Site Visit"],
     flows: {
       "View 2BHK Listings": [
@@ -1356,7 +1257,7 @@ const demoConfigs: any = {
   healthcare: {
     name: "City Care Clinic",
     welcome: "Welcome to City Care Clinic 🏥 How can we assist you?",
-    image: "https://images.unsplash.com/photo-1505751172876-019669bf6910?w=50&h=50&fit=crop",
+    image: "https://i.postimg.cc/RVjnxwfZ/remorix-logo.png",
     firstOptions: ["Book Appointment", "Consult Doctor Online"],
     flows: {
       "Book Appointment": [
