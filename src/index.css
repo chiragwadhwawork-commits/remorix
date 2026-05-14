@@ -5,9 +5,12 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Outfit", sans-serif;
   
-  --color-primary: #2563EB;
-  --color-accent: #22C55E;
-  --color-bg: #F8FAFC;
+  --color-primary: #075E54;
+  --color-accent: #075E54;
+  --color-bg: #FFFFFF;
+  --color-primary-text: #1F2937;
+  --color-secondary-text: #4B5563;
+  --color-border-light: #E5E7EB;
 }
 
 @layer base {

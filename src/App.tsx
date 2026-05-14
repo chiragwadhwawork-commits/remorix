@@ -28,50 +28,13 @@ import {
 // --- Components ---
 
 const Logo = ({ variant = 'full', className = "" }: { variant?: 'full' | 'icon' | 'white', className?: string }) => {
-  const isWhite = variant === 'white';
-  const showText = variant === 'full' || variant === 'white';
-  
   return (
-    <div className={`flex items-center gap-2.5 ${className}`}>
-      {/* SVG Icon - Premium SaaS Signal */}
-      <svg width="36" height="36" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="flex-shrink-0">
-        {/* Background Base */}
-        <rect width="40" height="40" rx="10" fill={isWhite ? "white" : "url(#logo-gradient-saas)"} />
-        
-        {/* Modern Chat Bubble Geometric Base */}
-        <path 
-          d="M10 26V14C10 11.7909 11.7909 10 14 10H26C28.2091 10 30 11.7909 30 14V22C30 24.2091 28.2091 26 26 26H14L10 30" 
-          stroke={isWhite ? "#2563EB" : "white"} 
-          strokeWidth="3" 
-          strokeLinecap="round" 
-          strokeLinejoin="round"
-          className="opacity-25"
-        />
-
-        {/* The Conversion Spark - Growth + Automation */}
-        <path 
-          d="M16 24L21 19L17 19L24 12V17L28 17L19 26" 
-          fill={isWhite ? "#2563EB" : "white"} 
-          className="drop-shadow-sm"
-        />
-
-        {!isWhite && (
-          <defs>
-            <linearGradient id="logo-gradient-saas" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#2563EB" />
-              <stop offset="1" stopColor="#10B981" />
-            </linearGradient>
-          </defs>
-        )}
-      </svg>
-
-      {/* Modern SaaS Typography */}
-      {showText && (
-        <div className={`flex items-baseline tracking-[-0.05em] ${isWhite ? 'text-white' : 'text-slate-900'}`}>
-          <span className="text-2xl font-extrabold">Remo</span>
-          <span className="text-2xl font-medium opacity-70">rix</span>
-        </div>
-      )}
+    <div className={`flex items-center ${className}`}>
+      <img 
+        src="remorix_logo.png" 
+        alt="Remorix Automation Logo" 
+        className={`${variant === 'icon' ? 'h-8 w-8 object-cover object-left' : 'h-8 md:h-10 w-auto object-contain'}`}
+      />
     </div>
   );
 };
@@ -110,7 +73,7 @@ const Navbar = () => {
             <a 
               key={link.name} 
               href={link.href} 
-              className="text-sm font-medium text-slate-600 hover:text-primary transition-colors"
+              className="text-sm font-medium text-secondary-text hover:text-primary transition-colors"
             >
               {link.name}
             </a>
@@ -119,7 +82,7 @@ const Navbar = () => {
             href="https://wa.me/918265011563?text=Hi%20I%20want%20to%20automate%20my%20WhatsApp%20leads" 
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-primary text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:shadow-lg hover:shadow-primary/30 transition-all active:scale-95 cursor-pointer"
+            className="bg-primary text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-primary/90 transition-all active:scale-95 cursor-pointer"
           >
             Get Free Setup Call
           </a>
@@ -127,7 +90,7 @@ const Navbar = () => {
 
         {/* Mobile Toggle */}
         <button 
-          className="md:hidden p-2 text-slate-600"
+          className="md:hidden p-2 text-secondary-text"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           id="mobile-menu-toggle"
         >
@@ -350,14 +313,14 @@ const Home = () => {
             viewport={{ once: true }}
             className="flex flex-col gap-8"
           >
-            <div className="inline-flex items-center gap-2 bg-blue-50 text-primary px-3 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase border border-blue-100">
+            <div className="inline-flex items-center gap-2 bg-primary/5 text-primary px-3 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase border border-primary/10">
               <Zap size={14} className="fill-primary" />
               100% Done-For-You Automation
             </div>
-            <h1 className="text-5xl md:text-7xl font-display font-bold text-slate-900 leading-[1.1]">
+            <h1 className="text-5xl md:text-7xl font-display font-bold text-primary-text leading-[1.1]">
               Convert 3x More WhatsApp Leads Into Paying Customers — <span className="text-primary italic">Automatically</span>
             </h1>
-            <p className="text-xl text-slate-600 leading-relaxed max-w-lg">
+            <p className="text-xl text-secondary-text leading-relaxed max-w-lg">
               Never miss a lead again. Remorix instantly replies, follows up, and converts your WhatsApp inquiries into real customers — even while you sleep.
             </p>
             
@@ -367,8 +330,8 @@ const Home = () => {
                 "Automated follow-ups that drive sales",
                 "Full professional setup & maintenance"
               ].map((text, i) => (
-                <div key={i} className="flex items-center gap-3 text-slate-700 font-medium">
-                  <div className="w-6 h-6 bg-green-100 text-green-600 rounded-full flex items-center justify-center flex-shrink-0">
+                <div key={i} className="flex items-center gap-3 text-primary-text font-medium">
+                  <div className="w-6 h-6 bg-primary/10 text-primary rounded-full flex items-center justify-center flex-shrink-0">
                     <Check size={14} strokeWidth={3} />
                   </div>
                   {text}
@@ -394,7 +357,7 @@ const Home = () => {
                   <Zap size={16} className="fill-current" />
                   ⚡ Free setup for first 10 businesses this month
                 </span>
-                <span className="text-slate-400 text-[10px] uppercase tracking-wider font-semibold">
+                <span className="text-secondary-text/60 text-[10px] uppercase tracking-wider font-semibold">
                   No tech skills needed • Setup done for you • Works in 24 hours
                 </span>
               </p>
@@ -430,12 +393,12 @@ const Home = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl md:text-5xl font-display font-bold mb-6 text-slate-900 leading-tight">
+              <h2 className="text-3xl md:text-5xl font-display font-bold mb-6 text-primary-text leading-tight">
                 Built on the same infrastructure <br/>
-                <span className="bg-gradient-to-r from-blue-600 to-accent bg-clip-text text-transparent italic">trusted by thousands of businesses</span>
+                <span className="text-primary italic">trusted by thousands of businesses</span>
               </h2>
-              <p className="text-xl text-slate-600 leading-relaxed mb-8">
-                We use official WhatsApp API platforms like <span className="font-bold text-slate-900">Interakt</span> and <span className="font-bold text-slate-900">AiSensy</span> to ensure secure, reliable, and scalable automation.
+              <p className="text-xl text-secondary-text leading-relaxed mb-8">
+                We use official WhatsApp API platforms like <span className="font-bold text-primary-text">Interakt</span> and <span className="font-bold text-primary-text">AiSensy</span> to ensure secure, reliable, and scalable automation.
               </p>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-8 mb-10">
@@ -444,8 +407,8 @@ const Home = () => {
                   "No risk of number bans",
                   "Fully compliant with WhatsApp API"
                 ].map((text, i) => (
-                  <div key={i} className="flex items-center gap-3 text-slate-700 font-bold text-sm uppercase tracking-wide">
-                    <div className="w-6 h-6 bg-green-100 text-green-600 rounded-full flex items-center justify-center flex-shrink-0">
+                  <div key={i} className="flex items-center gap-3 text-secondary-text font-bold text-sm uppercase tracking-wide">
+                    <div className="w-6 h-6 bg-primary/10 text-primary rounded-full flex items-center justify-center flex-shrink-0">
                       <Check size={14} strokeWidth={4} />
                     </div>
                     {text}
@@ -453,12 +416,12 @@ const Home = () => {
                 ))}
               </div>
 
-              <div className="space-y-4 p-6 bg-slate-50 rounded-2xl border border-slate-100">
-                <p className="text-slate-900 font-bold flex items-center gap-3">
+              <div className="space-y-4 p-6 bg-bg rounded-2xl border border-border-light">
+                <p className="text-primary-text font-bold flex items-center gap-3">
                   <Zap size={20} className="text-primary fill-primary" />
                   You get enterprise-level automation
                 </p>
-                <p className="text-slate-900 font-bold flex items-center gap-3">
+                <p className="text-primary-text font-bold flex items-center gap-3">
                   <Zap size={20} className="text-primary fill-primary" />
                   Without dealing with setup, tech, or complexity
                 </p>
@@ -561,19 +524,19 @@ const Home = () => {
       </section>
 
       {/* Problem Section */}
-      <section className="py-24 bg-slate-50 overflow-hidden" id="problem">
+      <section className="py-24 bg-bg overflow-hidden" id="problem">
         <div className="max-w-7xl mx-auto px-6">
           <div className="max-w-3xl mx-auto text-center mb-20">
-            <h2 className="text-3xl md:text-5xl font-display font-bold mb-6 text-slate-900">You’re Losing Customers Every Day</h2>
+            <h2 className="text-3xl md:text-5xl font-display font-bold mb-6 text-primary-text">You’re Losing Customers Every Day</h2>
             <div className="space-y-4 mb-8">
-              <p className="text-xl text-slate-600 font-medium">Most businesses lose 30–50% of leads due to slow replies.</p>
+              <p className="text-xl text-secondary-text font-medium">Most businesses lose 30–50% of leads due to slow replies.</p>
               <div className="flex flex-wrap justify-center gap-4 text-sm font-semibold text-red-500">
                 <span>• Customers message but you reply late</span>
                 <span>• Leads don’t get follow-ups</span>
                 <span>• Interested buyers disappear</span>
               </div>
             </div>
-            <p className="text-slate-500 italic">"A lead ignored for 5 minutes is already 80% lost."</p>
+            <p className="text-secondary-text opacity-70 italic">"A lead ignored for 5 minutes is already 80% lost."</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-10">
@@ -600,12 +563,12 @@ const Home = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow"
+                className="bg-white p-8 rounded-3xl border border-border-light shadow-sm hover:shadow-md transition-shadow"
                 id={`problem-card-${i}`}
               >
                 <div className="mb-6">{item.icon}</div>
-                <h3 className="text-2xl font-bold mb-4">{item.title}</h3>
-                <p className="text-slate-600 leading-relaxed">{item.desc}</p>
+                <h3 className="text-2xl font-bold mb-4 text-primary-text">{item.title}</h3>
+                <p className="text-secondary-text leading-relaxed">{item.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -628,41 +591,41 @@ const Home = () => {
                   <ShieldCheck size={32} />
                 </div>
                 <h3 className="text-4xl font-display font-bold leading-tight">We handle everything <br/><span className="text-primary italic">so you don't have to.</span></h3>
-                <p className="text-slate-600 text-lg leading-relaxed">
+                <p className="text-secondary-text text-lg leading-relaxed">
                   You don’t get software — you get a done-for-you system. No software to learn. No dashboards to manage. We build your flows, set up your triggers, and keep your automation running 24/7.
                 </p>
                 <div className="space-y-4 pt-4">
                   <div className="flex gap-4 items-start">
                     <div className="w-2 h-2 bg-primary rounded-full mt-2.5"></div>
-                    <p className="font-semibold text-slate-800">Done-for-you Setup & Maintenance</p>
+                    <p className="font-semibold text-primary-text">Done-for-you Setup & Maintenance</p>
                   </div>
                    <div className="flex gap-4 items-start">
                     <div className="w-2 h-2 bg-primary rounded-full mt-2.5"></div>
-                    <p className="font-semibold text-slate-800">Direct WhatsApp Integration</p>
+                    <p className="font-semibold text-primary-text">Direct WhatsApp Integration</p>
                   </div>
                 </div>
               </div>
             </div>
           </motion.div>
           <div className="order-1 md:order-2">
-            <h2 className="text-4xl md:text-6xl font-display font-bold mb-8">The Remorix <br/>Solution</h2>
+            <h2 className="text-4xl md:text-6xl font-display font-bold mb-8 text-primary-text">The Remorix <br/>Solution</h2>
             <div className="space-y-8">
               <div className="flex gap-6">
-                <div className="w-12 h-12 bg-blue-100 text-primary rounded-full flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 bg-primary/10 text-primary rounded-full flex items-center justify-center flex-shrink-0">
                   <Bot size={24} />
                 </div>
                 <div>
-                  <h4 className="text-xl font-bold mb-2 text-slate-900">Instant replies to every lead</h4>
-                  <p className="text-slate-600 leading-relaxed">Our system understands customer intent and replies with pricing, slots, or details instantly.</p>
+                  <h4 className="text-xl font-bold mb-2 text-primary-text">Instant replies to every lead</h4>
+                  <p className="text-secondary-text leading-relaxed">Our system understands customer intent and replies with pricing, slots, or details instantly.</p>
                 </div>
               </div>
               <div className="flex gap-6">
-                 <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center flex-shrink-0">
+                 <div className="w-12 h-12 bg-primary/10 text-primary rounded-full flex items-center justify-center flex-shrink-0">
                   <TrendingUp size={24} />
                 </div>
                 <div>
-                  <h4 className="text-xl font-bold mb-2 text-slate-900">Automatic Lead Qualification</h4>
-                  <p className="text-slate-600 leading-relaxed">We automatically categorize leads so you know exactly who is ready to buy right now.</p>
+                  <h4 className="text-xl font-bold mb-2 text-primary-text">Automatic Lead Qualification</h4>
+                  <p className="text-secondary-text leading-relaxed">We automatically categorize leads so you know exactly who is ready to buy right now.</p>
                 </div>
               </div>
             </div>
@@ -671,11 +634,11 @@ const Home = () => {
       </section>
 
       {/* How It Works Section */}
-      <section className="py-24 bg-slate-900 text-white" id="how-it-works">
+      <section className="py-24 bg-primary-text text-white" id="how-it-works">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-display font-bold mb-4">How It Works</h2>
-            <p className="text-slate-400">Simple, effective automation in 3 steps</p>
+            <p className="opacity-70">Simple, effective automation in 3 steps</p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
@@ -684,19 +647,19 @@ const Home = () => {
                 step: "01",
                 title: "Customer sends message",
                 desc: "A lead reaches out on WhatsApp requesting pricing or details about your services.",
-                icon: <MessageSquare size={32} className="text-blue-400" />
+                icon: <MessageSquare size={32} className="text-white/80" />
               },
               {
                 step: "02",
                 title: "Remorix replies instantly",
                 desc: "Our automation handles the inquiry immediately with personalized, accurate information.",
-                icon: <Zap size={32} className="text-accent" />
+                icon: <Zap size={32} className="text-primary" />
               },
               {
                 step: "03",
                 title: "You convert more leads",
                 desc: "Fast replies build trust, helping you close more bookings and sales automatically.",
-                icon: <TrendingUp size={32} className="text-blue-400" />
+                icon: <TrendingUp size={32} className="text-white/80" />
               }
             ].map((item, i) => (
               <motion.div 
@@ -705,14 +668,14 @@ const Home = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="bg-slate-800/50 p-10 rounded-[2.5rem] border border-white/5 text-center flex flex-col items-center gap-6"
+                className="bg-white/5 p-10 rounded-[2.5rem] border border-white/5 text-center flex flex-col items-center gap-6"
               >
-                <div className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">{item.step}</div>
+                <div className="text-xs font-bold uppercase tracking-widest text-white/40 mb-2">{item.step}</div>
                 <div className="p-4 bg-white/5 rounded-2xl">
                   {item.icon}
                 </div>
                 <h4 className="text-2xl font-bold">{item.title}</h4>
-                <p className="text-slate-400 leading-relaxed">{item.desc}</p>
+                <p className="text-white/60 leading-relaxed">{item.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -723,12 +686,12 @@ const Home = () => {
       <section className="py-24 bg-white" id="before-after">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-             <h2 className="text-4xl font-display font-bold mb-4">The Impact of Automation</h2>
-             <p className="text-slate-600">The difference Between Stress and Growth</p>
+             <h2 className="text-4xl font-display font-bold mb-4 text-primary-text">The Impact of Automation</h2>
+             <p className="text-secondary-text">The difference Between Stress and Growth</p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            <div className="bg-slate-50 p-10 rounded-[2.5rem] border-t-4 border-red-500">
+            <div className="bg-bg p-10 rounded-[2.5rem] border-t-4 border-red-500 shadow-sm border border-border-light">
               <h3 className="text-2xl font-bold mb-8 flex items-center gap-3">
                 <span className="text-red-500">Before</span> Remorix
               </h3>
@@ -739,7 +702,7 @@ const Home = () => {
                   "Sales losing track of follow-ups",
                   "Losing 50%+ potential customers"
                 ].map((text, i) => (
-                  <li key={i} className="flex gap-4 text-slate-500">
+                  <li key={i} className="flex gap-4 text-secondary-text">
                     <X className="text-red-400 mt-1 flex-shrink-0" size={20} />
                     {text}
                   </li>
@@ -747,9 +710,9 @@ const Home = () => {
               </ul>
             </div>
 
-            <div className="bg-blue-600 p-10 rounded-[2.5rem] border-t-4 border-accent text-white shadow-xl shadow-blue-200">
+            <div className="bg-primary p-10 rounded-[2.5rem] border-t-4 border-primary text-white shadow-xl shadow-primary/20">
               <h3 className="text-2xl font-bold mb-8 flex items-center gap-3">
-                <span className="text-accent underline decoration-2 underline-offset-4">After</span> Remorix
+                <span className="text-white underline decoration-2 underline-offset-4 font-bold">After</span> Remorix
               </h3>
               <ul className="space-y-6">
                 {[
@@ -758,8 +721,8 @@ const Home = () => {
                   "Strategic 7-day follow-up flows",
                   "Significant increase in conversions"
                 ].map((text, i) => (
-                  <li key={i} className="flex gap-4 text-blue-50 font-medium">
-                    <CheckCircle2 className="text-accent mt-1 flex-shrink-0" size={20} />
+                  <li key={i} className="flex gap-4 text-white/90 font-medium">
+                    <CheckCircle2 className="text-white mt-1 flex-shrink-0" size={20} />
                     {text}
                   </li>
                 ))}
@@ -770,13 +733,13 @@ const Home = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-24 bg-slate-50" id="features">
+      <section className="py-24 bg-bg" id="features">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
             <div className="max-w-2xl">
-              <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">Everything built <br/>specifically for <span className="text-primary">your</span> business.</h2>
+              <h2 className="text-4xl md:text-5xl font-display font-bold mb-6 text-primary-text">Everything built <br/>specifically for <span className="text-primary">your</span> business.</h2>
             </div>
-            <p className="text-slate-600 max-w-sm mb-2">We don't do generic. Every automation flow is tailored to how your business talks to customers.</p>
+            <p className="text-secondary-text max-w-sm mb-2">We don't do generic. Every automation flow is tailored to how your business talks to customers.</p>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -813,19 +776,19 @@ const Home = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05 }}
-                className="bg-white p-10 rounded-[2rem] border border-slate-100 hover:border-primary/20 hover:shadow-xl hover:shadow-primary/5 transition-all group"
+                className="bg-white p-10 rounded-[2rem] border border-border-light hover:border-primary/20 hover:shadow-xl hover:shadow-primary/5 transition-all group"
                 id={`feature-${i}`}
               >
-                <div className="mb-6 p-4 bg-slate-50 rounded-2xl w-fit group-hover:bg-blue-50 transition-colors">
+                <div className="mb-6 p-4 bg-bg rounded-2xl w-fit group-hover:bg-primary/5 transition-colors">
                   {feature.icon}
                 </div>
-                <h4 className="text-xl font-bold mb-4 text-slate-900">{feature.title}</h4>
-                <p className="text-slate-600 leading-relaxed">{feature.desc}</p>
+                <h4 className="text-xl font-bold mb-4 text-primary-text">{feature.title}</h4>
+                <p className="text-secondary-text leading-relaxed">{feature.desc}</p>
               </motion.div>
             ))}
             
             {/* CTA Card */}
-            <div className="bg-gradient-to-br from-primary to-blue-700 p-10 rounded-[2rem] text-white flex flex-col justify-between">
+            <div className="bg-primary p-10 rounded-[2rem] text-white flex flex-col justify-between shadow-xl shadow-primary/20">
               <div>
                 <h4 className="text-2xl font-bold mb-4">Start your automation journey today.</h4>
                 <p className="opacity-80 leading-relaxed mb-8">We take care of the tech, you take care of the new customers.</p>
@@ -835,7 +798,7 @@ const Home = () => {
                   href="https://wa.me/918265011563?text=Hi%20I%20want%20to%20automate%20my%20WhatsApp%20leads" 
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-white text-primary text-center py-4 rounded-xl font-bold hover:scale-105 transition-transform flex items-center justify-center gap-2 cursor-pointer"
+                  className="bg-white text-primary text-center py-4 rounded-xl font-bold hover:bg-white/90 transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   Get More Customers on WhatsApp
                   <ArrowRight size={18} />
@@ -851,13 +814,13 @@ const Home = () => {
       <section className="py-24 bg-white" id="how-it-works">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-20">
-            <h2 className="text-4xl font-display font-bold mb-4">A Simple 3-Step Process</h2>
-            <p className="text-slate-600">From manual struggle to automatic success in 7 days.</p>
+            <h2 className="text-4xl font-display font-bold mb-4 text-primary-text">A Simple 3-Step Process</h2>
+            <p className="text-secondary-text">From manual struggle to automatic success in 7 days.</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-16 relative">
              {/* Connector line (Desktop) */}
-            <div className="hidden md:block absolute top-1/2 left-0 right-0 h-0.5 bg-slate-100 -translate-y-1/2 -z-10"></div>
+            <div className="hidden md:block absolute top-1/2 left-0 right-0 h-0.5 bg-border-light -translate-y-1/2 -z-10"></div>
             
             {[
               {
@@ -884,11 +847,11 @@ const Home = () => {
                 transition={{ delay: i * 0.2 }}
                 className="text-center bg-white px-8"
               >
-                <div className="w-20 h-20 bg-blue-50 text-primary border-4 border-white rounded-full flex items-center justify-center text-2xl font-display font-bold mx-auto mb-8 shadow-sm">
+                <div className="w-20 h-20 bg-primary/5 text-primary border-4 border-white rounded-full flex items-center justify-center text-2xl font-display font-bold mx-auto mb-8 shadow-sm">
                   {item.step}
                 </div>
-                <h4 className="text-2xl font-bold mb-4">{item.title}</h4>
-                <p className="text-slate-600 leading-relaxed">{item.desc}</p>
+                <h4 className="text-2xl font-bold mb-4 text-primary-text">{item.title}</h4>
+                <p className="text-secondary-text leading-relaxed">{item.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -896,15 +859,15 @@ const Home = () => {
       </section>
 
       {/* Target Users */}
-      <section className="py-24 bg-slate-900 text-white overflow-hidden" id="target-users">
+      <section className="py-24 bg-primary-text text-white overflow-hidden" id="target-users">
         <div className="max-w-7xl mx-auto px-6">
            <div className="flex flex-col md:flex-row items-center justify-between gap-12 mb-20">
               <div className="max-w-2xl">
-                 <h2 className="text-4xl md:text-6xl font-display font-bold mb-4">Built for local businesses that <br/><span className="bg-gradient-to-r from-blue-400 to-accent bg-clip-text text-transparent italic">depend on fast replies.</span></h2>
+                 <h2 className="text-4xl md:text-6xl font-display font-bold mb-4 text-white">Built for local businesses that <br/><span className="text-primary italic">depend on fast replies.</span></h2>
                  <p className="text-lg opacity-80">From first message to confirmed booking — automated on WhatsApp.</p>
               </div>
-              <div className="bg-slate-800 p-6 rounded-3xl border border-white/10 text-center">
-                 <div className="text-accent font-bold text-lg mb-1 italic uppercase tracking-wider">Limited onboarding slots</div>
+              <div className="bg-white/5 p-6 rounded-3xl border border-white/10 text-center">
+                 <div className="text-primary font-bold text-lg mb-1 italic uppercase tracking-wider">Limited onboarding slots</div>
                  <p className="text-xs opacity-60">We onboard only 10 businesses per month to ensure high-quality setup and results.</p>
               </div>
            </div>
@@ -952,15 +915,15 @@ const Home = () => {
               ].map((item, i) => {
                 const CardContent = (
                   <>
-                    <div className="p-3 bg-white/5 rounded-2xl group-hover:bg-primary/20 transition-colors">
+                    <div className="p-3 bg-white/5 rounded-2xl group-hover:bg-primary/20 transition-colors text-white">
                       {item.icon}
                     </div>
                     <div className="flex flex-col gap-2">
                        <span className="font-bold text-sm h-10 md:h-12 flex items-center justify-center leading-tight text-white group-hover:text-primary transition-colors">{item.name}</span>
-                       <p className="text-[10px] text-slate-400 leading-tight">{item.desc}</p>
+                       <p className="text-[10px] text-white/50 leading-tight">{item.desc}</p>
                        <div className="flex flex-col gap-1 mt-1">
-                          <p className="text-[8px] text-slate-500 uppercase tracking-widest font-bold">Live demo:</p>
-                          <p className="text-[10px] text-accent font-medium leading-tight italic">{item.example}</p>
+                          <p className="text-[8px] text-white/30 uppercase tracking-widest font-bold">Live demo:</p>
+                          <p className="text-[10px] text-primary font-medium leading-tight italic">{item.example}</p>
                        </div>
                        <p className="text-[9px] text-primary font-bold mt-2 opacity-80 group-hover:opacity-100 group-hover:translate-x-1 transition-all flex items-center justify-center gap-1">
                           Click to view live demo →
@@ -974,7 +937,7 @@ const Home = () => {
                     <Link 
                       key={i}
                       to={item.href}
-                      className="bg-slate-800/50 hover:bg-slate-800 p-8 rounded-3xl border border-white/5 text-center flex flex-col items-center gap-4 transition-all hover:scale-105 cursor-pointer group"
+                      className="bg-white/5 hover:bg-white/10 p-8 rounded-3xl border border-white/5 text-center flex flex-col items-center gap-4 transition-all hover:scale-105 cursor-pointer group"
                     >
                       {CardContent}
                     </Link>
@@ -984,7 +947,7 @@ const Home = () => {
                 return (
                   <div 
                     key={i} 
-                    className="bg-slate-800/50 hover:bg-slate-800 p-8 rounded-3xl border border-white/5 text-center flex flex-col items-center gap-4 transition-all hover:scale-105 cursor-default group"
+                    className="bg-white/5 hover:bg-white/10 p-8 rounded-3xl border border-white/5 text-center flex flex-col items-center gap-4 transition-all hover:scale-105 cursor-default group"
                     id={`target-${i}`}
                   >
                     {CardContent}
@@ -999,8 +962,8 @@ const Home = () => {
       <section className="py-32 bg-white" id="pricing">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">Investment in Growth</h2>
-            <p className="text-slate-600">Simpler than hiring an employee, more effective than manual labor.</p>
+            <h2 className="text-4xl md:text-5xl font-display font-bold mb-4 text-primary-text">Investment in Growth</h2>
+            <p className="text-secondary-text">Simpler than hiring an employee, more effective than manual labor.</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -1055,39 +1018,39 @@ const Home = () => {
             ].map((plan, i) => (
               <div key={i} className={`relative group ${plan.popular ? 'scale-105 z-10' : ''}`}>
                 {plan.popular && (
-                  <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-accent text-slate-900 px-6 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest shadow-xl">
+                  <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-primary text-white px-6 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest shadow-xl">
                     Most Popular
                   </div>
                 )}
-                <div className={`h-full bg-white border-2 ${plan.popular ? 'border-primary' : 'border-slate-100'} rounded-[2.5rem] p-8 flex flex-col shadow-xl hover:shadow-2xl transition-all duration-300`}>
-                  <div className={`w-14 h-14 ${plan.popular ? 'bg-primary text-white' : 'bg-blue-50 text-primary'} rounded-2xl flex items-center justify-center mb-6`}>
+                <div className={`h-full bg-white border-2 ${plan.popular ? 'border-primary' : 'border-border-light'} rounded-[2.5rem] p-8 flex flex-col shadow-xl hover:shadow-2xl transition-all duration-300`}>
+                  <div className={`w-14 h-14 ${plan.popular ? 'bg-primary text-white' : 'bg-primary/5 text-primary'} rounded-2xl flex items-center justify-center mb-6`}>
                     {plan.icon}
                   </div>
                   
                   <div className="text-primary font-bold text-sm mb-2 uppercase tracking-wider">{plan.badge}</div>
-                  <h3 className="text-xl font-bold mb-4 leading-tight">{plan.title}</h3>
+                  <h3 className="text-xl font-bold mb-4 leading-tight text-primary-text">{plan.title}</h3>
                   
                   <div className="mb-6">
-                    <div className="text-4xl font-display font-bold text-slate-900 mb-1">
-                      <span className="text-lg font-sans text-slate-400 font-medium">{plan.setup}</span>
+                    <div className="text-4xl font-display font-bold text-primary-text mb-1">
+                      <span className="text-lg font-sans text-secondary-text/50 font-medium">{plan.setup}</span>
                       {plan.price}
-                      <span className="text-lg font-sans text-slate-400 font-medium">/mo</span>
+                      <span className="text-lg font-sans text-secondary-text/50 font-medium">/mo</span>
                     </div>
                   </div>
 
                   <div className="flex flex-col gap-3 mb-8 flex-grow">
                     {plan.features.map((feature, idx) => (
                       <div key={idx} className="flex gap-3 items-start">
-                        <div className="w-5 h-5 bg-green-500 text-white rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div className="w-5 h-5 bg-primary text-white rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                           <Check size={12} strokeWidth={4} />
                         </div>
-                        <span className="text-sm font-medium text-slate-600 leading-tight">{feature}</span>
+                        <span className="text-sm font-medium text-secondary-text leading-tight">{feature}</span>
                       </div>
                     ))}
                   </div>
 
-                  <div className="bg-slate-50 p-4 rounded-xl">
-                    <p className="text-[11px] text-slate-500 font-medium italic leading-relaxed">
+                  <div className="bg-bg p-4 rounded-xl border border-border-light">
+                    <p className="text-[11px] text-secondary-text/80 font-medium italic leading-relaxed">
                       {plan.footnote}
                     </p>
                   </div>
@@ -1097,8 +1060,8 @@ const Home = () => {
           </div>
 
           <div className="mt-12 text-center">
-            <p className="text-sm text-slate-400 font-bold flex items-center justify-center gap-2">
-              <Check size={16} className="text-green-500" strokeWidth={3} />
+            <p className="text-sm text-secondary-text opacity-60 font-bold flex items-center justify-center gap-2">
+              <Check size={16} className="text-primary" strokeWidth={3} />
               Includes ongoing monitoring, updates, and optimization
             </p>
           </div>
@@ -1106,12 +1069,12 @@ const Home = () => {
       </section>
 
       {/* FAQ */}
-      <section className="py-24 bg-slate-50" id="faq">
+      <section className="py-24 bg-bg" id="faq">
         <div className="max-w-3xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-display font-bold">Frequently Asked Questions</h2>
+            <h2 className="text-4xl font-display font-bold text-primary-text">Frequently Asked Questions</h2>
           </div>
-          <div className="bg-white rounded-[2.5rem] p-8 md:p-12 shadow-sm border border-slate-100">
+          <div className="bg-white rounded-[2.5rem] p-8 md:p-12 shadow-sm border border-border-light">
             <FAQItem 
               question="What exactly is Remorix?" 
               answer="Remorix is a done-for-you service. We don't sell software for you to learn. Instead, our team sets up and manages WhatsApp automation for local businesses to help them convert leads that currently go cold." 
@@ -1139,19 +1102,19 @@ const Home = () => {
       {/* Contact Section */}
       <section className="py-24 bg-white" id="contact">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="bg-blue-600 rounded-[3rem] overflow-hidden relative shadow-2xl shadow-blue-200">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-700 to-blue-500 opacity-90 -z-10"></div>
+          <div className="bg-primary rounded-[3rem] overflow-hidden relative shadow-2xl shadow-primary/20">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary to-primary/80 opacity-90 -z-10"></div>
             <div className="grid md:grid-cols-2">
               <div className="p-12 md:p-20 text-white flex flex-col justify-center">
                 <h2 className="text-4xl md:text-6xl font-display font-bold mb-8 leading-tight">Ready to win <br/>back your time?</h2>
                 <div className="space-y-6 mb-12">
-                   <a href="tel:+918265011563" className="flex items-center gap-4 text-xl font-bold hover:text-accent transition-colors">
+                   <a href="tel:+918265011563" className="flex items-center gap-4 text-xl font-bold hover:text-white transition-colors">
                       <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center">
                         <Phone size={24} />
                       </div>
                       +91 8265011563
                    </a>
-                   <a href="mailto:info@remorix.in" className="flex items-center gap-4 text-xl font-bold hover:text-accent transition-colors">
+                   <a href="mailto:info@remorix.in" className="flex items-center gap-4 text-xl font-bold hover:text-white transition-colors">
                       <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center">
                         <Mail size={24} />
                       </div>
@@ -1163,21 +1126,21 @@ const Home = () => {
                     href="https://wa.me/918265011563?text=Hi%20I%20want%20to%20automate%20my%20WhatsApp%20leads" 
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-accent text-slate-900 px-8 py-5 rounded-2xl font-bold text-lg hover:bg-green-400 transition-colors flex items-center gap-2 cursor-pointer"
+                    className="bg-white text-primary px-8 py-5 rounded-2xl font-bold text-lg hover:bg-white/90 transition-colors flex items-center gap-2 cursor-pointer"
                     id="contact-whatsapp"
                   >
-                    <MessageSquare size={20} className="fill-slate-900" />
+                    <MessageSquare size={20} className="fill-primary" />
                     Chat on WhatsApp
                   </a>
                 </div>
               </div>
 
               {/* Contact Form */}
-              <div className="bg-white/5 p-12 md:p-20 backdrop-blur-sm border-l border-white/10">
+              <div className="bg-black/5 p-12 md:p-20 backdrop-blur-sm border-l border-white/10">
                 <AnimatePresence mode="wait">
                   <div className="mb-8 text-center md:text-left">
                     <h3 className="text-2xl font-bold text-white mb-4">Start converting more WhatsApp leads into customers today.</h3>
-                    <p className="text-blue-100 opacity-80">Setup takes less than 24 hours. Limited onboarding slots available this month.</p>
+                    <p className="text-white/80">Setup takes less than 24 hours. Limited onboarding slots available this month.</p>
                   </div>
                   {!formSubmitted ? (
                     <motion.form 
@@ -1196,7 +1159,7 @@ const Home = () => {
                           type="text" 
                           required
                           placeholder="e.g. Rahul Sharma" 
-                          className="bg-white/10 border border-white/20 rounded-2xl p-5 text-white placeholder:text-white/30 focus:outline-none focus:border-accent transition-colors transition-shadow"
+                          className="bg-white/10 border border-white/20 rounded-2xl p-5 text-white placeholder:text-white/30 focus:outline-none focus:border-white transition-colors transition-shadow"
                           id="form-name"
                         />
                       </div>
@@ -1207,7 +1170,7 @@ const Home = () => {
                           type="tel" 
                           required
                           placeholder="+91 00000 00000" 
-                          className="bg-white/10 border border-white/20 rounded-2xl p-5 text-white placeholder:text-white/30 focus:outline-none focus:border-accent transition-colors"
+                          className="bg-white/10 border border-white/20 rounded-2xl p-5 text-white placeholder:text-white/30 focus:outline-none focus:border-white transition-colors"
                           id="form-phone"
                         />
                       </div>
@@ -1218,14 +1181,14 @@ const Home = () => {
                           type="text" 
                           required
                           placeholder="e.g. Yoga Gym, Dental Clinic" 
-                          className="bg-white/10 border border-white/20 rounded-2xl p-5 text-white placeholder:text-white/30 focus:outline-none focus:border-accent transition-colors"
+                          className="bg-white/10 border border-white/20 rounded-2xl p-5 text-white placeholder:text-white/30 focus:outline-none focus:border-white transition-colors"
                           id="form-type"
                         />
                       </div>
                       <button 
                         type="submit" 
                         disabled={isSubmitting}
-                        className="bg-white text-blue-600 w-full py-5 rounded-2xl font-bold text-xl hover:bg-slate-50 transition-colors shadow-lg shadow-black/10 mt-4 active:scale-95 cursor-pointer disabled:opacity-50"
+                        className="bg-white text-primary w-full py-5 rounded-2xl font-bold text-xl hover:bg-slate-50 transition-colors shadow-lg shadow-black/10 mt-4 active:scale-95 cursor-pointer disabled:opacity-50"
                       >
                         {isSubmitting ? "Saving..." : "Save My Spot"}
                       </button>
@@ -1238,11 +1201,11 @@ const Home = () => {
                       animate={{ opacity: 1, scale: 1 }}
                       className="h-full flex flex-col items-center justify-center text-center p-8"
                     >
-                      <div className="w-20 h-20 bg-accent text-slate-900 rounded-full flex items-center justify-center mb-6 shadow-xl shadow-accent/20">
+                      <div className="w-20 h-20 bg-white text-primary rounded-full flex items-center justify-center mb-6 shadow-xl shadow-black/10">
                         <Check size={40} strokeWidth={3} />
                       </div>
                       <h3 className="text-3xl font-display font-bold text-white mb-4">You're on the list!</h3>
-                      <p className="text-blue-50 text-lg leading-relaxed">
+                      <p className="text-white/90 text-lg leading-relaxed">
                         ✅ Your spot is reserved. We’ll contact you within 24 hours.
                       </p>
                       <button 
@@ -1261,69 +1224,69 @@ const Home = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-20 bg-slate-50 border-t border-slate-100" id="footer">
+      <footer className="py-20 bg-bg border-t border-border-light" id="footer">
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12">
           <div className="md:col-span-1">
              <a href="#hero" className="mb-6 block cursor-pointer">
                 <Logo variant="full" />
               </a>
-              <p className="text-slate-500 text-sm leading-relaxed mb-6">
+              <p className="text-secondary-text text-sm leading-relaxed mb-6">
                 Redefining sales for Indian local businesses through seamless WhatsApp automation. Built with ❤️ for Bharat.
               </p>
               <div className="flex gap-4">
-                 <div className="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center text-slate-400 hover:text-primary transition-colors cursor-pointer">
+                 <div className="w-10 h-10 bg-primary/5 rounded-full flex items-center justify-center text-secondary-text hover:text-primary transition-colors cursor-pointer border border-border-light">
                     <TrendingUp size={18} />
                  </div>
-                 <div className="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center text-slate-400 hover:text-primary transition-colors cursor-pointer">
+                 <div className="w-10 h-10 bg-primary/5 rounded-full flex items-center justify-center text-secondary-text hover:text-primary transition-colors cursor-pointer border border-border-light">
                     <MessageSquare size={18} />
                  </div>
               </div>
           </div>
 
           <div>
-            <h5 className="font-bold mb-6 text-slate-900">Navigation</h5>
+            <h5 className="font-bold mb-6 text-primary-text">Navigation</h5>
             <div className="flex flex-col gap-4">
-              <a href="#how-it-works-visual" className="text-slate-500 text-sm hover:text-primary transition-colors cursor-pointer">How It Works</a>
-              <a href="#features" className="text-slate-500 text-sm hover:text-primary transition-colors cursor-pointer">Features</a>
-              <a href="#pricing" className="text-slate-500 text-sm hover:text-primary transition-colors cursor-pointer">Pricing</a>
-              <a href="#contact" className="text-slate-500 text-sm hover:text-primary transition-colors cursor-pointer">Contact</a>
+              <a href="#how-it-works-visual" className="text-secondary-text text-sm hover:text-primary transition-colors cursor-pointer">How It Works</a>
+              <a href="#features" className="text-secondary-text text-sm hover:text-primary transition-colors cursor-pointer">Features</a>
+              <a href="#pricing" className="text-secondary-text text-sm hover:text-primary transition-colors cursor-pointer">Pricing</a>
+              <a href="#contact" className="text-secondary-text text-sm hover:text-primary transition-colors cursor-pointer">Contact</a>
             </div>
           </div>
 
           <div>
-             <h5 className="font-bold mb-6 text-slate-900">Contact Details</h5>
+             <h5 className="font-bold mb-6 text-primary-text">Contact Details</h5>
              <div className="flex flex-col gap-4">
-                <a href="tel:+918265011563" className="flex items-center gap-3 text-slate-500 text-sm hover:text-primary transition-colors cursor-pointer">
+                <a href="tel:+918265011563" className="flex items-center gap-3 text-secondary-text text-sm hover:text-primary transition-colors cursor-pointer">
                   <Phone size={16} /> +91 8265011563
                 </a>
-                 <a href="mailto:info@remorix.in" className="flex items-center gap-3 text-slate-500 text-sm hover:text-primary transition-colors cursor-pointer">
+                 <a href="mailto:info@remorix.in" className="flex items-center gap-3 text-secondary-text text-sm hover:text-primary transition-colors cursor-pointer">
                   <Mail size={16} /> info@remorix.in
                 </a>
-                <div className="flex items-center gap-3 text-slate-500 text-sm">
+                <div className="flex items-center gap-3 text-secondary-text text-sm">
                    <Users size={16} /> Mumbai, India
                 </div>
              </div>
           </div>
 
           <div>
-            <h5 className="font-bold mb-6 text-slate-900">Quick Connection</h5>
+            <h5 className="font-bold mb-6 text-primary-text">Quick Connection</h5>
             <a 
               href="https://wa.me/918265011563?text=Hi%20I%20want%20to%20automate%20my%20WhatsApp%20leads" 
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 bg-accent text-slate-900 px-6 py-4 rounded-2xl font-bold hover:shadow-lg transition-all text-sm cursor-pointer"
+              className="inline-flex items-center gap-3 bg-primary text-white px-6 py-4 rounded-2xl font-bold hover:bg-primary/90 transition-all text-sm cursor-pointer shadow-lg shadow-primary/20"
               id="footer-whatsapp-btn"
             >
-              <MessageSquare size={18} className="fill-slate-900" />
+              <MessageSquare size={18} className="fill-white" />
               Chat on WhatsApp
             </a>
           </div>
         </div>
-        <div className="max-w-7xl mx-auto px-6 mt-20 pt-10 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-6">
-           <p className="text-slate-400 text-xs">© 2026 Remorix Automation. All rights reserved.</p>
+        <div className="max-w-7xl mx-auto px-6 mt-20 pt-10 border-t border-border-light flex flex-col md:flex-row justify-between items-center gap-6">
+           <p className="text-secondary-text/50 text-xs">© 2026 Remorix Automation. All rights reserved.</p>
            <div className="flex gap-8">
-              <span className="text-slate-400 text-xs hover:text-slate-600 transition-colors cursor-pointer">Privacy Policy</span>
-              <span className="text-slate-400 text-xs hover:text-slate-600 transition-colors cursor-pointer">Terms of Service</span>
+              <span className="text-secondary-text/50 text-xs hover:text-secondary-text transition-colors cursor-pointer">Privacy Policy</span>
+              <span className="text-secondary-text/50 text-xs hover:text-secondary-text transition-colors cursor-pointer">Terms of Service</span>
            </div>
         </div>
       </footer>
@@ -1522,34 +1485,34 @@ const IndustryDemo = ({ type }: { type: string }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex flex-col items-center justify-center p-6 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] overflow-hidden selection:bg-primary selection:text-white">
+    <div className="min-h-screen bg-bg flex flex-col items-center justify-center p-6 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] overflow-hidden selection:bg-primary selection:text-white">
       <div className="fixed inset-0 pointer-events-none opacity-40">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-100 blur-[100px] rounded-full"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-accent/20 blur-[100px] rounded-full"></div>
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 blur-[100px] rounded-full"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/5 blur-[100px] rounded-full"></div>
       </div>
 
-      <Link to="/" className="fixed top-8 left-8 z-50 flex items-center gap-2 bg-white px-5 py-2.5 rounded-full shadow-lg border border-slate-100 text-slate-600 hover:text-primary font-bold transition-all group scale-90 md:scale-100">
+      <Link to="/" className="fixed top-8 left-8 z-50 flex items-center gap-2 bg-white px-5 py-2.5 rounded-full shadow-lg border border-border-light text-secondary-text hover:text-primary font-bold transition-all group scale-90 md:scale-100">
         <ArrowRight size={18} className="rotate-180 group-hover:-translate-x-1 transition-transform" />
         Back to Home
       </Link>
 
       <div className="max-w-2xl w-full text-center mb-8 relative z-10">
-        <h1 className="text-4xl md:text-5xl font-display font-bold mb-4 text-slate-900 tracking-tight">{config.name} Demo</h1>
-        <p className="text-slate-600 text-lg">See how Remorix automates {type} leads instantly.</p>
+        <h1 className="text-4xl md:text-5xl font-display font-bold mb-4 text-primary-text tracking-tight">{config.name} Demo</h1>
+        <p className="text-secondary-text text-lg">See how Remorix automates {type} leads instantly.</p>
       </div>
 
-      <div className="w-full max-w-[380px] h-[720px] bg-[#E5DDD5] rounded-[3rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] border-[12px] border-slate-900 overflow-hidden flex flex-col relative z-10 transition-transform hover:scale-[1.01] duration-500">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-6 bg-slate-900 rounded-b-2xl z-30"></div>
-        <div className="absolute top-2 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-slate-800 rounded-full z-30 opacity-40"></div>
+      <div className="w-full max-w-[380px] h-[720px] bg-[#E5DDD5] rounded-[3rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] border-[12px] border-primary-text overflow-hidden flex flex-col relative z-10 transition-transform hover:scale-[1.01] duration-500">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-6 bg-primary-text rounded-b-2xl z-30"></div>
+        <div className="absolute top-2 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-black/20 rounded-full z-30 opacity-40"></div>
         
         <div className="bg-[#075E54] p-4 pt-10 flex items-center gap-3 text-white shadow-md relative z-20">
-          <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 font-bold overflow-hidden border border-white/20">
+          <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white font-bold overflow-hidden border border-white/20">
             <img src={config.image} alt={config.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
           </div>
           <div>
             <div className="text-sm font-bold flex items-center gap-1.5">
               {config.name}
-              <ShieldCheck size={12} className="text-blue-300" />
+              <ShieldCheck size={12} className="text-white/70" />
             </div>
             <div className="text-[10px] flex items-center gap-1 opacity-80">
               <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
@@ -1560,18 +1523,18 @@ const IndustryDemo = ({ type }: { type: string }) => {
 
         <div ref={scrollRef} className="flex-1 p-4 overflow-y-auto flex flex-col gap-3 custom-scrollbar relative z-10" style={{ backgroundImage: 'url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png")', backgroundSize: '400px' }}>
           {messages.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-center p-8 opacity-40 bg-white/20 backdrop-blur-[2px] rounded-3xl m-2">
+            <div className="h-full flex flex-col items-center justify-center text-center p-8 opacity-40 bg-white/20 backdrop-blur-[2px] rounded-3xl m-2 border border-white/30">
               <div className="w-16 h-16 bg-white/40 rounded-full flex items-center justify-center mb-4"><MessageSquare size={32} /></div>
-              <p className="text-sm font-bold text-slate-700">Click "Start Demo" below to see the automation flow.</p>
+              <p className="text-sm font-bold text-primary-text">Click "Start Demo" below to see the automation flow.</p>
             </div>
           ) : (
             <>
               {messages.map((m) => (
                 <div key={m.id} className="flex flex-col gap-2">
-                  <motion.div initial={{ opacity: 0, scale: 0.95, y: 10 }} animate={{ opacity: 1, scale: 1, y: 0 }} className={`max-w-[85%] p-3 rounded-2xl shadow-sm text-sm relative group ${m.sender === 'user' ? 'bg-[#DCF8C6] self-end rounded-tr-none' : m.sender === 'staff' ? 'bg-blue-50 border border-blue-100 self-start rounded-tl-none' : 'bg-white self-start rounded-tl-none text-slate-800'}`}>
-                    {m.sender === 'staff' && <div className="text-[10px] font-bold text-blue-600 mb-1 flex items-center gap-1.5"><ShieldCheck size={12}/> Verified Business Account</div>}
+                  <motion.div initial={{ opacity: 0, scale: 0.95, y: 10 }} animate={{ opacity: 1, scale: 1, y: 0 }} className={`max-w-[85%] p-3 rounded-2xl shadow-sm text-sm relative group ${m.sender === 'user' ? 'bg-[#DCF8C6] self-end rounded-tr-none' : m.sender === 'staff' ? 'bg-white border border-border-light self-start rounded-tl-none' : 'bg-white self-start rounded-tl-none text-primary-text'}`}>
+                    {m.sender === 'staff' && <div className="text-[10px] font-bold text-primary mb-1 flex items-center gap-1.5"><ShieldCheck size={12}/> Verified Business Account</div>}
                     <p className="whitespace-pre-line leading-relaxed">{m.text}</p>
-                    <div className="text-[9px] text-slate-400 text-right mt-1.5 flex items-center justify-end gap-1">
+                    <div className="text-[9px] text-secondary-text/50 text-right mt-1.5 flex items-center justify-end gap-1">
                       {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       {m.sender === 'user' && <Check size={10} className="text-blue-500" />}
                     </div>
@@ -1579,7 +1542,7 @@ const IndustryDemo = ({ type }: { type: string }) => {
                   {m.options && (
                     <div className="flex flex-col gap-2 pt-1 items-start">
                       {m.options.map((opt, idx) => (
-                        <motion.button key={opt} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.1 }} onClick={() => handleOptionClick(opt)} className="bg-white text-primary border-b-2 border-slate-100 px-5 py-3 rounded-2xl text-xs font-bold hover:bg-slate-50 transition-all shadow-md active:scale-95 text-left w-fit max-w-[240px]">
+                        <motion.button key={opt} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.1 }} onClick={() => handleOptionClick(opt)} className="bg-white text-primary-text border border-border-light px-5 py-3 rounded-2xl text-xs font-bold hover:bg-bg transition-all shadow-md active:scale-95 text-left w-fit max-w-[240px]">
                           {opt}
                         </motion.button>
                       ))}
@@ -1589,31 +1552,31 @@ const IndustryDemo = ({ type }: { type: string }) => {
               ))}
               {isTyping && (
                 <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} className="bg-white self-start rounded-2xl rounded-tl-none p-4 shadow-sm flex gap-1.5">
-                  <div className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-                  <div className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-                  <div className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce"></div>
+                  <div className="w-1.5 h-1.5 bg-border-light rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+                  <div className="w-1.5 h-1.5 bg-border-light rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                  <div className="w-1.5 h-1.5 bg-border-light rounded-full animate-bounce"></div>
                 </motion.div>
               )}
             </>
           )}
         </div>
 
-        <div className="p-4 bg-[#F0F2F5] border-t border-slate-200 relative z-20">
+        <div className="p-4 bg-[#F0F2F5] border-t border-border-light relative z-20">
           {messages.length === 0 ? (
-            <button onClick={startDemo} className="w-full bg-accent text-slate-900 py-4 rounded-2xl font-bold hover:bg-green-400 transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 group">
+            <button onClick={startDemo} className="w-full bg-primary text-white py-4 rounded-2xl font-bold hover:bg-primary/90 transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 group">
               Start Live Demo
               <Bot size={18} className="group-hover:rotate-12 transition-transform" />
             </button>
           ) : (
             <div className="flex items-center gap-2">
-               <div className="flex-1 bg-white p-3 rounded-2xl shadow-inner text-slate-300 text-sm px-4 flex items-center justify-between"><span>Type a message...</span><Zap size={14} className="opacity-20" /></div>
-               <div onClick={() => { setMessages([]); setHasFollowedUp(false); }} className="p-3 bg-white text-slate-400 hover:text-red-500 rounded-2xl cursor-pointer transition-all shadow-sm active:scale-90"><X size={20} /></div>
+               <div className="flex-1 bg-white p-3 rounded-2xl shadow-inner text-secondary-text/30 text-sm px-4 flex items-center justify-between"><span>Type a message...</span><Zap size={14} className="opacity-20" /></div>
+               <div onClick={() => { setMessages([]); setHasFollowedUp(false); }} className="p-3 bg-white text-secondary-text/50 hover:text-red-500 rounded-2xl cursor-pointer transition-all shadow-sm active:scale-90"><X size={20} /></div>
             </div>
           )}
         </div>
       </div>
       
-      <div className="mt-8 text-center text-slate-400 text-xs flex flex-col gap-2">
+      <div className="mt-8 text-center text-secondary-text/50 text-xs flex flex-col gap-2">
          <p>Remorix {type.charAt(0).toUpperCase() + type.slice(1)} Automation v1.2</p>
          <div className="flex items-center gap-4 justify-center">
             <span className="flex items-center gap-1"><ShieldCheck size={12}/> Zero Spam</span>
