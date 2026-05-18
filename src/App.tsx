@@ -377,6 +377,7 @@ const Home = () => {
               </p>
             </div>
             <WhatsAppDemo />
+
             <div className="mt-6 text-center">
               <p className="text-sm font-bold text-primary italic">Businesses using this see up to 3x higher response rates</p>
             </div>
@@ -860,111 +861,195 @@ const Home = () => {
 
 
       {/* Pricing Section */}
-      <section className="py-32 bg-white" id="pricing">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-display font-bold mb-4 text-primary-text">Investment in Growth</h2>
-            <p className="text-secondary-text">Simpler than hiring an employee, more effective than manual labor.</p>
+      <section className="py-32 bg-slate-50/50 overflow-hidden relative" id="pricing">
+        {/* Futuristic Glow Background Elements */}
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -z-10 animate-pulse"></div>
+        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-[100px] -z-10 animate-pulse [animation-delay:2s]"></div>
+
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-6xl font-display font-bold mb-6 text-primary-text tracking-tight italic">
+              Simple, Powerful <span className="text-primary underline decoration-primary/20 underline-offset-8">Pricing</span>
+            </h2>
+            <p className="text-xl text-secondary-text max-w-2xl mx-auto opacity-70">
+              Choose the perfect automation fuel for your business growth. 
+              No hidden fees, just pure conversion.
+            </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Lead Capture System",
-                badge: "🔹 Starter",
-                setup: "₹999 Setup | ",
-                price: "₹3,000",
-                desc: "Never miss a customer inquiry. Automated 24/7 capture.",
-                features: [
-                  "Instant reply to every message (24/7)",
-                  "Never miss a customer inquiry",
-                  "Capture name, number & requirements",
-                  "Step in and reply manually anytime"
-                ],
-                footnote: "Perfect if you're currently missing or delaying responses. Best for businesses with daily inquiries.",
-                icon: <MessageSquare size={32} />
-              },
-              {
-                title: "Conversion Booster System",
-                badge: "🔥 Growth",
-                price: "₹5,000",
-                popular: true,
-                desc: "Designed to help increase conversions by 10–30%.",
-                features: [
-                  "Everything in Starter",
-                  "Automated follow-ups",
-                  "Re-engage customers automatically",
-                  "Broadcast offers & reminders",
-                  "Step in and reply manually anytime"
-                ],
-                footnote: "Best Value: This is where most businesses start seeing real revenue growth.",
-                icon: <TrendingUp size={32} />
-              },
-              {
-                title: "Sales Autopilot System",
-                badge: "⚡ Pro",
-                price: "₹8,000",
-                desc: "Built for businesses serious about scaling.",
-                features: [
-                  "Everything in Growth",
-                  "Customized business automation",
-                  "End-to-end sales journey handling",
-                  "Smart lead nurturing sequences",
-                  "Priority support & optimization",
-                  "Step in and reply manually anytime"
-                ],
-                footnote: "Built for businesses serious about scaling.",
-                icon: <Zap size={32} />
-              }
-            ].map((plan, i) => (
-              <div key={i} className={`relative group ${plan.popular ? 'scale-105 z-10' : ''}`}>
-                {plan.popular && (
-                  <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-primary text-white px-6 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest shadow-xl">
-                    Most Popular
-                  </div>
-                )}
-                <div className={`h-full bg-white border-2 ${plan.popular ? 'border-primary' : 'border-border-light'} rounded-[2.5rem] p-8 flex flex-col shadow-xl hover:shadow-2xl transition-all duration-300`}>
-                  <div className={`w-14 h-14 ${plan.popular ? 'bg-primary text-white' : 'bg-primary/5 text-primary'} rounded-2xl flex items-center justify-center mb-6`}>
-                    {plan.icon}
-                  </div>
-                  
-                  <div className="text-primary font-bold text-sm mb-2 uppercase tracking-wider">{plan.badge}</div>
-                  <h3 className="text-xl font-bold mb-4 leading-tight text-primary-text">{plan.title}</h3>
-                  
-                  <div className="mb-6">
-                    <div className="text-4xl font-display font-bold text-primary-text mb-1">
-                      <span className="text-lg font-sans text-secondary-text/50 font-medium">{plan.setup}</span>
-                      {plan.price}
-                      <span className="text-lg font-sans text-secondary-text/50 font-medium">/mo</span>
-                    </div>
-                  </div>
+          <div className="grid lg:grid-cols-3 gap-8 items-stretch">
+            {/* Starter Package */}
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              whileHover={{ y: -5 }}
+              className="group bg-white rounded-[3rem] p-10 border border-slate-100 shadow-xl shadow-slate-200/50 flex flex-col transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5"
+            >
+              <div className="mb-8">
+                <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-400 mb-6 group-hover:bg-primary/10 group-hover:text-primary transition-colors duration-500">
+                  <span className="text-3xl">🟢</span>
+                </div>
+                <div className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-2">Starter Package</div>
+                <div className="flex items-baseline gap-1 mb-4">
+                  <span className="text-4xl font-display font-bold text-primary-text">₹3,000</span>
+                  <span className="text-slate-400 font-medium">/mo</span>
+                </div>
+                <p className="text-slate-500 text-sm font-medium">Best for small businesses getting regular inquiries.</p>
+              </div>
 
-                  <div className="flex flex-col gap-3 mb-8 flex-grow">
-                    {plan.features.map((feature, idx) => (
-                      <div key={idx} className="flex gap-3 items-start">
-                        <div className="w-5 h-5 bg-primary text-white rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <Check size={12} strokeWidth={4} />
-                        </div>
-                        <span className="text-sm font-medium text-secondary-text leading-tight">{feature}</span>
-                      </div>
+              <div className="space-y-8 flex-grow mb-10">
+                <div>
+                  <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-4 border-b border-slate-50 pb-2">Communication</h4>
+                  <ul className="space-y-3">
+                    {[
+                      "WhatsApp customer support",
+                      "FAQ automation",
+                      "Pricing inquiry automation",
+                      "Schedule/timing sharing",
+                      "Human handoff support",
+                      "Support routing"
+                    ].map((item, idx) => (
+                      <li key={idx} className="flex items-center gap-3 text-sm font-medium text-slate-600">
+                        <Check size={14} className="text-primary flex-shrink-0" strokeWidth={3} />
+                        {item}
+                      </li>
                     ))}
-                  </div>
-
-                  <div className="bg-bg p-4 rounded-xl border border-border-light">
-                    <p className="text-[11px] text-secondary-text/80 font-medium italic leading-relaxed">
-                      {plan.footnote}
-                    </p>
-                  </div>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-4 border-b border-slate-50 pb-2">Data & Management</h4>
+                  <ul className="space-y-3">
+                    <li className="flex items-center gap-3 text-sm font-medium text-slate-600">
+                      <Check size={14} className="text-primary flex-shrink-0" strokeWidth={3} />
+                      Google Sheets/CRM lead collection
+                    </li>
+                  </ul>
                 </div>
               </div>
-            ))}
+            </motion.div>
+
+            {/* Growth Package */}
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              whileHover={{ y: -8 }}
+              className="relative group bg-white rounded-[3.5rem] p-10 border-2 border-primary shadow-2xl shadow-primary/10 flex flex-col transition-all duration-500"
+            >
+              <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-primary text-white px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] shadow-xl shadow-primary/30 whitespace-nowrap">
+                Most Popular
+              </div>
+
+              <div className="mb-8">
+                <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-primary/30">
+                  <span className="text-3xl">🟡</span>
+                </div>
+                <div className="text-xs font-bold uppercase tracking-[0.2em] text-primary mb-2">Growth Package</div>
+                <div className="flex items-baseline gap-1 mb-4">
+                  <span className="text-5xl font-display font-bold text-primary-text tracking-tight">₹5,000</span>
+                  <span className="text-primary font-bold">/mo</span>
+                </div>
+                <p className="text-slate-500 text-sm font-medium">Best for growing businesses running ads & needing conversion.</p>
+              </div>
+
+              <div className="space-y-8 flex-grow mb-10">
+                <div className="bg-primary/5 p-4 rounded-2xl border border-primary/10">
+                  <p className="text-[10px] font-bold text-primary uppercase tracking-widest text-center">Everything in Starter +</p>
+                </div>
+                <div>
+                  <h4 className="text-[10px] font-bold uppercase tracking-widest text-primary mb-4 border-b border-primary/5 pb-2">Booking & Onboarding</h4>
+                  <ul className="space-y-3">
+                    {[
+                      "Booking system automation",
+                      "Consultation/demo booking",
+                      "Onboarding automation",
+                      "Appointment scheduling"
+                    ].map((item, idx) => (
+                      <li key={idx} className="flex items-center gap-3 text-sm font-bold text-primary-text">
+                        <Check size={16} className="text-primary flex-shrink-0" strokeWidth={3} />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-[10px] font-bold uppercase tracking-widest text-primary mb-4 border-b border-primary/5 pb-2">Lead & Sales Automation</h4>
+                  <ul className="space-y-3">
+                    {[
+                      "Automated inquiry handling",
+                      "Lead capture automation",
+                      "Lead qualification flow",
+                      "WhatsApp-based sales funnel",
+                      "Abandoned inquiry follow-ups",
+                      "AI follow-up system"
+                    ].map((item, idx) => (
+                      <li key={idx} className="flex items-center gap-3 text-sm font-bold text-primary-text">
+                        <Check size={16} className="text-primary flex-shrink-0" strokeWidth={3} />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Pro Package */}
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              whileHover={{ y: -5 }}
+              className="group bg-white rounded-[3rem] p-10 border border-slate-100 shadow-xl shadow-slate-200/50 flex flex-col transition-all duration-500 hover:shadow-2xl hover:shadow-red-500/5"
+            >
+              <div className="mb-8">
+                <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-400 mb-6 group-hover:bg-red-50 group-hover:text-red-500 transition-colors duration-500">
+                  <span className="text-3xl">🔴</span>
+                </div>
+                <div className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-2">Pro / Custom Package</div>
+                <div className="flex items-baseline gap-1 mb-4">
+                  <span className="text-3xl font-display font-bold text-primary-text tracking-tighter uppercase">Custom Pricing</span>
+                </div>
+                <p className="text-slate-500 text-sm font-medium">Best for premium brands & high-volume automation.</p>
+              </div>
+
+              <div className="space-y-8 flex-grow mb-10">
+                <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 text-center">
+                  <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Everything in Growth +</p>
+                </div>
+                <div>
+                  <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-4 border-b border-slate-50 pb-2">Systems & Features</h4>
+                  <ul className="space-y-3">
+                    {[
+                      "Re-engagement campaigns",
+                      "Broadcast marketing campaigns",
+                      "AI-powered assistant systems",
+                      "Advanced workflows",
+                      "API integrations",
+                      "Custom CRM integrations",
+                      "Advanced analytics",
+                      "Multi-agent systems"
+                    ].map((item, idx) => (
+                      <li key={idx} className="flex items-center gap-3 text-sm font-medium text-slate-600">
+                        <Zap size={14} className="text-red-400 flex-shrink-0 fill-red-400/20" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </motion.div>
           </div>
 
-          <div className="mt-12 text-center">
-            <p className="text-sm text-secondary-text opacity-60 font-bold flex items-center justify-center gap-2">
-              <Check size={16} className="text-primary" strokeWidth={3} />
-              Includes ongoing monitoring, updates, and optimization
-            </p>
+          <div className="mt-20 text-center">
+             <div className="inline-flex items-center gap-3 bg-white px-6 py-4 rounded-full border border-slate-100 shadow-sm">
+                <ShieldCheck className="text-primary" size={20} />
+                <p className="text-sm font-bold text-slate-600">
+                  Setup done for you in <span className="text-primary italic">24 hours</span>. Full ongoing maintenance included.
+                </p>
+             </div>
           </div>
         </div>
       </section>
