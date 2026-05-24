@@ -22,7 +22,13 @@ import {
   Calendar,
   X,
   Menu,
-  Check
+  Check,
+  Dumbbell,
+  Stethoscope,
+  GraduationCap,
+  Building2,
+  Compass,
+  Ticket
 } from 'lucide-react';
 
 // --- Components ---
@@ -42,6 +48,8 @@ const Logo = ({ variant = 'full', className = "" }: { variant?: 'full' | 'icon' 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSolutionsOpen, setIsSolutionsOpen] = useState(false);
+  const [isMobileSolutionsOpen, setIsMobileSolutionsOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -56,19 +64,123 @@ const Navbar = () => {
     { name: 'Contact', href: '#contact' },
   ];
 
+  const industries = [
+    {
+      name: "Gym & Fitness Centers",
+      path: "/industries/gym-fitness",
+      desc: "Automate class bookings, renewals & follow-ups.",
+      icon: Dumbbell,
+      color: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20"
+    },
+    {
+      name: "Healthcare",
+      path: "/industries/healthcare",
+      desc: "Automate patient scheduling, reminders & FAQs.",
+      icon: Stethoscope,
+      color: "text-blue-500 bg-blue-500/10 border-blue-500/20"
+    },
+    {
+      name: "Education & Ed Tech",
+      path: "/industries/education-edtech",
+      desc: "Automate student admissions & qualifications.",
+      icon: GraduationCap,
+      color: "text-purple-500 bg-purple-500/10 border-purple-500/20"
+    },
+    {
+      name: "Real Estate",
+      path: "/industries/real-estate",
+      desc: "Automate property inquiries, visits & handoffs.",
+      icon: Building2,
+      color: "text-amber-500 bg-amber-500/10 border-amber-500/20"
+    },
+    {
+      name: "Travel & Tourism",
+      path: "/industries/travel-tourism",
+      desc: "Automate confirmations, itineraries & support.",
+      icon: Compass,
+      color: "text-sky-500 bg-sky-500/10 border-sky-500/20"
+    },
+    {
+      name: "Events & Webinar",
+      path: "/industries/events-webinar",
+      desc: "Automate tickets, event reminders & feedback.",
+      icon: Ticket,
+      color: "text-rose-500 bg-rose-500/10 border-rose-500/20"
+    }
+  ];
+
   return (
     <nav 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-6'
+        isScrolled || isMobileMenuOpen ? 'bg-white shadow-md py-4' : 'bg-transparent py-6'
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-        <a href="#hero" className="group cursor-pointer">
+        <a href="/" className="group cursor-pointer">
           <Logo variant="full" />
         </a>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
+          <a
+            href="/"
+            className="text-sm font-medium text-secondary-text hover:text-primary transition-colors"
+          >
+            Home
+          </a>
+
+          {/* Solutions Dropdown */}
+          <div 
+            className="relative"
+            onMouseEnter={() => setIsSolutionsOpen(true)}
+            onMouseLeave={() => setIsSolutionsOpen(false)}
+          >
+            <button 
+              className={`text-sm font-medium flex items-center gap-1 transition-colors ${
+                isSolutionsOpen ? 'text-primary' : 'text-secondary-text hover:text-primary'
+              }`}
+            >
+              Solutions
+              <ChevronDown size={14} className={`transition-transform duration-350 ${isSolutionsOpen ? 'rotate-180 text-primary' : ''}`} />
+            </button>
+
+            <AnimatePresence>
+              {isSolutionsOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute left-1/2 -translate-x-1/2 top-full mt-4 w-[640px] bg-white rounded-3xl p-6 shadow-2xl border border-slate-100 grid grid-cols-2 gap-4 z-50 overflow-hidden"
+                >
+                  <div className="absolute top-0 left-0 right-0 h-[3px] bg-primary"></div>
+                  
+                  {industries.map((ind, i) => {
+                    const IconComponent = ind.icon;
+                    return (
+                      <a 
+                        key={i}
+                        href={ind.path}
+                        className="flex gap-4 p-4 rounded-2xl hover:bg-slate-50 transition-all duration-300 group/navitem border border-transparent hover:border-slate-100 hover:shadow-lg hover:shadow-slate-100/30"
+                      >
+                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center border ${ind.color} group-hover/navitem:scale-110 transition-transform duration-300 shadow-sm`}>
+                          <IconComponent size={20} />
+                        </div>
+                        <div className="flex-1 text-left">
+                          <div className="text-sm font-bold text-slate-800 group-hover/navitem:text-primary transition-colors flex items-center gap-1">
+                            {ind.name}
+                            <ArrowRight size={12} className="opacity-0 group-hover/navitem:opacity-100 group-hover/navitem:translate-x-1 transition-all" />
+                          </div>
+                          <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">{ind.desc}</p>
+                        </div>
+                      </a>
+                    );
+                  })}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
           {navLinks.map((link) => (
             <a 
               key={link.name} 
@@ -107,7 +219,54 @@ const Navbar = () => {
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden bg-white border-t border-slate-100 overflow-hidden"
           >
-            <div className="p-6 flex flex-col gap-4">
+            <div className="p-6 flex flex-col gap-4 max-h-[80vh] overflow-y-auto">
+              <a 
+                href="/"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-lg font-semibold text-slate-800"
+              >
+                Home
+              </a>
+
+              {/* Mobile Solutions Section */}
+              <div className="border-b border-slate-50 pb-2">
+                <button 
+                  onClick={() => setIsMobileSolutionsOpen(!isMobileSolutionsOpen)}
+                  className="flex items-center justify-between w-full text-lg font-semibold text-slate-800 py-2"
+                >
+                  Solutions
+                  <ChevronDown size={20} className={`transition-transform duration-300 ${isMobileSolutionsOpen ? 'rotate-180 text-primary' : 'text-slate-400'}`} />
+                </button>
+                
+                <AnimatePresence>
+                  {isMobileSolutionsOpen && (
+                    <motion.div 
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="overflow-hidden pl-4 pr-2 flex flex-col gap-3 pt-2"
+                    >
+                      {industries.map((ind, i) => {
+                        const IconComponent = ind.icon;
+                        return (
+                          <a 
+                            key={i}
+                            href={ind.path}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="flex items-center gap-3 py-2 text-sm text-slate-600 hover:text-primary transition-colors border-b border-slate-50/50 last:border-0"
+                          >
+                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${ind.color}`}>
+                              <IconComponent size={14} />
+                            </div>
+                            <span className="font-medium text-slate-700">{ind.name}</span>
+                          </a>
+                        );
+                      })}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
               {navLinks.map((link) => (
                 <a 
                   key={link.name} 
@@ -1283,7 +1442,7 @@ const Home = () => {
 const demoConfigs: any = {
   salon: {
     name: "Glow & Grace Salon",
-    welcome: "Hi! Welcome to Glow & Grace Salon 💇‍♀️",
+    welcome: "Hi! Welcome to Glow & Grace Salon 💇‍♀️ What can we do for you today?",
     image: "https://i.postimg.cc/RVjnxwfZ/remorix-logo.png",
     firstOptions: ["Book Appointment", "View Prices"],
     flows: {
@@ -1305,13 +1464,13 @@ const demoConfigs: any = {
   },
   gym: {
     name: "Iron Paradise Gym",
-    welcome: "Welcome to Iron Paradise Gym! 💪 Ready to reach your goals?",
+    welcome: "Welcome to Iron Paradise Gym! 💪 Ready to reach your fitness goals?",
     image: "https://i.postimg.cc/RVjnxwfZ/remorix-logo.png",
     firstOptions: ["Free Trial Class", "Membership Plans"],
     flows: {
       "Free Trial Class": [
-        { sender: 'bot', text: "Awesome! We have a HIIT class tomorrow at 7 AM or a Yoga session at 6 PM." },
-        { sender: 'staff', text: "Hey! Coach Amit here. I'll be leading the HIIT session. Can I put your name down for the 7 AM trial?", options: ["Yes, Book HIIT", "Tell me about Yoga"] }
+        { sender: 'bot', text: "Awesome! We have a HIIT class tomorrow at 7 AM or a Yoga session at 6 PM. 📅" },
+        { sender: 'staff', text: "Hey! Coach Amit here. I'll be leading the HIIT session. Can I put your name down for the 7 AM trial?", options: ["Yes, Book HIIT", "Talk to Staff"] }
       ],
       "Membership Plans": [
         { sender: 'bot', text: "We have flexible plans:\n\n🔥 Monthly - ₹1,500\n💎 Quarterly - ₹4,000\n🌟 Annual - ₹12,000 (Best Value)" },
@@ -1325,9 +1484,9 @@ const demoConfigs: any = {
     name: "Skyline Properties",
     welcome: "Welcome to Skyline Properties! 🏘️ Looking for your dream home?",
     image: "https://i.postimg.cc/RVjnxwfZ/remorix-logo.png",
-    firstOptions: ["View 2BHK Listings", "Book Site Visit"],
+    firstOptions: ["View Listings", "Book Site Visit"],
     flows: {
-      "View 2BHK Listings": [
+      "View Listings": [
         { sender: 'bot', text: "Sure! We have 3 premium 2BHK units available in the city center starting from ₹85L. 🏢" },
         { sender: 'staff', text: "Hi, I'm Rajesh. I've sent the detailed brochure and floor plans to your WhatsApp. Would you like to see a video tour?", options: ["Watch Video", "Book Visit"] }
       ],
@@ -1341,7 +1500,7 @@ const demoConfigs: any = {
   },
   healthcare: {
     name: "City Care Clinic",
-    welcome: "Welcome to City Care Clinic 🏥 How can we assist you?",
+    welcome: "Welcome to City Care Clinic 🏥 How can we assist you today?",
     image: "https://i.postimg.cc/RVjnxwfZ/remorix-logo.png",
     firstOptions: ["Book Appointment", "Consult Doctor Online"],
     flows: {
@@ -1355,10 +1514,63 @@ const demoConfigs: any = {
       ],
       "Confirm 6 PM": [{ sender: 'staff', text: "Confirmed! ✅ Please arrive 10 minutes early. Take care!", isConversion: true }]
     }
+  },
+  education: {
+    name: "Excel Academy Hub",
+    welcome: "Welcome to Excel Academy Hub! 📚 Ready to elevate your career?",
+    image: "https://i.postimg.cc/RVjnxwfZ/remorix-logo.png",
+    firstOptions: ["View Courses", "Apply Now"],
+    flows: {
+      "View Courses": [
+        { sender: 'bot', text: "We offer top-tier programs:\n\n🚀 Web Development - 6 Months\n📊 Data Science - 6 Months\n🎨 UI/UX Design - 4 Months" },
+        { sender: 'staff', text: "Hi! I'm Simran. All courses include 100% placement support. Would you like our detailed syllabus?", options: ["Get Syllabus", "Speak to Counselor"] }
+      ],
+      "Apply Now": [
+        { sender: 'bot', text: "Wonderful! Let's get your admission process rolling. 📝" },
+        { sender: 'staff', text: "Hi, I'm Kunal. I can schedule a free career assessment test for you today. Does 5 PM work?", options: ["Yes, Schedule", "Talk to Staff"] }
+      ],
+      "Get Syllabus": [{ sender: 'staff', text: "Excellent choice! 📄 I have dispatched the syllabus and brochure to your WhatsApp. Let's chat soon!", isConversion: true }],
+      "Yes, Schedule": [{ sender: 'staff', text: "Booked! 📅 I have scheduled your career guidance test for 5 PM. A counselor will call you then.", isConversion: true }]
+    }
+  },
+  travel: {
+    name: "RoamFree Travels",
+    welcome: "Hi! Welcome to RoamFree Travels 🏔️ Let's design your dream vacation!",
+    image: "https://i.postimg.cc/RVjnxwfZ/remorix-logo.png",
+    firstOptions: ["Explore Packages", "Instant Support"],
+    flows: {
+      "Explore Packages": [
+        { sender: 'bot', text: "Choose your paradise:\n\n🌴 Maldives Gateway - 4D/3N\n🏔️ Himachal Adventure - 6D/5N\n🌸 Bali Bliss - 5D/4N" },
+        { sender: 'staff', text: "Hey there! I'm Kabir. If you book today, we get you a flat ₹5,000 off on international bookings. Want to customize an itinerary?", options: ["Send Himachal Plan", "Request Bali Call"] }
+      ],
+      "Instant Support": [
+        { sender: 'bot', text: "We are here 24/7. Connecting you to travel helpline team... ✈️" },
+        { sender: 'staff', text: "Hi, I'm Sarah from client support. Please share your booking reference number and query below.", isConversion: true }
+      ],
+      "Send Himachal Plan": [{ sender: 'bot', text: "PDF itinerary sent! 🏔️ Pack your bags and get ready for snow peaks! Let me know if you need custom stays.", isConversion: true }]
+    }
+  },
+  events: {
+    name: "Nexus Web Events",
+    welcome: "Hi! Welcome to Nexus Web Events 🎟️ Ready to reserve your ticket?",
+    image: "https://i.postimg.cc/RVjnxwfZ/remorix-logo.png",
+    firstOptions: ["Claim Webinar Ticket", "Speaker Lineup"],
+    flows: {
+      "Claim Webinar Ticket": [
+        { sender: 'bot', text: "Splendid! Registration takes less than 30 seconds." },
+        { sender: 'staff', text: "Hey! I'm Varun. We have limited free seat tickets remaining for this Sunday's Masterclass. Reserve your entry spot now?", options: ["Yes, Reserve Spot", "Ask Event Timing"] }
+      ],
+      "Speaker Lineup": [
+        { sender: 'bot', text: "This Sunday, we have industry leaders from Google, Meta, and Netflix sharing conversion secrets! 🎙️" },
+        { sender: 'staff', text: "Kajal here! Would you like a VIP calendar invite so you don't miss any session?", options: ["Get Calendar Invite", "Talk to Staff"] }
+      ],
+      "Yes, Reserve Spot": [{ sender: 'staff', text: "Confirmed! 🎉 Your digital entry ticket with a unique QR code has been delivered to your WhatsApp. See you on Sunday!", isConversion: true }],
+      "Get Calendar Invite": [{ sender: 'staff', text: "Perfect! 📅 Google Calendar invite dispatched. Looking forward to having you with us!", isConversion: true }]
+    }
   }
 };
 
-const IndustryDemo = ({ type }: { type: string }) => {
+const WhatsAppPhone = ({ type }: { type: string }) => {
   const config = demoConfigs[type as keyof typeof demoConfigs] || demoConfigs.salon;
   const [messages, setMessages] = useState<{ id: number; sender: 'user' | 'bot' | 'staff'; text: string; options?: string[]; isConversion?: boolean }[]>([]);
   const [messageQueue, setMessageQueue] = useState<{ sender: 'bot' | 'staff'; text: string; options?: string[]; isConversion?: boolean }[]>([]);
@@ -1373,8 +1585,7 @@ const IndustryDemo = ({ type }: { type: string }) => {
       const nextMessage = messageQueue[0];
       const timer = setTimeout(() => {
         setIsTyping(true);
-        // Simulate human-like typing speed
-        const typingDuration = Math.min(Math.max(nextMessage.text.length * 20, 1000), 2000);
+        const typingDuration = Math.min(Math.max(nextMessage.text.length * 15, 800), 1600);
         
         const typingTimer = setTimeout(() => {
           setIsTyping(false);
@@ -1387,7 +1598,6 @@ const IndustryDemo = ({ type }: { type: string }) => {
           }]);
           setMessageQueue(prev => prev.slice(1));
 
-          // Global conversion follow-up logic
           if (nextMessage.isConversion && !hasFollowedUp) {
              setHasFollowedUp(true);
              setTimeout(() => {
@@ -1397,18 +1607,17 @@ const IndustryDemo = ({ type }: { type: string }) => {
                   options: ["Chat on WhatsApp"],
                   isConversion: true
                 }]);
-             }, 3500);
+             }, 3000);
           }
         }, typingDuration);
         
         return () => clearTimeout(typingTimer);
-      }, 600); // Natural pause between messages
+      }, 500);
       
       return () => clearTimeout(timer);
     }
   }, [messageQueue, isTyping, hasFollowedUp]);
 
-  // Auto-scroll to bottom
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTo({
@@ -1442,20 +1651,23 @@ const IndustryDemo = ({ type }: { type: string }) => {
 
     const nextMessages: { sender: 'bot' | 'staff'; text: string; options?: string[]; isConversion?: boolean }[] = [];
 
-    // Simple industry routing
-    if (type === 'salon') {
-      if (option === "Book Appointment" || option === "Pricing") {
-        nextMessages.push({ sender: 'bot', text: "Let me check available slots... 📅" });
-        nextMessages.push({ sender: 'staff', text: "Hi! I'm Priya. We have a slot open at 5 PM today. Should I book it?", options: ["Yes, Book Now", "Talk to Staff"] });
-      } else if (option === "Yes, Book Now") {
-        nextMessages.push({ sender: 'staff', text: "Perfect! I've reserved the 5 PM slot for you. See you soon! ✨", isConversion: true });
-      }
-    } else if (type === 'gym') {
-      if (option === "Join Membership") {
-        nextMessages.push({ sender: 'bot', text: "Awesome choice! Muscle building starts here. 💪" });
-        nextMessages.push({ sender: 'staff', text: "Hey! Coach Amit here. We have a 20% discount on Annual plans this week. Interested?", options: ["Yes, Tell me more", "View Pricing"] });
-      } else if (option === "Yes, Tell me more") {
-        nextMessages.push({ sender: 'staff', text: "Annual plans include 2 free sessions with me! Want me to reserve a spot?", isConversion: true });
+    if (config.flows && config.flows[option]) {
+      nextMessages.push(...config.flows[option]);
+    } else {
+      if (type === 'salon') {
+        if (option === "Book Appointment" || option === "Pricing") {
+          nextMessages.push({ sender: 'bot', text: "Let me check available slots... 📅" });
+          nextMessages.push({ sender: 'staff', text: "Hi! I'm Priya. We have a slot open at 5 PM today. Should I book it?", options: ["Yes, Book Now", "Talk to Staff"] });
+        } else if (option === "Yes, Book Now") {
+          nextMessages.push({ sender: 'staff', text: "Perfect! I've reserved the 5 PM slot for you. See you soon! ✨", isConversion: true });
+        }
+      } else if (type === 'gym') {
+        if (option === "Join Membership") {
+          nextMessages.push({ sender: 'bot', text: "Awesome choice! Muscle building starts here. 💪" });
+          nextMessages.push({ sender: 'staff', text: "Hey! Coach Amit here. We have a 20% discount on Annual plans this week. Interested?", options: ["Yes, Tell me more", "View Pricing"] });
+        } else if (option === "Yes, Tell me more") {
+          nextMessages.push({ sender: 'staff', text: "Annual plans include 2 free sessions with me! Want me to reserve a spot?", isConversion: true });
+        }
       }
     }
     
@@ -1470,6 +1682,85 @@ const IndustryDemo = ({ type }: { type: string }) => {
     }
   };
 
+  return (
+    <div className="w-full h-full flex flex-col bg-[#E5DDD5] select-none text-left">
+      <div className="bg-[#075E54] p-4 pt-10 flex items-center gap-3 text-white shadow-md relative z-20">
+        <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white font-bold overflow-hidden border border-white/20 flex-shrink-0">
+          <img src={config.image} alt={config.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+        </div>
+        <div>
+          <div className="text-xs font-bold flex items-center gap-1.5 leading-tight">
+            {config.name}
+            <ShieldCheck size={12} className="text-white/70" />
+          </div>
+          <div className="text-[9px] flex items-center gap-1 opacity-80 leading-tight mt-0.5">
+            <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
+            Online
+          </div>
+        </div>
+      </div>
+
+      <div ref={scrollRef} className="flex-1 p-4 overflow-y-auto flex flex-col gap-3 custom-scrollbar relative z-10" style={{ backgroundImage: 'url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png")', backgroundSize: '400px' }}>
+        {messages.length === 0 ? (
+          <div className="h-full flex flex-col items-center justify-center text-center p-6 opacity-40 bg-white/40 backdrop-blur-[2px] rounded-3xl m-2 border border-white/30">
+            <div className="w-12 h-12 bg-white/60 rounded-full flex items-center justify-center mb-3 text-slate-700">
+              <MessageSquare size={24} />
+            </div>
+            <p className="text-xs font-bold text-slate-800 leading-snug">Click "Start Live Demo" below to see the automation flow.</p>
+          </div>
+        ) : (
+          <>
+            {messages.map((m) => (
+              <div key={m.id} className="flex flex-col gap-2">
+                <motion.div initial={{ opacity: 0, scale: 0.95, y: 10 }} animate={{ opacity: 1, scale: 1, y: 0 }} className={`max-w-[85%] p-3 rounded-2xl shadow-sm text-sm relative group ${m.sender === 'user' ? 'bg-[#DCF8C6] self-end rounded-tr-none' : m.sender === 'staff' ? 'bg-white border border-border-light self-start rounded-tl-none' : 'bg-white self-start rounded-tl-none text-primary-text'}`}>
+                  {m.sender === 'staff' && <div className="text-[10px] font-bold text-primary mb-1 flex items-center gap-1.5"><ShieldCheck size={12}/> Verified Business Account</div>}
+                  <p className="whitespace-pre-line leading-relaxed">{m.text}</p>
+                  <div className="text-[9px] text-secondary-text/50 text-right mt-1.5 flex items-center justify-end gap-1">
+                    {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    {m.sender === 'user' && <Check size={10} className="text-blue-500" />}
+                  </div>
+                </motion.div>
+                {m.options && (
+                  <div className="flex flex-col gap-2 pt-1 items-start">
+                    {m.options.map((opt, idx) => (
+                      <motion.button key={opt} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.1 }} onClick={() => handleOptionClick(opt)} className="bg-white text-primary-text border border-border-light px-5 py-3 rounded-2xl text-xs font-bold hover:bg-bg transition-all shadow-md active:scale-95 text-left w-fit max-w-[240px]">
+                        {opt}
+                      </motion.button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+            {isTyping && (
+              <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} className="bg-white self-start rounded-2xl rounded-tl-none p-4 shadow-sm flex gap-1.5">
+                <div className="w-1.5 h-1.5 bg-border-light rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+                <div className="w-1.5 h-1.5 bg-border-light rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                <div className="w-1.5 h-1.5 bg-border-light rounded-full animate-bounce"></div>
+              </motion.div>
+            )}
+          </>
+        )}
+      </div>
+
+      <div className="p-4 bg-[#F0F2F5] border-t border-border-light relative z-20">
+        {messages.length === 0 ? (
+          <button onClick={startDemo} className="w-full bg-primary text-white py-4 rounded-2xl font-bold hover:bg-primary/90 transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 group cursor-pointer">
+            Start Live Demo
+            <Bot size={18} className="group-hover:rotate-12 transition-transform" />
+          </button>
+        ) : (
+          <div className="flex items-center gap-2">
+             <div className="flex-1 bg-white p-3 rounded-2xl shadow-inner text-secondary-text/30 text-sm px-4 flex items-center justify-between"><span>Type a message...</span><Zap size={14} className="opacity-20" /></div>
+             <div onClick={() => { setMessages([]); setHasFollowedUp(false); }} className="p-3 bg-white text-secondary-text/50 hover:text-red-500 rounded-2xl cursor-pointer transition-all shadow-sm active:scale-90"><X size={20} /></div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const IndustryDemo = ({ type }: { type: string }) => {
+  const config = demoConfigs[type as keyof typeof demoConfigs] || demoConfigs.salon;
   return (
     <div className="min-h-screen bg-bg flex flex-col items-center justify-center p-6 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] overflow-hidden selection:bg-primary selection:text-white">
       <div className="fixed inset-0 pointer-events-none opacity-40">
@@ -1487,79 +1778,10 @@ const IndustryDemo = ({ type }: { type: string }) => {
         <p className="text-secondary-text text-lg">See how Remorix automates {type} leads instantly.</p>
       </div>
 
-      <div className="w-full max-w-[380px] h-[720px] bg-[#E5DDD5] rounded-[3rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] border-[12px] border-primary-text overflow-hidden flex flex-col relative z-10 transition-transform hover:scale-[1.01] duration-500">
+      <div className="w-full max-w-[380px] h-[720px] bg-[#E5DDD5] rounded-[3rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] border-[12px] border-primary-text overflow-hidden flex flex-col relative z-10 transition-transform hover:scale-[1.01] duration-500 pb-0">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-6 bg-primary-text rounded-b-2xl z-30"></div>
         <div className="absolute top-2 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-black/20 rounded-full z-30 opacity-40"></div>
-        
-        <div className="bg-[#075E54] p-4 pt-10 flex items-center gap-3 text-white shadow-md relative z-20">
-          <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white font-bold overflow-hidden border border-white/20">
-            <img src={config.image} alt={config.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-          </div>
-          <div>
-            <div className="text-sm font-bold flex items-center gap-1.5">
-              {config.name}
-              <ShieldCheck size={12} className="text-white/70" />
-            </div>
-            <div className="text-[10px] flex items-center gap-1 opacity-80">
-              <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
-              Online
-            </div>
-          </div>
-        </div>
-
-        <div ref={scrollRef} className="flex-1 p-4 overflow-y-auto flex flex-col gap-3 custom-scrollbar relative z-10" style={{ backgroundImage: 'url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png")', backgroundSize: '400px' }}>
-          {messages.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-center p-8 opacity-40 bg-white/20 backdrop-blur-[2px] rounded-3xl m-2 border border-white/30">
-              <div className="w-16 h-16 bg-white/40 rounded-full flex items-center justify-center mb-4"><MessageSquare size={32} /></div>
-              <p className="text-sm font-bold text-primary-text">Click "Start Demo" below to see the automation flow.</p>
-            </div>
-          ) : (
-            <>
-              {messages.map((m) => (
-                <div key={m.id} className="flex flex-col gap-2">
-                  <motion.div initial={{ opacity: 0, scale: 0.95, y: 10 }} animate={{ opacity: 1, scale: 1, y: 0 }} className={`max-w-[85%] p-3 rounded-2xl shadow-sm text-sm relative group ${m.sender === 'user' ? 'bg-[#DCF8C6] self-end rounded-tr-none' : m.sender === 'staff' ? 'bg-white border border-border-light self-start rounded-tl-none' : 'bg-white self-start rounded-tl-none text-primary-text'}`}>
-                    {m.sender === 'staff' && <div className="text-[10px] font-bold text-primary mb-1 flex items-center gap-1.5"><ShieldCheck size={12}/> Verified Business Account</div>}
-                    <p className="whitespace-pre-line leading-relaxed">{m.text}</p>
-                    <div className="text-[9px] text-secondary-text/50 text-right mt-1.5 flex items-center justify-end gap-1">
-                      {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                      {m.sender === 'user' && <Check size={10} className="text-blue-500" />}
-                    </div>
-                  </motion.div>
-                  {m.options && (
-                    <div className="flex flex-col gap-2 pt-1 items-start">
-                      {m.options.map((opt, idx) => (
-                        <motion.button key={opt} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.1 }} onClick={() => handleOptionClick(opt)} className="bg-white text-primary-text border border-border-light px-5 py-3 rounded-2xl text-xs font-bold hover:bg-bg transition-all shadow-md active:scale-95 text-left w-fit max-w-[240px]">
-                          {opt}
-                        </motion.button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-              {isTyping && (
-                <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} className="bg-white self-start rounded-2xl rounded-tl-none p-4 shadow-sm flex gap-1.5">
-                  <div className="w-1.5 h-1.5 bg-border-light rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-                  <div className="w-1.5 h-1.5 bg-border-light rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-                  <div className="w-1.5 h-1.5 bg-border-light rounded-full animate-bounce"></div>
-                </motion.div>
-              )}
-            </>
-          )}
-        </div>
-
-        <div className="p-4 bg-[#F0F2F5] border-t border-border-light relative z-20">
-          {messages.length === 0 ? (
-            <button onClick={startDemo} className="w-full bg-primary text-white py-4 rounded-2xl font-bold hover:bg-primary/90 transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 group">
-              Start Live Demo
-              <Bot size={18} className="group-hover:rotate-12 transition-transform" />
-            </button>
-          ) : (
-            <div className="flex items-center gap-2">
-               <div className="flex-1 bg-white p-3 rounded-2xl shadow-inner text-secondary-text/30 text-sm px-4 flex items-center justify-between"><span>Type a message...</span><Zap size={14} className="opacity-20" /></div>
-               <div onClick={() => { setMessages([]); setHasFollowedUp(false); }} className="p-3 bg-white text-secondary-text/50 hover:text-red-500 rounded-2xl cursor-pointer transition-all shadow-sm active:scale-90"><X size={20} /></div>
-            </div>
-          )}
-        </div>
+        <WhatsAppPhone type={type} />
       </div>
       
       <div className="mt-8 text-center text-secondary-text/50 text-xs flex flex-col gap-2">
@@ -1569,6 +1791,208 @@ const IndustryDemo = ({ type }: { type: string }) => {
             <span className="flex items-center gap-1"><Zap size={12} className="fill-current"/> Instant Response</span>
          </div>
       </div>
+    </div>
+  );
+};
+
+const IndustryPage = ({ type }: { type: string }) => {
+  const industryMeta: Record<string, { title: string; subtitle: string; icon: any; focusText: string; bulletHeading: string; bulletPoints: string[]; ctaText: string }> = {
+    "gym": {
+      title: "Gym & Fitness Centers",
+      subtitle: "Convert trial inquiries and maintain consistent membership numbers with hands-off automation.",
+      focusText: "Never lose an enthusiastic fitness lead. Our flows handle booking, reminders, and payment renewals naturally.",
+      bulletHeading: "Automation Capabilities",
+      bulletPoints: [
+        "Instant class schedule & booking triggers",
+        "Membership renew / prompt system via WhatsApp",
+        "Automated personal training trial follow-ups",
+        "Direct synchronization with gym CRM & calendars",
+        "Automatic no-show recovery communications"
+      ],
+      ctaText: "Automate Gym Leads",
+      icon: Dumbbell
+    },
+    "healthcare": {
+      title: "Healthcare Clinics",
+      subtitle: "Reduce clinic phone load and ensure seamless patient follow-up with clinical-grade WhatsApp flows.",
+      focusText: "Allow patients to book appointments and receive crucial updates without exhausting your reception staff.",
+      bulletHeading: "Automation Capabilities",
+      bulletPoints: [
+        "Smart appointment slot checker & booking engine",
+        "Automated dosage & next-appointment reminders",
+        "Immediate replies to treatment costs & timings",
+        "Secure patient documentation dispatch",
+        "Human routing for critical clinical concerns"
+      ],
+      ctaText: "Automate Healthcare Leads",
+      icon: Stethoscope
+    },
+    "education": {
+      title: "Education & Ed Tech",
+      subtitle: "Qualify prospective student leads and send course catalogs automatically 24/7.",
+      focusText: "Speed to lead is king in Ed Tech. Answer curriculum inquiries instantly and schedule demo lectures.",
+      bulletHeading: "Automation Capabilities",
+      bulletPoints: [
+        "Instant course PDF brochure delivery on request",
+        "Interactive interest & background qualification survey",
+        "Automatic booking of academic counselor trials",
+        "Integrated application deadline alerts",
+        "Seamless transfer of high-intent leads to counselors"
+      ],
+      ctaText: "Automate Education Leads",
+      icon: GraduationCap
+    },
+    "realestate": {
+      title: "Real Estate Developers",
+      subtitle: "Qualify buyers, distribute catalogs, and book site visits automatically.",
+      focusText: "Real estate agents are busy on site. Let automation handle the introductory details and brochure delivery.",
+      bulletHeading: "Automation Capabilities",
+      bulletPoints: [
+        "Instant brochure, floor layout, and video tour sharing",
+        "Site visit booking widget directly on WhatsApp",
+        "Smart qualification based on budget and location",
+        "Auto-handoff to dedicated block agents on site",
+        "Automated post-visit feedback loops"
+      ],
+      ctaText: "Automate Property Leads",
+      icon: Building2
+    },
+    "travel": {
+      title: "Travel & Tourism",
+      subtitle: "Send instant travel details, confirmation PDFs, and support itineraries on the go.",
+      focusText: "Travelers demand information now. Provide confirmations, schedules, and instant help in any timezone.",
+      bulletHeading: "Automation Capabilities",
+      bulletPoints: [
+        "Instant flight, hotel, or package voucher dispatch",
+        "Interactive trip planner & itinerary suggestions",
+        "24/7 helpline routing for active traveler emergencies",
+        "Automated check-in & gate timing reminders",
+        "Collect traveler reviews and photos post-trip"
+      ],
+      ctaText: "Automate Travel Leads",
+      icon: Compass
+    },
+    "events": {
+      title: "Events & Webinars",
+      subtitle: "Deliver digital tickets, send broadcast alerts, and capture masterclass feedback effortlessly.",
+      focusText: "Keep attendance rates high. Automate calendar sync, countdown reminders, and post-webinar deals.",
+      bulletHeading: "Automation Capabilities",
+      bulletPoints: [
+        "Digital ticket delivery with secure QR codes",
+        "Staggered pre-event reminders & teaser sequences",
+        "Automatic Zoom / webinar link distribution",
+        "Post-event special cohort discounts & offers",
+        "Instant survey feedback collectors"
+      ],
+      ctaText: "Automate Event Leads",
+      icon: Ticket
+    }
+  };
+
+  const meta = industryMeta[type] || industryMeta.gym;
+  const Icon = meta.icon;
+
+  return (
+    <div className="min-h-screen bg-slate-50/50">
+      <Navbar />
+      
+      {/* Hero Header */}
+      <section className="pt-32 pb-20 bg-white border-b border-slate-100 relative overflow-hidden">
+        <div className="absolute top-[-10%] left-[-10%] w-[30%] h-[30%] bg-primary/5 blur-[100px] rounded-full"></div>
+        <div className="max-w-7xl mx-auto px-6 relative z-10 grid lg:grid-cols-12 gap-16 items-center">
+          
+          <div className="lg:col-span-7 text-left flex flex-col gap-6">
+            <Link to="/" className="inline-flex items-center gap-2 text-slate-400 hover:text-primary font-bold text-sm transition-all group w-fit">
+              <ArrowRight size={16} className="rotate-180 group-hover:-translate-x-1 transition-transform" />
+              Back to Home
+            </Link>
+            
+            <div className="inline-flex items-center gap-2 bg-primary/5 text-primary px-4 py-2 rounded-full text-xs font-bold w-fit border border-primary/10">
+              <Icon size={14} className="animate-pulse" />
+              Industry Blueprint
+            </div>
+
+            <h1 className="text-4xl md:text-6xl font-display font-bold text-slate-800 leading-tight">
+              WhatsApp Automation Built for <span className="text-primary italic">{meta.title}</span>
+            </h1>
+
+            <p className="text-lg text-slate-500 leading-relaxed max-w-2xl">
+              {meta.subtitle} {meta.focusText}
+            </p>
+
+            <div className="border border-slate-100 p-6 rounded-3xl bg-slate-50/50">
+              <h4 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                <CheckCircle2 size={18} className="text-primary" />
+                {meta.bulletHeading}
+              </h4>
+              <div className="grid md:grid-cols-2 gap-4">
+                {meta.bulletPoints.map((pt, i) => (
+                  <div key={i} className="flex gap-3 items-start text-sm text-slate-600 font-medium">
+                    <Check size={14} className="text-primary mt-1 flex-shrink-0" strokeWidth={3} />
+                    <span>{pt}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+              <a 
+                href={`https://wa.me/917410711563?text=Hi%20I%20want%20to%20automate%20my%20WhatsApp%20leads%20for%20my%20${meta.title}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-primary text-white text-center py-4 px-8 rounded-2xl font-bold text-normal hover:bg-primary/95 transition-all shadow-xl shadow-primary/20 flex items-center justify-center gap-3"
+              >
+                <MessageSquare size={18} className="fill-white" />
+                {meta.ctaText}
+              </a>
+              <a 
+                href="#live-demo-interactive"
+                className="bg-slate-100 hover:bg-slate-200 text-slate-700 text-center py-4 px-8 rounded-2xl font-bold text-normal transition-all flex items-center justify-center gap-2"
+              >
+                Try Simulator Below
+                <ArrowRight size={16} />
+              </a>
+            </div>
+          </div>
+
+          {/* Side Visualization / Simulation Frame */}
+          <div className="lg:col-span-5 flex justify-center w-full" id="live-demo-interactive">
+            <div className="scale-90 md:scale-95 lg:scale-100 origin-center">
+              <div className="text-sm font-bold text-slate-400 mb-4 uppercase tracking-widest text-center flex items-center gap-2 justify-center">
+                <span className="w-2.5 h-2.5 bg-green-500 rounded-full animate-ping"></span>
+                Interactive Sandbox Simulator
+              </div>
+              <div className="w-[360px] h-[680px] bg-[#E5DDD5] rounded-[3rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.25)] border-[12px] border-slate-800 overflow-hidden flex flex-col relative">
+                <WhatsAppPhone type={type} />
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* Trust & DFY Checklist */}
+      <section className="py-20 bg-slate-50/50">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <h2 className="text-3xl font-display font-bold mb-6 text-slate-800">Remorix is 100% Done-For-You</h2>
+          <p className="text-slate-500 text-base max-w-2xl mx-auto mb-12">
+            You don't need any technical skills, servers, or API registrations. Our engineers handle everything, ensuring your WhatsApp flows launch and scale seamlessly in 24 hours.
+          </p>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              { title: "Flow Copywriting", desc: "We write highly converting, natural copy specific to your target customers." },
+              { title: "System Setup", desc: "Connecting WhatsApp, databases, and calendars is completely executed by us." },
+              { title: "Active Maintenance", desc: "We constantly verify triggers and API health so you never miss a lead." }
+            ].map((fac, i) => (
+              <div key={i} className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm text-left">
+                <div className="w-10 h-10 bg-primary/10 text-primary rounded-full flex items-center justify-center font-bold font-display text-sm mb-4">0{i+1}</div>
+                <h4 className="font-bold text-slate-800 mb-2">{fac.title}</h4>
+                <p className="text-sm text-slate-500 leading-relaxed">{fac.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
@@ -1583,6 +2007,14 @@ export default function App() {
         <Route path="/realestate-demo" element={<IndustryDemo type="realestate" />} />
         <Route path="/coaching-demo" element={<IndustryDemo type="coaching" />} />
         <Route path="/healthcare-demo" element={<IndustryDemo type="healthcare" />} />
+        
+        {/* Solutions Dynamic Industry Pages */}
+        <Route path="/industries/gym-fitness" element={<IndustryPage type="gym" />} />
+        <Route path="/industries/healthcare" element={<IndustryPage type="healthcare" />} />
+        <Route path="/industries/education-edtech" element={<IndustryPage type="education" />} />
+        <Route path="/industries/real-estate" element={<IndustryPage type="realestate" />} />
+        <Route path="/industries/travel-tourism" element={<IndustryPage type="travel" />} />
+        <Route path="/industries/events-webinar" element={<IndustryPage type="events" />} />
       </Routes>
     </Router>
   );
