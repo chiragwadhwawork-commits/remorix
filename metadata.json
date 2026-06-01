@@ -2,5 +2,5 @@
   "name": "Remorix",
   "description": "Premium Done-For-You WhatsApp automation for Indian local businesses. Turn leads into customers automatically.",
   "requestFramePermissions": [],
-  "majorCapabilities": []
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

@@ -82,9 +82,9 @@ const Navbar = () => {
       color: "text-blue-500 bg-blue-500/10 border-blue-500/20"
     },
     {
-      name: "Education & Ed Tech",
+      name: "🎓 Education & EdTech",
       path: "/industries/education-edtech",
-      desc: "Automate student admissions & qualifications.",
+      desc: "Automate student admissions, course inquiries, counseling bookings, fee collection reminders, and student support.",
       icon: GraduationCap,
       color: "text-purple-500 bg-purple-500/10 border-purple-500/20"
     },
@@ -1493,36 +1493,15 @@ const demoConfigs: any = {
     name: "City Care Clinic",
     welcome: "Welcome to City Care Clinic 🏥 How can we assist you today?",
     image: "https://i.postimg.cc/RVjnxwfZ/remorix-logo.png",
-    firstOptions: ["Book Appointment", "Consult Doctor Online"],
-    flows: {
-      "Book Appointment": [
-        { sender: 'bot', text: "I can help with that. Which department are you looking for?" },
-        { sender: 'staff', text: "Hi, I'm Nurse Anjali. We have Dr. Mehta (General Physician) available today at 6 PM. Shall I confirm your slot?", options: ["Confirm 6 PM", "Talk to Staff"] }
-      ],
-      "Consult Doctor Online": [
-        { sender: 'bot', text: "Connecting you to our online consultation portal... 💻" },
-        { sender: 'staff', text: "Hi, Dr. Rohan here. I'm available for a quick chat now. Please share your symptoms briefly.", isConversion: true }
-      ],
-      "Confirm 6 PM": [{ sender: 'staff', text: "Confirmed! ✅ Please arrive 10 minutes early. Take care!", isConversion: true }]
-    }
+    firstOptions: ["📅 Book Appointment", "💻 Consult Doctor Online", "🩺 Specializations", "🚨 Emergency Helpline", "📍 Clinic Location"],
+    flows: {}
   },
   education: {
-    name: "Excel Academy Hub",
-    welcome: "Welcome to Excel Academy Hub! 📚 Ready to elevate your career?",
+    name: "EduFlow AI",
+    welcome: "👋 Welcome to EduFlow AI\n\nAutomate admissions, counseling, student support, and follow-ups through WhatsApp.\n\nHow can we help you today?",
     image: "https://i.postimg.cc/RVjnxwfZ/remorix-logo.png",
-    firstOptions: ["View Courses", "Apply Now"],
-    flows: {
-      "View Courses": [
-        { sender: 'bot', text: "We offer top-tier programs:\n\n🚀 Web Development - 6 Months\n📊 Data Science - 6 Months\n🎨 UI/UX Design - 4 Months" },
-        { sender: 'staff', text: "Hi! I'm Simran. All courses include 100% placement support. Would you like our detailed syllabus?", options: ["Get Syllabus", "Speak to Counselor"] }
-      ],
-      "Apply Now": [
-        { sender: 'bot', text: "Wonderful! Let's get your admission process rolling. 📝" },
-        { sender: 'staff', text: "Hi, I'm Kunal. I can schedule a free career assessment test for you today. Does 5 PM work?", options: ["Yes, Schedule", "Talk to Staff"] }
-      ],
-      "Get Syllabus": [{ sender: 'staff', text: "Excellent choice! 📄 I have dispatched the syllabus and brochure to your WhatsApp. Let's chat soon!", isConversion: true }],
-      "Yes, Schedule": [{ sender: 'staff', text: "Booked! 📅 I have scheduled your career guidance test for 5 PM. A counselor will call you then.", isConversion: true }]
-    }
+    firstOptions: ["🎓 Course Inquiry", "📝 Admission Process", "💰 Fee Structure", "📅 Book Counseling", "📚 Student Support"],
+    flows: {}
   },
   travel: {
     name: "RoamFree Travels",
@@ -1561,7 +1540,82 @@ const demoConfigs: any = {
   }
 };
 
-const InstagramAdPreview = ({ onCtaClick }: { onCtaClick: () => void }) => {
+const InstagramAdPreview = ({ type, onCtaClick }: { type: string; onCtaClick: () => void }) => {
+  const isGym = type === 'gym';
+
+  let profileInitials = "1RM";
+  let profileHandle = "onerepmax_fitness";
+  let captionText = "STOP making excuses. 🏋️ Join ONE REP MAX Fitness Hub. Claim your FREE Trial and personalized coaching consultation. Click below to start chatting instantly with our coaches on WhatsApp!";
+  let likedByText = "fitness_coach_am and 2,410 others";
+  let timeAgo = "3 hours ago";
+
+  let adImage = "https://i.ibb.co/MDWbtVRD/Screenshot-2026-06-01-160924.png";
+  let adTitle = "ONE REP MAX FITNESS STUDIO";
+  let adBadge = "MEMBERSHIP STARTS AT ₹599";
+  let adOffers = ["✨ Cardio & Strengthening", "✨ Body Transformation & Weight Loss", "✨ Steam Bath & Specialist Personal Trainers"];
+
+  if (type === 'salon') {
+    profileInitials = "GG";
+    profileHandle = "glowandgrace_salon";
+    captionText = "Get the luxury salon makeover you deserve! ✨ Claim a FREE head massage with any service booked today. Click below to start chatting with our stylist on WhatsApp! 💇‍♀️💅";
+    likedByText = "stylist_priya and 1,894 others";
+    adImage = "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=600&q=80";
+    adTitle = "Glow & Grace Makeover";
+    adBadge = "FREE HEAD MASSAGE";
+    adOffers = ["✨ Balayage & Styling Special", "✨ Premium Hair & Nail Spa", "✨ Professional HydraFacials"];
+    timeAgo = "1 hour ago";
+  } else if (type === 'realestate') {
+    profileInitials = "SP";
+    profileHandle = "skyline_properties";
+    captionText = "Your dream home is waiting! Premium City Center apartments starting at ₹85 Lakhs. Click to get catalogs, video tours and scheduled site visits on WhatsApp! 🏢🏙️";
+    likedByText = "rajesh_realestate and 3,120 others";
+    adImage = "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80";
+    adTitle = "Skyline Luxury Residences";
+    adBadge = "2BHK CITY CENTER UNIT";
+    adOffers = ["📍 Heart of the City Location", "📹 On-Demand Video Walkthroughs", "📆 Scheduled Personal Viewings"];
+    timeAgo = "2 hours ago";
+  } else if (type === 'healthcare') {
+    profileInitials = "CC";
+    profileHandle = "citycare_clinic";
+    captionText = "Skip the crowded waiting lines! Book your appointment with Dr. Mehta or consult online with expert doctors instantly. Click below to chat with our staff on WhatsApp! 👨‍⚕️💊";
+    likedByText = "dr_rohan and 1,452 others";
+    adImage = "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=600&q=80";
+    adTitle = "City Care Clinic Online";
+    adBadge = "SKIP WAITING ROOMS";
+    adOffers = ["👨‍⚕️ Top Senior Physicians", "💻 Live Digital Consultant Chats", "⏱️ Direct Appt Scheduling"];
+    timeAgo = "4 hours ago";
+  } else if (type === 'education') {
+    profileInitials = "EF";
+    profileHandle = "eduflow_ai";
+    captionText = "Accelerate your career in tech! 🚀 100% placement support, live assessment and 1-on-1 counseling. Click below to book your FREE counseling seat on WhatsApp! 💻📊";
+    likedByText = "placement_cell and 4,520 others";
+    adImage = "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80";
+    adTitle = "EduFlow Tech Accelerator";
+    adBadge = "1-ON-1 FREE COUNSELING";
+    adOffers = ["🚀 Practical Real-world Curriculum", "💼 100% Comprehensive Job Hunt Assistance", "🎓 Direct Interactive Enrollment Slots"];
+    timeAgo = "5 hours ago";
+  } else if (type === 'travel') {
+    profileInitials = "RF";
+    profileHandle = "roamfree_travels";
+    captionText = "Your next paradise is just a chat away! Get flat ₹5,000 off on Maldives, Himachal, or Bali itineraries today. Click below to plan your custom travel on WhatsApp! 🌴✈️";
+    likedByText = "wanderlust_kabir and 2,240 others";
+    adImage = "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80";
+    adTitle = "RoamFree Luxury Escapes";
+    adBadge = "FLAT ₹5,000 OFF TODAY";
+    adOffers = ["🌴 Custom Maldives Resorts Plans", "🏔️ Spectacular Himachal Hikes", "🌸 Magical Bali Bliss Packages"];
+    timeAgo = "1 hour ago";
+  } else if (type === 'events') {
+    profileInitials = "NX";
+    profileHandle = "nexus_events";
+    captionText = "Masterclass seats filling fast! Learn from leaders at Google, Meta, and Netflix this Sunday. Click below to claim your standard FREE entry ticket & calendar invite on WhatsApp! 🎙️📅";
+    likedByText = "kajal_meta and 5,115 others";
+    adImage = "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=600&q=80";
+    adTitle = "Nexus Web Masterclass";
+    adBadge = "FREE SUNDAY ENTRY SEAT";
+    adOffers = ["🎙️ Speakers from Google, Meta & Netflix", "📅 Instant Google Calendar Reserve Link", "🎁 Custom Digital VIP Tickets Delivered"];
+    timeAgo = "1 hour ago";
+  }
+
   return (
     <div className="w-full h-full bg-white flex flex-col font-sans select-none overflow-y-auto custom-scrollbar">
       {/* Mobile simulated Status Bar */}
@@ -1592,13 +1646,13 @@ const InstagramAdPreview = ({ onCtaClick }: { onCtaClick: () => void }) => {
       <div className="flex items-center justify-between px-3.5 py-2.5 flex-shrink-0">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-500 via-red-500 to-purple-600 p-[2px] shadow-sm flex items-center justify-center">
-            <div className="w-full h-full rounded-full border border-white bg-slate-900 flex items-center justify-center text-[9px] text-amber-400 font-black tracking-tighter">
-              1RM
+            <div className="w-full h-full rounded-full border border-white bg-slate-900 flex items-center justify-center text-[9px] text-amber-400 font-black tracking-tighter uppercase">
+              {profileInitials}
             </div>
           </div>
           <div className="flex flex-col text-left leading-tight">
-            <span className="text-[12px] font-bold text-slate-805 flex items-center gap-1 leading-none">
-              onerepmax_fitness
+            <span className="text-[12px] font-bold text-slate-800 flex items-center gap-1 leading-none">
+              {profileHandle}
               <span className="text-blue-500 text-[10px] select-none" title="Verified Account">✓</span>
             </span>
             <span className="text-[9px] text-slate-500 font-semibold leading-none mt-1">Sponsored</span>
@@ -1612,56 +1666,106 @@ const InstagramAdPreview = ({ onCtaClick }: { onCtaClick: () => void }) => {
       </div>
 
       {/* Main Ad Image / Creative Wrapper */}
-      <div 
-        className="relative w-full h-auto bg-black flex-shrink-0 select-none overflow-hidden"
-      >
-        <img 
-          src="https://i.ibb.co/MDWbtVRD/Screenshot-2026-06-01-160924.png" 
-          alt="Instagram Ad Campaign Creative" 
-          className="w-full h-auto block"
-          referrerPolicy="no-referrer"
-        />
+      <div className="relative w-full aspect-square bg-slate-900 border-y border-slate-100 flex-shrink-0 select-none overflow-hidden">
+        {isGym ? (
+          <>
+            <img 
+              src={adImage} 
+              alt="Instagram Ad Campaign Creative" 
+              className="w-full h-full object-cover"
+              referrerPolicy="no-referrer"
+            />
 
-        {/* High-fidelity interactive "Chat on WhatsApp" button overlay */}
-        {/* Sits exactly on top of the drawn button coordinates in the vertical screenshot */}
-        <motion.button
-          onClick={onCtaClick}
-          whileHover={{ scale: 1.015, brightness: 1.05 }}
-          whileTap={{ scale: 0.985 }}
-          className="absolute top-[78.6%] left-[4.8%] w-[76.5%] h-[6.8%] bg-[#208365] hover:bg-[#1a7358] text-white rounded-xl flex items-center justify-between px-3.5 shadow-md active:scale-95 transition-all text-left z-20 group border border-white/5 font-sans"
-          style={{
-            boxShadow: "0 4px 15px rgba(32,131,101,0.4)"
-          }}
-        >
-          <div className="flex items-center gap-2">
-            <svg className="w-5 h-5 fill-current text-white flex-shrink-0 animate-pulse" viewBox="0 0 24 24">
-              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.453L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.625 1.45 5.489.002 9.961-4.438 9.964-9.893.001-2.643-1.02-5.127-2.877-6.986-1.855-1.859-4.325-2.883-6.963-2.884-5.49 0-9.966 4.438-9.969 9.894-.001 1.942.512 3.63 1.42 5.093l-.974 3.556 3.739-.98z" />
-            </svg>
-            <span className="text-[12.5px] font-extrabold tracking-wide text-white font-sans leading-none">Chat on WhatsApp</span>
-          </div>
-          
-          <svg className="w-4 h-4 stroke-current text-white transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" strokeWidth="3">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-          </svg>
-        </motion.button>
+            {/* High-fidelity interactive "Chat on WhatsApp" button overlay */}
+            {/* Sits exactly on top of the drawn button coordinates in the vertical screenshot */}
+            <motion.button
+              onClick={onCtaClick}
+              whileHover={{ scale: 1.015, brightness: 1.05 }}
+              whileTap={{ scale: 0.985 }}
+              className="absolute top-[78.6%] left-[4.8%] w-[76.5%] h-[6.8%] bg-[#208365] hover:bg-[#1a7358] text-white rounded-xl flex items-center justify-between px-3.5 shadow-md active:scale-95 transition-all text-left z-20 group border border-white/5 font-sans cursor-pointer"
+              style={{
+                boxShadow: "0 4px 15px rgba(32,131,101,0.4)"
+              }}
+            >
+              <div className="flex items-center gap-2">
+                <svg className="w-5 h-5 fill-current text-white flex-shrink-0 animate-pulse" viewBox="0 0 24 24">
+                  <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.453L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.625 1.45 5.489.002 9.961-4.438 9.964-9.893.001-2.643-1.02-5.127-2.877-6.986-1.855-1.859-4.325-2.883-6.963-2.884-5.49 0-9.966 4.438-9.969 9.894-.001 1.942.512 3.63 1.42 5.093l-.974 3.556 3.739-.98z" />
+                </svg>
+                <span className="text-[12.5px] font-extrabold tracking-wide text-white font-sans leading-none">Chat on WhatsApp</span>
+              </div>
+              
+              <svg className="w-4 h-4 stroke-current text-white transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" strokeWidth="3">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </motion.button>
+          </>
+        ) : (
+          <>
+            <img 
+              src={adImage} 
+              alt={adTitle} 
+              className="w-full h-full object-cover opacity-90"
+              referrerPolicy="no-referrer"
+            />
+            {/* Elegant overlay gradient to make textual information pop */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/20" />
+
+            <div className="absolute inset-x-4 bottom-18 text-white flex flex-col gap-1 text-left z-10">
+              <span className="bg-yellow-400 text-slate-900 font-black text-[9px] px-2 py-0.5 rounded-md w-fit uppercase tracking-wider mb-1">
+                {adBadge}
+              </span>
+              <h3 className="font-extrabold text-[15px] tracking-tight text-white leading-tight uppercase">
+                {adTitle}
+              </h3>
+              <div className="flex flex-col gap-0.5 mt-1">
+                {adOffers.map((offer, idx) => (
+                  <div key={idx} className="text-[9.5px] text-white/95 font-semibold flex items-center gap-1.5">
+                    {offer}
+                  </div>
+                ))}
+              </div>
+              <p className="text-[8px] text-slate-300 italic mt-0.5">Powered by Remorix Automation Lead-Capture Engine</p>
+            </div>
+
+            {/* Custom CTA matching the style perfectly but dynamically rendered on non-gym post */}
+            <motion.button
+              onClick={onCtaClick}
+              whileHover={{ scale: 1.015, brightness: 1.05 }}
+              whileTap={{ scale: 0.985 }}
+              className="absolute bottom-3 left-4 right-4 bg-[#208365] hover:bg-[#1a7358] text-white py-3 px-4 rounded-xl flex items-center justify-between shadow-lg active:scale-95 transition-all text-left z-20 group border border-white/10 font-sans cursor-pointer"
+              style={{
+                boxShadow: "0 4px 15px rgba(32,131,101,0.4)"
+              }}
+            >
+              <div className="flex items-center gap-2">
+                <svg className="w-5 h-5 fill-current text-white flex-shrink-0 animate-pulse" viewBox="0 0 24 24">
+                  <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.453L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.625 1.45 5.489.002 9.961-4.438 9.964-9.893.001-2.643-1.02-5.127-2.877-6.986-1.855-1.859-4.325-2.883-6.963-2.884-5.49 0-9.966 4.438-9.969 9.894-.001 1.942.512 3.63 1.42 5.093l-.974 3.556 3.739-.98z" />
+                </svg>
+                <span className="text-[12.5px] font-extrabold tracking-wide text-white font-sans leading-none">Chat on WhatsApp</span>
+              </div>
+              
+              <svg className="w-4 h-4 stroke-current text-white transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" strokeWidth="3">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </motion.button>
+          </>
+        )}
       </div>
-
-
 
       {/* Description text under click */}
       <div className="px-4 pb-5 text-left flex-shrink-0">
         <div className="text-[11px] font-extrabold text-slate-900 leading-snug">
-          Liked by fitness_coach_am and 2,410 others
+          Liked by {likedByText}
         </div>
         <div className="text-[11px] mt-1 text-slate-600 leading-relaxed">
-          <span className="font-extrabold text-slate-800 mr-1.5">onerepmax_fitness</span>
-          STOP making excuses. 🏋️ Join ONE REP MAX Fitness Hub. Claim your FREE Trial and personalized coaching consultation. Click below to start chatting instantly with our coaches on WhatsApp!
+          <span className="font-extrabold text-slate-800 mr-1.5">{profileHandle}</span>
+          {captionText}
         </div>
         <div className="text-[9.5px] text-slate-400 font-bold mt-2 uppercase tracking-wide">
           View all 148 comments
         </div>
         <div className="text-[8px] text-slate-400 font-bold mt-0.5 uppercase tracking-wider">
-          3 hours ago
+          {timeAgo}
         </div>
       </div>
     </div>
@@ -1770,18 +1874,239 @@ const GymForm = ({ onSubmit }: { onSubmit: (data: { name: string; phone: string;
   );
 };
 
+const EduCounselingForm = ({ onSubmit }: { onSubmit: (data: { name: string; phone: string; email: string; course: string }) => void }) => {
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
+  const [course, setCourse] = useState('Digital Marketing');
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (!name.trim()) {
+      setError("Please enter your name");
+      return;
+    }
+    if (!phone.trim()) {
+      setError("Please enter your phone number");
+      return;
+    }
+    if (!email.trim() || !email.includes('@')) {
+      setError("Please enter a valid email address");
+      return;
+    }
+    setError('');
+    setSubmitted(true);
+    onSubmit({ name, phone, email, course });
+  };
+
+  if (submitted) {
+    return (
+      <div className="text-center py-2 text-emerald-600 font-bold flex items-center justify-center gap-1.5 text-xs">
+        <CheckCircle2 size={14} className="text-emerald-500" /> Booking Session Scheduled
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="mt-3 flex flex-col gap-3 bg-slate-50 p-4 rounded-xl border border-slate-150 shadow-xs text-left w-full max-w-[280px]">
+      <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 pb-1.5 flex items-center gap-1">
+        🎓 Interactive Booking Form
+      </div>
+      
+      <div>
+        <label className="block text-[10px] font-bold text-slate-500 uppercase mb-0.5 tracking-wider">👤 Full Name</label>
+        <input 
+          type="text" 
+          value={name} 
+          onChange={e => setName(e.target.value)}
+          placeholder="e.g. Rahul Sharma" 
+          className="w-full text-xs p-2 bg-white border border-slate-200 rounded-md focus:outline-none focus:border-green-500 font-sans text-slate-850"
+          required
+        />
+      </div>
+
+      <div>
+        <label className="block text-[10px] font-bold text-slate-500 uppercase mb-0.5 tracking-wider">📞 Phone Number</label>
+        <input 
+          type="tel" 
+          value={phone} 
+          onChange={e => setPhone(e.target.value)}
+          placeholder="e.g. +91 98765 43210" 
+          className="w-full text-xs p-2 bg-white border border-slate-200 rounded-md focus:outline-none focus:border-green-500 font-sans text-slate-850"
+          required
+        />
+      </div>
+
+      <div>
+        <label className="block text-[10px] font-bold text-slate-500 uppercase mb-0.5 tracking-wider">📧 Email Address</label>
+        <input 
+          type="email" 
+          value={email} 
+          onChange={e => setEmail(e.target.value)}
+          placeholder="e.g. rahul@example.com" 
+          className="w-full text-xs p-2 bg-white border border-slate-200 rounded-md focus:outline-none focus:border-green-500 font-sans text-slate-850"
+          required
+        />
+      </div>
+
+      <div>
+        <label className="block text-[10px] font-bold text-slate-500 uppercase mb-0.5 tracking-wider">🎓 Course of Interest</label>
+        <select 
+          value={course} 
+          onChange={e => setCourse(e.target.value)}
+          className="w-full text-xs p-2 bg-white border border-slate-200 rounded-md focus:outline-none focus:border-green-500 font-sans text-slate-850 animate-none"
+        >
+          <option value="Digital Marketing">Digital Marketing 💻</option>
+          <option value="Data Analytics">Data Analytics 📊</option>
+          <option value="Graphic Design">Graphic Design 🎨</option>
+          <option value="AI & Automation">AI & Automation 🤖</option>
+        </select>
+      </div>
+
+      {error && <div className="text-[10px] text-red-500 font-bold">{error}</div>}
+      
+      <button 
+        type="submit" 
+        className="mt-1.5 w-full bg-[#128C7E] hover:bg-[#075E54] text-white py-2 rounded-lg text-xs font-bold shadow-sm transition-all text-center flex items-center justify-center gap-1.5 cursor-pointer"
+      >
+        <Check size={14} strokeWidth={3} /> Submit Booking Form
+      </button>
+    </form>
+  );
+};
+
+const HealthcareApptForm = ({ onSubmit }: { onSubmit: (data: { name: string; phone: string; age: string; dept: string }) => void }) => {
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [age, setAge] = useState('');
+  const [dept, setDept] = useState('General Medicine 🩺');
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (!name.trim()) {
+      setError("Please enter patient's name");
+      return;
+    }
+    if (!phone.trim()) {
+      setError("Please enter phone number");
+      return;
+    }
+    if (!age.trim() || isNaN(Number(age)) || Number(age) <= 0) {
+      setError("Please enter a valid age");
+      return;
+    }
+    setError('');
+    setSubmitted(true);
+    onSubmit({ name, phone, age, dept });
+  };
+
+  if (submitted) {
+    return (
+      <div className="text-center py-2 text-teal-600 font-bold flex items-center justify-center gap-1.5 text-xs">
+        <CheckCircle2 size={14} className="text-teal-500" /> Patient Slot Requested
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="mt-3 flex flex-col gap-3 bg-slate-50 p-4 rounded-xl border border-slate-150 shadow-xs text-left w-full max-w-[280px]">
+      <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 pb-1.5 flex items-center gap-1">
+        🩺 Patient Intake Registry
+      </div>
+      
+      <div>
+        <label className="block text-[10px] font-bold text-slate-500 uppercase mb-0.5 tracking-wider">👤 Patient Full Name</label>
+        <input 
+          type="text" 
+          value={name} 
+          onChange={e => setName(e.target.value)}
+          placeholder="e.g. Ramesh Kumar" 
+          className="w-full text-xs p-2 bg-white border border-slate-200 rounded-md focus:outline-none focus:border-green-500 font-sans text-slate-855"
+          required
+        />
+      </div>
+
+      <div className="grid grid-cols-2 gap-2">
+        <div>
+          <label className="block text-[10px] font-bold text-slate-500 uppercase mb-0.5 tracking-wider">📞 Phone No.</label>
+          <input 
+            type="tel" 
+            value={phone} 
+            onChange={e => setPhone(e.target.value)}
+            placeholder="e.g. 9876543210" 
+            className="w-full text-xs p-2 bg-white border border-slate-200 rounded-md focus:outline-none focus:border-green-500 font-sans text-slate-855"
+            required
+          />
+        </div>
+        <div>
+          <label className="block text-[10px] font-bold text-slate-500 uppercase mb-0.5 tracking-wider">🎂 Age</label>
+          <input 
+            type="number" 
+            value={age} 
+            onChange={e => setAge(e.target.value)}
+            placeholder="e.g. 35" 
+            className="w-full text-xs p-2 bg-white border border-slate-200 rounded-md focus:outline-none focus:border-green-500 font-sans text-slate-855"
+            required
+          />
+        </div>
+      </div>
+
+      <div>
+        <label className="block text-[10px] font-bold text-slate-500 uppercase mb-0.5 tracking-wider">🩺 Doctor Department</label>
+        <select 
+          value={dept} 
+          onChange={e => setDept(e.target.value)}
+          className="w-full text-xs p-2 bg-white border border-slate-200 rounded-md focus:outline-none focus:border-green-500 font-sans text-slate-845 animate-none"
+        >
+          <option value="General Medicine 🩺">Dr. Mehta (General Medicine)</option>
+          <option value="Pediatrics (Kids) 👶">Dr. Roy (Pediatrics)</option>
+          <option value="Dermatology (Skin) 🥑">Dr. Joshi (Dermatology)</option>
+          <option value="Cardiology (Heart) ❤️">Dr. Iyer (Cardiology)</option>
+        </select>
+      </div>
+
+      {error && <div className="text-[10px] text-red-500 font-bold">{error}</div>}
+      
+      <button 
+        type="submit" 
+        className="mt-1.5 w-full bg-[#128C7E] hover:bg-[#075E54] text-white py-2 rounded-lg text-xs font-bold shadow-sm transition-all text-center flex items-center justify-center gap-1.5 cursor-pointer"
+      >
+        <Check size={14} strokeWidth={3} /> Register & Book Slot
+      </button>
+    </form>
+  );
+};
+
 const WhatsAppPhone = ({ type }: { type: string }) => {
   const config = demoConfigs[type as keyof typeof demoConfigs] || demoConfigs.salon;
   const isGym = type === 'gym';
+  const isEdu = type === 'education';
+  const isHealth = type === 'healthcare';
 
   // State Management for Gym click-to-WhatsApp Funnel
-  const [igAdActive, setIgAdActive] = useState(isGym);
+  const [igAdActive, setIgAdActive] = useState(true);
   const [gymSelectedGoal, setGymSelectedGoal] = useState("");
   const [gymSelectedTimeline, setGymSelectedTimeline] = useState("");
   const [showGymForm, setShowGymForm] = useState(false);
   const [gymLeadName, setGymLeadName] = useState("");
   const [gymLeadPhone, setGymLeadPhone] = useState("");
   const [gymLeadDate, setGymLeadDate] = useState("");
+
+  // State Management for Education dynamic chatbot
+  const [eduSelectedCourse, setEduSelectedCourse] = useState("");
+  const [eduLeadName, setEduLeadName] = useState("");
+  const [eduLeadPhone, setEduLeadPhone] = useState("");
+  const [eduLeadEmail, setEduLeadEmail] = useState("");
+
+  // State Management for Healthcare dynamic chatbot
+  const [healthSelectedDept, setHealthSelectedDept] = useState("");
+  const [healthLeadName, setHealthLeadName] = useState("");
+  const [healthLeadPhone, setHealthLeadPhone] = useState("");
+  const [healthLeadAge, setHealthLeadAge] = useState("");
 
   const [messages, setMessages] = useState<{ 
     id: number; 
@@ -1793,6 +2118,14 @@ const WhatsAppPhone = ({ type }: { type: string }) => {
     isSalesNotification?: boolean;
     isGymFormBubble?: boolean;
     isGymConfirmationDone?: boolean;
+    isEduFormBubble?: boolean;
+    isEduCrmEntry?: boolean;
+    isEduSalesNotification?: boolean;
+    isEduConfirmationDone?: boolean;
+    isHealthFormBubble?: boolean;
+    isHealthCrmEntry?: boolean;
+    isHealthSalesNotification?: boolean;
+    isHealthConfirmationDone?: boolean;
   }[]>([]);
 
   const [messageQueue, setMessageQueue] = useState<{ 
@@ -1804,6 +2137,14 @@ const WhatsAppPhone = ({ type }: { type: string }) => {
     isSalesNotification?: boolean;
     isGymFormBubble?: boolean;
     isGymConfirmationDone?: boolean;
+    isEduFormBubble?: boolean;
+    isEduCrmEntry?: boolean;
+    isEduSalesNotification?: boolean;
+    isEduConfirmationDone?: boolean;
+    isHealthFormBubble?: boolean;
+    isHealthCrmEntry?: boolean;
+    isHealthSalesNotification?: boolean;
+    isHealthConfirmationDone?: boolean;
   }[]>([]);
 
   const [isTyping, setIsTyping] = useState(false);
@@ -1832,12 +2173,20 @@ const WhatsAppPhone = ({ type }: { type: string }) => {
             isCrmEntry: nextMessage.isCrmEntry,
             isSalesNotification: nextMessage.isSalesNotification,
             isGymFormBubble: nextMessage.isGymFormBubble,
-            isGymConfirmationDone: nextMessage.isGymConfirmationDone
+            isGymConfirmationDone: nextMessage.isGymConfirmationDone,
+            isEduFormBubble: nextMessage.isEduFormBubble,
+            isEduCrmEntry: nextMessage.isEduCrmEntry,
+            isEduSalesNotification: nextMessage.isEduSalesNotification,
+            isEduConfirmationDone: nextMessage.isEduConfirmationDone,
+            isHealthFormBubble: nextMessage.isHealthFormBubble,
+            isHealthCrmEntry: nextMessage.isHealthCrmEntry,
+            isHealthSalesNotification: nextMessage.isHealthSalesNotification,
+            isHealthConfirmationDone: nextMessage.isHealthConfirmationDone
           }]);
           setMessageQueue(prev => prev.slice(1));
 
           // Global conversion follow-up logic for general industries
-          if (!isGym && nextMessage.isConversion && !hasFollowedUp) {
+          if (!isGym && !isEdu && !isHealth && nextMessage.isConversion && !hasFollowedUp) {
              setHasFollowedUp(true);
               setTimeout(() => {
                 setMessageQueue(prev => [...prev, {
@@ -1855,7 +2204,7 @@ const WhatsAppPhone = ({ type }: { type: string }) => {
       
       return () => clearTimeout(timer);
     }
-  }, [messageQueue, isTyping, hasFollowedUp, isGym]);
+  }, [messageQueue, isTyping, hasFollowedUp, isGym, isEdu, isHealth]);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -1875,17 +2224,43 @@ const WhatsAppPhone = ({ type }: { type: string }) => {
     isSalesNotification?: boolean;
     isGymFormBubble?: boolean;
     isGymConfirmationDone?: boolean;
+    isEduFormBubble?: boolean;
+    isEduCrmEntry?: boolean;
+    isEduSalesNotification?: boolean;
+    isEduConfirmationDone?: boolean;
+    isHealthFormBubble?: boolean;
+    isHealthCrmEntry?: boolean;
+    isHealthSalesNotification?: boolean;
+    isHealthConfirmationDone?: boolean;
   }[]) => {
     setMessageQueue(prev => [...prev, ...msgs]);
   };
 
   const handleIgCtaClick = () => {
     setIgAdActive(false);
+
+    let initialUserText = "Hi! Can I get more information?";
+    if (isGym) {
+      initialUserText = "hello! Can I get more info on Gym packages?";
+    } else if (isEdu) {
+      initialUserText = "Hi! I am interested in educational courses.";
+    } else if (type === 'salon') {
+      initialUserText = "Hi! I want to book a hair/beauty appointment.";
+    } else if (type === 'realestate') {
+      initialUserText = "Hi! I want to see the latest premium real estate listings.";
+    } else if (type === 'healthcare') {
+      initialUserText = "Hello! I would like to book a doctor appointment.";
+    } else if (type === 'travel') {
+      initialUserText = "Hi! I am looking for travel packages.";
+    } else if (type === 'events') {
+      initialUserText = "Hi! Register me for the next masterclass ticket.";
+    }
+
     setMessages([
       {
         id: Date.now(),
         sender: 'user' as const,
-        text: 'hello! Can I get more info on Gym packages?'
+        text: initialUserText
       }
     ]);
     setMessageQueue([]);
@@ -1894,28 +2269,36 @@ const WhatsAppPhone = ({ type }: { type: string }) => {
     // Welcome Message (Step 2)
     addToQueue([{
       sender: 'bot' as const,
-      text: `🏋️ Welcome to ONE REP MAX Fitness Hub\n\nReady to transform your physique and level up your fitness journey?\n\nTrain with expert guidance, premium equipment, and result-driven programs built for real transformation.\n\nHow can we help you today?`,
-      options: ["Membership Plans", "Book Free Trial", "Program Details", "Personal Training", "Talk to Support"]
+      text: config.welcome,
+      options: config.firstOptions
     }]);
   };
 
   const startDemo = () => {
-    if (isGym) {
-      setIgAdActive(true);
-      setMessages([]);
-      setMessageQueue([]);
-      setGymSelectedGoal("");
-      setGymSelectedTimeline("");
-      setGymLeadName("");
-      setGymLeadPhone("");
-      setGymLeadDate("");
-      setShowGymForm(false);
-    } else {
-      setMessages([]);
-      setMessageQueue([]);
-      setHasFollowedUp(false);
-      addToQueue([{ sender: 'bot', text: config.welcome, options: config.firstOptions }]);
-    }
+    setIgAdActive(true);
+    setMessages([]);
+    setMessageQueue([]);
+    setHasFollowedUp(false);
+
+    // Reset Gym specific states
+    setGymSelectedGoal("");
+    setGymSelectedTimeline("");
+    setGymLeadName("");
+    setGymLeadPhone("");
+    setGymLeadDate("");
+    setShowGymForm(false);
+
+    // Reset Education specific states
+    setEduSelectedCourse("");
+    setEduLeadName("");
+    setEduLeadPhone("");
+    setEduLeadEmail("");
+
+    // Reset Healthcare specific states
+    setHealthSelectedDept("");
+    setHealthLeadName("");
+    setHealthLeadPhone("");
+    setHealthLeadAge("");
   };
 
   const handleFormSubmit = (data: { name: string; phone: string; date: string; goal: string }) => {
@@ -1960,6 +2343,78 @@ const WhatsAppPhone = ({ type }: { type: string }) => {
     ]);
   };
 
+  const handleEduFormSubmit = (data: { name: string; phone: string; email: string; course: string }) => {
+    setEduLeadName(data.name);
+    setEduLeadPhone(data.phone);
+    setEduLeadEmail(data.email);
+    setEduSelectedCourse(data.course);
+
+    const userSummaryMsg = {
+      id: Date.now(),
+      sender: 'user' as const,
+      text: `👤 Counseling Booking Registered:\n\nName: ${data.name}\nPhone: ${data.phone}\nEmail: ${data.email}\nCourse: ${data.course}`
+    };
+
+    setMessages(prev => {
+      const updatedPrev = prev.map(m => m.isEduFormBubble ? { ...m, isEduFormBubble: false, options: undefined } : m);
+      return [...updatedPrev, userSummaryMsg];
+    });
+
+    addToQueue([
+      {
+        sender: 'bot' as const,
+        text: `lead_crm_entry`,
+        isEduCrmEntry: true
+      },
+      {
+        sender: 'staff' as const,
+        text: `lead_sales_alert`,
+        isEduSalesNotification: true
+      },
+      {
+        sender: 'staff' as const,
+        text: `✅ Dear ${data.name}, your academic counseling slot is reserved.\n\nOur enrollment consultant will call you on ${data.phone} within a few hours to match your career goals. Get ready to launch!`,
+        isEduConfirmationDone: true
+      }
+    ]);
+  };
+
+  const handleHealthFormSubmit = (data: { name: string; phone: string; age: string; dept: string }) => {
+    setHealthLeadName(data.name);
+    setHealthLeadPhone(data.phone);
+    setHealthLeadAge(data.age);
+    setHealthSelectedDept(data.dept);
+
+    const userSummaryMsg = {
+      id: Date.now(),
+      sender: 'user' as const,
+      text: `👤 Patient Registration:\n\nName: ${data.name}\nPhone: ${data.phone}\nAge: ${data.age}\nSelected Track: ${data.dept}`
+    };
+
+    setMessages(prev => {
+      const updatedPrev = prev.map(m => m.isHealthFormBubble ? { ...m, isHealthFormBubble: false, options: undefined } : m);
+      return [...updatedPrev, userSummaryMsg];
+    });
+
+    addToQueue([
+      {
+        sender: 'bot' as const,
+        text: `patient_crm_entry`,
+        isHealthCrmEntry: true
+      },
+      {
+        sender: 'staff' as const,
+        text: `patient_sales_alert`,
+        isHealthSalesNotification: true
+      },
+      {
+        sender: 'staff' as const,
+        text: `✅ Dear ${data.name}, your doctor consultation slot is reserved in our register.\n\nOur clinic receptionist will match your medical record and issue a WhatsApp digital prescription token shortly on ${data.phone}. Stay healthy! 🏥`,
+        isHealthConfirmationDone: true
+      }
+    ]);
+  };
+
   const handleOptionClick = (option: string) => {
     if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
 
@@ -1985,6 +2440,14 @@ const WhatsAppPhone = ({ type }: { type: string }) => {
       isSalesNotification?: boolean;
       isGymFormBubble?: boolean;
       isGymConfirmationDone?: boolean;
+      isEduFormBubble?: boolean;
+      isEduCrmEntry?: boolean;
+      isEduSalesNotification?: boolean;
+      isEduConfirmationDone?: boolean;
+      isHealthFormBubble?: boolean;
+      isHealthCrmEntry?: boolean;
+      isHealthSalesNotification?: boolean;
+      isHealthConfirmationDone?: boolean;
     }[] = [];
 
     if (isGym) {
@@ -2036,6 +2499,229 @@ const WhatsAppPhone = ({ type }: { type: string }) => {
           isConversion: true
         });
       }
+    } else if (isEdu) {
+      if (option === "🎓 Course Inquiry") {
+        nextMessages.push({
+          sender: "bot",
+          text: "Which course are you interested in?",
+          options: ["💻 Digital Marketing", "📊 Data Analytics", "🎨 Graphic Design", "🤖 AI & Automation"]
+        });
+      } else if (["💻 Digital Marketing", "📊 Data Analytics", "🎨 Graphic Design", "🤖 AI & Automation"].includes(option)) {
+        const pureCourseName = option.replace(/[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF]/g, "").trim();
+        setEduSelectedCourse(pureCourseName);
+        nextMessages.push({
+          sender: "bot",
+          text: `📚 *Course: ${pureCourseName}*\n\n✅ *Duration:* 6 Months\n✅ *Live + Recorded Classes*\n✅ *Industry Projects*\n✅ *Placement Assistance*`,
+          options: ["📄 Download Brochure", "📅 Book Demo Class"]
+        });
+      } else if (option === "📄 Download Brochure") {
+        nextMessages.push({
+          sender: "staff",
+          text: `Excellent choice! 📄 I have dispatched the curriculum brochure and syllabus PDF for *${eduSelectedCourse || "your selected course"}* to your WhatsApp.\n\nReady to elevate your career?`,
+          options: ["📅 Book Demo Class", "💰 Fee Structure"]
+        });
+      } else if (option === "📅 Book Demo Class") {
+        nextMessages.push({
+          sender: "staff",
+          text: `Wonderful! Let's schedule your 1-on-1 free counseling assessment and demo session. Your seat is premium allocated. Please register your details below! 👇`
+        });
+        nextMessages.push({
+          sender: "bot",
+          text: "lead_capture_form",
+          isEduFormBubble: true
+        });
+      } else if (option === "📝 Admission Process") {
+        nextMessages.push({
+          sender: "bot",
+          text: `Our admission process is simple:\n\n1. Application Form\n2. Counseling Session\n3. Document Verification\n4. Fee Payment\n5. Enrollment Confirmation`,
+          options: ["🚀 Apply Now", "📞 Talk to Counselor"]
+        });
+      } else if (option === "🚀 Apply Now") {
+        nextMessages.push({
+          sender: "bot",
+          text: `Wonderful decision! Let's secure your seat booking. Access the interactive form card below to start. 👇`
+        });
+        nextMessages.push({
+          sender: "bot",
+          text: "lead_capture_form",
+          isEduFormBubble: true
+        });
+      } else if (option === "📞 Talk to Counselor") {
+        nextMessages.push({
+          sender: "bot",
+          text: `Connecting you to a certified academic counselor... ☎️`
+        });
+        nextMessages.push({
+          sender: "staff",
+          text: `Hey! Simran from admissions office here. 😊 I can help you select the ideal tech focus track.\n\nPlease drop your details in the card below so I can review your background and call you! 👇`
+        });
+        nextMessages.push({
+          sender: "bot",
+          text: "lead_capture_form",
+          isEduFormBubble: true
+        });
+      } else if (option === "💰 Fee Structure") {
+        nextMessages.push({
+          sender: "bot",
+          text: "Select a course track to view standard fee configurations:",
+          options: ["💻 Digital Marketing", "📊 Data Analytics", "🎨 Graphic Design"]
+        });
+      } else if (option === "📅 Book Counseling") {
+        nextMessages.push({
+          sender: "bot",
+          text: `Perfect! Please specify your academic contact details in the card below to lock your counselor session slot. 👇`
+        });
+        nextMessages.push({
+          sender: "bot",
+          text: "lead_capture_form",
+          isEduFormBubble: true
+        });
+      } else if (option === "📚 Student Support") {
+        nextMessages.push({
+          sender: "bot",
+          text: "Welcome to Student Learning Support. How can we help you today with your active class dashboard? 🎓",
+          options: ["📅 Class Schedule", "🎥 Recorded Lectures", "📜 Certificates", "🛠 Technical Support"]
+        });
+      } else if (option === "📅 Class Schedule") {
+        nextMessages.push({
+          sender: "bot",
+          text: `📅 *Your live sessions are scheduled:*\nEvery Saturday & Sunday 6:00 PM - 8:00 PM IST.\n\nA session access link is dispatched 15 minutes before class.`
+        });
+        nextMessages.push({
+          sender: "staff",
+          text: "Need to make any modifications, or talk to student support administration?",
+          options: ["📞 Talk to Counselor", "Go back to Main Menu"]
+        });
+      } else if (option === "🎥 Recorded Lectures") {
+        nextMessages.push({
+          sender: "bot",
+          text: `🎥 *Recorded Lectures Status:*\nAll live playback recordings are automatically published to your LMS dashboard within 2 hours of completion.\n\nYou have lifetime 24/7 access!`
+        });
+        nextMessages.push({
+          sender: "staff",
+          text: "Do you have any login issues, or would you like to speak with general tech desk?",
+          options: ["🛠 Technical Support", "Go back to Main Menu"]
+        });
+      } else if (option === "📜 Certificates") {
+        nextMessages.push({
+          sender: "bot",
+          text: `📜 *Certificate Evaluation:*\nOnce you complete the modular projects and clear the final industry review assessment, your certified document will be digitally issued instantly.`
+        });
+        nextMessages.push({
+          sender: "staff",
+          text: "Would you like our support team to verify your graduation checklist status?",
+          options: ["📞 Talk to Counselor", "Go back to Main Menu"]
+        });
+      } else if (option === "🛠 Technical Support") {
+        nextMessages.push({
+          sender: "bot",
+          text: `🛠 *Technical Help Desk Is Online:*\nPlease describe your dashboard issue. Our development and support engineers will assist you in real time shortly!`
+        });
+        nextMessages.push({
+          sender: "staff",
+          text: "You can also return to the main dashboard menu:",
+          options: ["Go back to Main Menu"]
+        });
+      } else if (option === "Go back to Main Menu") {
+        nextMessages.push({
+          sender: "bot",
+          text: `👋 Back to the main office menu. How can we assist you today?`,
+          options: ["🎓 Course Inquiry", "📝 Admission Process", "💰 Fee Structure", "📅 Book Counseling", "📚 Student Support"]
+        });
+      } else {
+        nextMessages.push({
+          sender: "bot",
+          text: `Noted! Let me connect you with our lead academic counselors shortly. 🚀`,
+          isConversion: true
+        });
+      }
+    } else if (isHealth) {
+      if (option === "📅 Book Appointment") {
+        nextMessages.push({
+          sender: "bot",
+          text: "Which medical department/specialization do you need help with?",
+          options: ["🩺 General Medicine", "👶 Pediatrics (Kids)", "🥑 Dermatology (Skin)", "❤️ Cardiology (Heart)"]
+        });
+      } else if (["🩺 General Medicine", "👶 Pediatrics (Kids)", "🥑 Dermatology (Skin)", "❤️ Cardiology (Heart)"].includes(option)) {
+        setHealthSelectedDept(option);
+        nextMessages.push({
+          sender: "bot",
+          text: `🏥 *Department:* ${option}\n\n✅ *Live consultation available*\n✅ *Verified medical practitioner*\n✅ *Digital prescription & follow-up support*\n✅ *Quick registration processes*`,
+          options: ["📅 Confirm Booking Slot", "💬 Offline Consultation Slots"]
+        });
+      } else if (option === "📅 Confirm Booking Slot") {
+        nextMessages.push({
+          sender: "staff",
+          text: `Wonderful decision! Let's get your medical details down in our patient register. Please fill the clinic form card below to secure your instant slot 👇`
+        });
+        nextMessages.push({
+          sender: "bot",
+          text: "lead_capture_form",
+          isHealthFormBubble: true
+        });
+      } else if (option === "💬 Offline Consultation Slots") {
+        nextMessages.push({
+          sender: "bot",
+          text: `Connecting with our general medicine and diagnostic desks... ☎️`
+        });
+        nextMessages.push({
+          sender: "staff",
+          text: `Hey! Nurse Anjali here. 😊 I can help you select the ideal specialist.\n\nPlease describe your symptoms or provide details in the form card below so I can verify and register your slot! 👇`
+        });
+        nextMessages.push({
+          sender: "bot",
+          text: "lead_capture_form",
+          isHealthFormBubble: true
+        });
+      } else if (option === "💻 Consult Doctor Online") {
+        nextMessages.push({
+          sender: "bot",
+          text: `Dr. Rohan (On-Duty General Medical Officer) is active online. Let's submit your patient records to connect you immediately 👇`
+        });
+        nextMessages.push({
+          sender: "bot",
+          text: "lead_capture_form",
+          isHealthFormBubble: true
+        });
+      } else if (option === "🩺 Specializations") {
+        nextMessages.push({
+          sender: "bot",
+          text: "We have state-of-the-art diagnostic and clinical consultation divisions:\n\n• *General Medicine* – Daily health consultations, wellness checkups.\n• *Pediatrics & Child Care* – Special vaccination & child growth audits.\n• *Dermatology* – Skin, hair, allergies, cosmetic guidance.\n• *Cardiology* – Vascular checks, BP diagnostics, cardiac wellness.",
+          options: ["📅 Book Appointment", "🚨 Emergency Helpline"]
+        });
+      } else if (option === "🚨 Emergency Helpline") {
+        nextMessages.push({
+          sender: "bot",
+          text: `🚨 *CITY CARE EMERGENCY HELPLINE*\n\nIf you have a life-threatening medical situation, please dial our emergency squad coordinate immediately at: *+91 91100 00108* ☎️\n\nAmbulation response time is ~12-15 minutes in urban bounds.`
+        });
+        nextMessages.push({
+          sender: "staff",
+          text: "You can also schedule a standard consult or return to main menu:",
+          options: ["📅 Book Appointment", "Go back to Healthcare Menu"]
+        });
+      } else if (option === "📍 Clinic Location") {
+        nextMessages.push({
+          sender: "bot",
+          text: `🏥 *City Care Clinic Location*\n\n📍 Landmark: Metro Pillar 125, Beside Grand Arcade, New Delhi\n⏰ Timings: 8:00 AM - 10:00 PM (Monday-Sunday)\n\nDirections pin has been auto-dispatched to your mobile tracker! 🗺️`
+        });
+        nextMessages.push({
+          sender: "staff",
+          text: "Would you like our support team to verify appointment slots or go back?",
+          options: ["📅 Book Appointment", "Go back to Healthcare Menu"]
+        });
+      } else if (option === "Go back to Healthcare Menu") {
+        nextMessages.push({
+          sender: "bot",
+          text: `🏥 Back to the clinic menu. How can we assist you today?`,
+          options: ["📅 Book Appointment", "💻 Consult Doctor Online", "🩺 Specializations", "🚨 Emergency Helpline", "📍 Clinic Location"]
+        });
+      } else {
+        nextMessages.push({
+          sender: "bot",
+          text: `Noted! Connecting you with our clinical counselors immediately! 🚀`,
+          isConversion: true
+        });
+      }
     } else {
       // Standard Industries routing
       if (config.flows && config.flows[option]) {
@@ -2063,11 +2749,11 @@ const WhatsAppPhone = ({ type }: { type: string }) => {
     }
   };
 
-  // If in Gym mode and Instagram ad is active
-  if (isGym && igAdActive) {
+  // If Instagram ad is active
+  if (igAdActive) {
     return (
       <div className="w-full h-full relative overflow-hidden bg-white select-none">
-        <InstagramAdPreview onCtaClick={handleIgCtaClick} />
+        <InstagramAdPreview type={type} onCtaClick={handleIgCtaClick} />
       </div>
     );
   }
@@ -2145,6 +2831,32 @@ const WhatsAppPhone = ({ type }: { type: string }) => {
                       {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </div>
                   </motion.div>
+                ) : m.isEduCrmEntry ? (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.95, y: 15 }} 
+                    animate={{ opacity: 1, scale: 1, y: 0 }} 
+                    className="w-[85%] bg-purple-50 border border-purple-200 self-start p-4 rounded-2xl rounded-tl-none shadow-sm flex flex-col gap-2 text-slate-800"
+                  >
+                    <div className="text-xs font-bold text-purple-800 flex items-center gap-1.5">
+                      <Database size={15} className="text-purple-500 fill-purple-100" />
+                      CRM Student Database Log
+                    </div>
+                    
+                    <div className="text-[11px] font-sans flex flex-col gap-2 mt-1">
+                      <div className="text-purple-600 font-extrabold uppercase text-[10px] bg-purple-100/50 px-2.5 py-1 rounded-md border border-purple-200 w-fit">
+                        ✅ Lead Captured Successfully
+                      </div>
+                      <div className="mt-1 flex flex-col gap-1.5 font-medium text-slate-700">
+                        <div><strong className="text-slate-800">Source:</strong> WhatsApp Chatbot (EduFlow AI)</div>
+                        <div><strong className="text-slate-800">Interest Course:</strong> {eduSelectedCourse || "Digital Marketing"}</div>
+                        <div><strong className="text-slate-800">Status:</strong> Hot Lead (Assigned to Counselor)</div>
+                      </div>
+                    </div>
+                    
+                    <div className="text-[9px] text-slate-400 text-right mt-1.5">
+                      {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </div>
+                  </motion.div>
                 ) : m.isSalesNotification ? (
                   <motion.div 
                     initial={{ opacity: 0, scale: 0.95, y: 15 }} 
@@ -2172,6 +2884,86 @@ const WhatsAppPhone = ({ type }: { type: string }) => {
                       {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </div>
                   </motion.div>
+                ) : m.isEduSalesNotification ? (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.95, y: 15 }} 
+                    animate={{ opacity: 1, scale: 1, y: 0 }} 
+                    className="w-[85%] bg-fuchsia-50 border border-fuchsia-200 self-start p-4 rounded-2xl rounded-tl-none shadow-sm flex flex-col gap-2 text-slate-800"
+                  >
+                    <div className="text-xs font-bold text-fuchsia-850 flex items-center gap-1.5">
+                      <Bell size={15} className="text-fuchsia-500 fill-fuchsia-200 animate-bounce" />
+                      Counselor Assignment System Alert
+                    </div>
+                    
+                    <div className="text-[11px] flex flex-col gap-1 mt-1 font-medium text-slate-700">
+                      <div className="text-fuchsia-600 font-extrabold uppercase text-[10px] bg-fuchsia-100/50 px-2.5 py-1 rounded-md border border-fuchsia-200 w-fit mb-1.5 flex items-center gap-1">
+                        📢 New Student Session Required
+                      </div>
+                      <div><strong className="text-slate-800">Name:</strong> {eduLeadName}</div>
+                      <div><strong className="text-slate-800">Phone:</strong> {eduLeadPhone}</div>
+                      <div><strong className="text-slate-800">Email:</strong> {eduLeadEmail}</div>
+                      <div><strong className="text-slate-800">Course:</strong> {eduSelectedCourse || "Digital Marketing"}</div>
+                      <div><strong className="text-slate-800">Source:</strong> Remorix EduFlow AI</div>
+                      <div><strong className="text-slate-800">Priority:</strong> <span className="bg-red-500 text-white font-extrabold text-[8.5px] px-2 py-0.5 rounded-full inline-block">COUNSELOR ALERT</span></div>
+                    </div>
+                    
+                    <div className="text-[9px] text-slate-400 text-right mt-1.5">
+                      {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </div>
+                  </motion.div>
+                ) : m.isHealthCrmEntry ? (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.95, y: 15 }} 
+                    animate={{ opacity: 1, scale: 1, y: 0 }} 
+                    className="w-[85%] bg-teal-50 border border-teal-250 self-start p-4 rounded-2xl rounded-tl-none shadow-sm flex flex-col gap-2 text-slate-800 animate-none"
+                  >
+                    <div className="text-xs font-bold text-teal-850 flex items-center gap-1.5">
+                      <Database size={15} className="text-teal-500 fill-teal-100" />
+                      Clinic Patient Database Log
+                    </div>
+                    
+                    <div className="text-[11px] font-sans flex flex-col gap-2 mt-1">
+                      <div className="text-teal-600 font-extrabold uppercase text-[10px] bg-teal-100/50 px-2.5 py-1 rounded-md border border-teal-200/50 w-fit">
+                        ✅ Patient Intake Saved
+                      </div>
+                      <div className="mt-1 flex flex-col gap-1.5 font-medium text-slate-705">
+                        <div><strong className="text-slate-800 font-bold">Source:</strong> WhatsApp Clinic Bot</div>
+                        <div><strong className="text-slate-800 font-bold">Patient Track:</strong> {healthSelectedDept || "General Medical Advice"}</div>
+                        <div><strong className="text-slate-800 font-bold">Status:</strong> Registered (Awaiting Nurse triage)</div>
+                      </div>
+                    </div>
+                    
+                    <div className="text-[9px] text-slate-400 text-right mt-1.5">
+                      {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </div>
+                  </motion.div>
+                ) : m.isHealthSalesNotification ? (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.95, y: 15 }} 
+                    animate={{ opacity: 1, scale: 1, y: 0 }} 
+                    className="w-[85%] bg-cyan-50 border border-cyan-200 self-start p-4 rounded-2xl rounded-tl-none shadow-sm flex flex-col gap-2 text-slate-800 animate-none"
+                  >
+                    <div className="text-xs font-bold text-cyan-850 flex items-center gap-1.5">
+                      <Bell size={15} className="text-cyan-500 fill-cyan-200 animate-bounce" />
+                      Nurse Desk System Dispatch
+                    </div>
+                    
+                    <div className="text-[11px] flex flex-col gap-1 mt-1 font-medium text-slate-705">
+                      <div className="text-cyan-600 font-extrabold uppercase text-[10px] bg-cyan-100/50 px-2.5 py-1 rounded-md border border-cyan-200/50 w-fit mb-1.5 flex items-center gap-1">
+                        📢 Live Patient Admission Requested
+                      </div>
+                      <div><strong className="text-slate-800 font-bold">Patient Name:</strong> {healthLeadName}</div>
+                      <div><strong className="text-slate-800 font-bold">Contact Number:</strong> {healthLeadPhone}</div>
+                      <div><strong className="text-slate-800 font-bold">Patient Age:</strong> {healthLeadAge}</div>
+                      <div><strong className="text-slate-800 font-bold">Allocated Dept:</strong> {healthSelectedDept || "General Medicine 🩺"}</div>
+                      <div><strong className="text-slate-800 font-bold">Triage Operator:</strong> Nurse Anjali</div>
+                      <div><strong className="text-slate-800 font-bold">Triage Priority:</strong> <span className="bg-[#128C7E] text-white font-extrabold text-[8.5px] px-2 py-0.5 rounded-full inline-block">IMMEDIATE CALL</span></div>
+                    </div>
+                    
+                    <div className="text-[9px] text-slate-400 text-right mt-1.5">
+                      {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </div>
+                  </motion.div>
                 ) : (
                   <motion.div 
                     initial={{ opacity: 0, scale: 0.95, y: 10 }} 
@@ -2182,11 +2974,15 @@ const WhatsAppPhone = ({ type }: { type: string }) => {
                     
                     {m.isGymFormBubble ? (
                       <GymForm onSubmit={handleFormSubmit} />
+                    ) : m.isEduFormBubble ? (
+                      <EduCounselingForm onSubmit={handleEduFormSubmit} />
+                    ) : m.isHealthFormBubble ? (
+                      <HealthcareApptForm onSubmit={handleHealthFormSubmit} />
                     ) : (
                       <p className="whitespace-pre-line leading-relaxed">{m.text}</p>
                     )}
 
-                    {!m.isGymFormBubble && (
+                    {!m.isGymFormBubble && !m.isEduFormBubble && !m.isHealthFormBubble && (
                       <div className="text-[8.5px] text-secondary-text/50 text-right mt-1.5 flex items-center justify-end gap-1">
                         {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         {m.sender === 'user' && <Check size={10} className="text-blue-500" />}
@@ -2325,18 +3121,18 @@ const IndustryPage = ({ type }: { type: string }) => {
       icon: Stethoscope
     },
     "education": {
-      title: "Education & Ed Tech",
-      subtitle: "Qualify prospective student leads and send course catalogs automatically 24/7.",
-      focusText: "Speed to lead is king in Ed Tech. Answer curriculum inquiries instantly and schedule demo lectures.",
+      title: "🎓 Education & EdTech",
+      subtitle: "Automate admissions, counseling, student support, and follow-ups through WhatsApp.",
+      focusText: "Speed to lead is king in Ed Tech. Answer student curriculum inquiries instantly, qualify prospective student leads 24/7, and book counseling calls.",
       bulletHeading: "Automation Capabilities",
       bulletPoints: [
-        "Instant course PDF brochure delivery on request",
-        "Interactive interest & background qualification survey",
-        "Automatic booking of academic counselor trials",
-        "Integrated application deadline alerts",
-        "Seamless transfer of high-intent leads to counselors"
+        "Instant course curriculum & PDF brochure delivery on request",
+        "Interactive admissions qualification survey & interview routing",
+        "Automated booking of academic counselor sessions",
+        "Dynamic fee payment collection alerts & reminders",
+        "Ongoing client and student support FAQs on demand"
       ],
-      ctaText: "Automate Education Leads",
+      ctaText: "Automate EdTech Leads",
       icon: GraduationCap
     },
     "realestate": {
@@ -2504,6 +3300,7 @@ export default function App() {
         <Route path="/realestate-demo" element={<IndustryDemo type="realestate" />} />
         <Route path="/coaching-demo" element={<IndustryDemo type="coaching" />} />
         <Route path="/healthcare-demo" element={<IndustryDemo type="healthcare" />} />
+        <Route path="/education-demo" element={<IndustryDemo type="education" />} />
         
         {/* Solutions Dynamic Industry Pages */}
         <Route path="/industries/gym-fitness" element={<IndustryPage type="gym" />} />
