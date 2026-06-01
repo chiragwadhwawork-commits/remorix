@@ -28,7 +28,9 @@ import {
   GraduationCap,
   Building2,
   Compass,
-  Ticket
+  Ticket,
+  Database,
+  Bell
 } from 'lucide-react';
 
 // --- Components ---
@@ -1463,22 +1465,11 @@ const demoConfigs: any = {
     }
   },
   gym: {
-    name: "Iron Paradise Gym",
-    welcome: "Welcome to Iron Paradise Gym! 💪 Ready to reach your fitness goals?",
+    name: "ONE REP MAX Fitness Hub",
+    welcome: "🏋️ Welcome to ONE REP MAX Fitness Hub\n\nReady to transform your physique and level up your fitness journey?\n\nTrain with expert guidance, premium equipment, and result-driven programs built for real transformation.\n\nHow can we help you today?",
     image: "https://i.postimg.cc/RVjnxwfZ/remorix-logo.png",
-    firstOptions: ["Free Trial Class", "Membership Plans"],
-    flows: {
-      "Free Trial Class": [
-        { sender: 'bot', text: "Awesome! We have a HIIT class tomorrow at 7 AM or a Yoga session at 6 PM. 📅" },
-        { sender: 'staff', text: "Hey! Coach Amit here. I'll be leading the HIIT session. Can I put your name down for the 7 AM trial?", options: ["Yes, Book HIIT", "Talk to Staff"] }
-      ],
-      "Membership Plans": [
-        { sender: 'bot', text: "We have flexible plans:\n\n🔥 Monthly - ₹1,500\n💎 Quarterly - ₹4,000\n🌟 Annual - ₹12,000 (Best Value)" },
-        { sender: 'staff', text: "Hi! I'm Neha from front desk. If you join today, we'll waive the registration fee (₹500). Which plan interests you?", options: ["Annual Plan", "Monthly Plan"] }
-      ],
-      "Yes, Book HIIT": [{ sender: 'staff', text: "Done! I've added you to the HIIT class for 7 AM tomorrow. Bring a towel and get ready to sweat! 🔥", isConversion: true }],
-      "Annual Plan": [{ sender: 'staff', text: "Exciting! I've reserved the 20% discount slot for you. Come by today to activate your membership! 🌟", isConversion: true }]
-    }
+    firstOptions: ["Membership Plans", "Book Free Trial", "Program Details", "Personal Training", "Talk to Support"],
+    flows: {}
   },
   realestate: {
     name: "Skyline Properties",
@@ -1570,10 +1561,251 @@ const demoConfigs: any = {
   }
 };
 
+const InstagramAdPreview = ({ onCtaClick }: { onCtaClick: () => void }) => {
+  return (
+    <div className="w-full h-full bg-white flex flex-col font-sans select-none overflow-y-auto custom-scrollbar">
+      {/* Mobile simulated Status Bar */}
+      <div className="flex items-center justify-between px-5 pt-3 pb-2 text-[10px] font-bold text-slate-700 bg-white">
+        <div>10:50</div>
+        <div className="flex items-center gap-1.5">
+          <span className="opacity-80">5G</span>
+          <div className="w-5 h-2.5 border border-slate-700 rounded-sm p-0.5 flex items-center">
+            <div className="w-full h-full bg-slate-700 rounded-xs"></div>
+          </div>
+        </div>
+      </div>
+
+      {/* Instagram App Header */}
+      <div className="flex items-center justify-between px-4 py-2 bg-white border-b border-slate-100 flex-shrink-0">
+        <div className="font-serif font-black text-xl text-slate-800 tracking-tight italic select-none">Instagram</div>
+        <div className="flex items-center gap-5 text-slate-700">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+          </svg>
+          <svg className="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          </svg>
+        </div>
+      </div>
+
+      {/* Profile Info */}
+      <div className="flex items-center justify-between px-3.5 py-2.5 flex-shrink-0">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-500 via-red-500 to-purple-600 p-[2px] shadow-sm flex items-center justify-center">
+            <div className="w-full h-full rounded-full border border-white bg-slate-900 flex items-center justify-center text-[9px] text-amber-400 font-black tracking-tighter">
+              1RM
+            </div>
+          </div>
+          <div className="flex flex-col text-left leading-tight">
+            <span className="text-[12px] font-bold text-slate-805 flex items-center gap-1 leading-none">
+              onerepmax_fitness
+              <span className="text-blue-500 text-[10px] select-none" title="Verified Account">✓</span>
+            </span>
+            <span className="text-[9px] text-slate-500 font-semibold leading-none mt-1">Sponsored</span>
+          </div>
+        </div>
+        <button className="text-slate-400 p-1 hover:bg-slate-50 rounded-full transition-all">
+          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+          </svg>
+        </button>
+      </div>
+
+      {/* Main Ad Image / Creative Wrapper */}
+      <div 
+        className="relative w-full h-auto bg-black flex-shrink-0 select-none overflow-hidden"
+      >
+        <img 
+          src="https://i.ibb.co/MDWbtVRD/Screenshot-2026-06-01-160924.png" 
+          alt="Instagram Ad Campaign Creative" 
+          className="w-full h-auto block"
+          referrerPolicy="no-referrer"
+        />
+
+        {/* High-fidelity interactive "Chat on WhatsApp" button overlay */}
+        {/* Sits exactly on top of the drawn button coordinates in the vertical screenshot */}
+        <motion.button
+          onClick={onCtaClick}
+          whileHover={{ scale: 1.015, brightness: 1.05 }}
+          whileTap={{ scale: 0.985 }}
+          className="absolute top-[78.6%] left-[4.8%] w-[76.5%] h-[6.8%] bg-[#208365] hover:bg-[#1a7358] text-white rounded-xl flex items-center justify-between px-3.5 shadow-md active:scale-95 transition-all text-left z-20 group border border-white/5 font-sans"
+          style={{
+            boxShadow: "0 4px 15px rgba(32,131,101,0.4)"
+          }}
+        >
+          <div className="flex items-center gap-2">
+            <svg className="w-5 h-5 fill-current text-white flex-shrink-0 animate-pulse" viewBox="0 0 24 24">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.453L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.625 1.45 5.489.002 9.961-4.438 9.964-9.893.001-2.643-1.02-5.127-2.877-6.986-1.855-1.859-4.325-2.883-6.963-2.884-5.49 0-9.966 4.438-9.969 9.894-.001 1.942.512 3.63 1.42 5.093l-.974 3.556 3.739-.98z" />
+            </svg>
+            <span className="text-[12.5px] font-extrabold tracking-wide text-white font-sans leading-none">Chat on WhatsApp</span>
+          </div>
+          
+          <svg className="w-4 h-4 stroke-current text-white transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" strokeWidth="3">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </motion.button>
+      </div>
+
+
+
+      {/* Description text under click */}
+      <div className="px-4 pb-5 text-left flex-shrink-0">
+        <div className="text-[11px] font-extrabold text-slate-900 leading-snug">
+          Liked by fitness_coach_am and 2,410 others
+        </div>
+        <div className="text-[11px] mt-1 text-slate-600 leading-relaxed">
+          <span className="font-extrabold text-slate-800 mr-1.5">onerepmax_fitness</span>
+          STOP making excuses. 🏋️ Join ONE REP MAX Fitness Hub. Claim your FREE Trial and personalized coaching consultation. Click below to start chatting instantly with our coaches on WhatsApp!
+        </div>
+        <div className="text-[9.5px] text-slate-400 font-bold mt-2 uppercase tracking-wide">
+          View all 148 comments
+        </div>
+        <div className="text-[8px] text-slate-400 font-bold mt-0.5 uppercase tracking-wider">
+          3 hours ago
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const GymForm = ({ onSubmit }: { onSubmit: (data: { name: string; phone: string; date: string; goal: string }) => void }) => {
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [date, setDate] = useState('');
+  const [goal, setGoal] = useState('Muscle Gain');
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (!name.trim()) {
+      setError("Please enter your name");
+      return;
+    }
+    if (!phone.trim()) {
+      setError("Please enter your phone number");
+      return;
+    }
+    if (!date) {
+      setError("Please choose a date");
+      return;
+    }
+    setError('');
+    setSubmitted(true);
+    onSubmit({ name, phone, date, goal });
+  };
+
+  if (submitted) {
+    return (
+      <div className="text-center py-2 text-emerald-600 font-bold flex items-center justify-center gap-1.5 text-xs">
+        <CheckCircle2 size={14} className="text-emerald-500" /> Lead Information Recorded
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="mt-3 flex flex-col gap-3 bg-slate-50 p-4 rounded-xl border border-slate-150 shadow-xs text-left w-full max-w-[280px]">
+      <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 pb-1.5 flex items-center gap-1">
+        📝 Interactive Application Form
+      </div>
+      
+      <div>
+        <label className="block text-[10px] font-bold text-slate-500 uppercase mb-0.5 tracking-wider">👤 Full Name</label>
+        <input 
+          type="text" 
+          value={name} 
+          onChange={e => setName(e.target.value)}
+          placeholder="e.g. Rahul Sharma" 
+          className="w-full text-xs p-2 bg-white border border-slate-200 rounded-md focus:outline-none focus:border-green-500 font-sans text-slate-800"
+          required
+        />
+      </div>
+
+      <div>
+        <label className="block text-[10px] font-bold text-slate-500 uppercase mb-0.5 tracking-wider">📞 Phone Number</label>
+        <input 
+          type="tel" 
+          value={phone} 
+          onChange={e => setPhone(e.target.value)}
+          placeholder="e.g. +91 98765 43210" 
+          className="w-full text-xs p-2 bg-white border border-slate-200 rounded-md focus:outline-none focus:border-green-500 font-sans text-slate-800"
+          required
+        />
+      </div>
+
+      <div>
+        <label className="block text-[10px] font-bold text-slate-500 uppercase mb-0.5 tracking-wider">🎯 Primary Fitness Goal</label>
+        <select 
+          value={goal} 
+          onChange={e => setGoal(e.target.value)}
+          className="w-full text-xs p-2 bg-white border border-slate-200 rounded-md focus:outline-none focus:border-green-500 font-sans text-slate-850"
+        >
+          <option value="Muscle Gain">Muscle Gain 🏋️</option>
+          <option value="Weight Loss">Weight Loss 🏃</option>
+          <option value="Body Transformation">Body Transformation ⭐</option>
+          <option value="General Fitness">General Fitness 💪</option>
+        </select>
+      </div>
+
+      <div>
+        <label className="block text-[10px] font-bold text-slate-500 uppercase mb-0.5 tracking-wider">📅 Preferred Visit Date</label>
+        <input 
+          type="date" 
+          value={date} 
+          onChange={e => setDate(e.target.value)}
+          className="w-full text-xs p-2 bg-white border border-slate-200 rounded-md focus:outline-none focus:border-green-500 font-sans text-slate-800"
+          required
+        />
+      </div>
+
+      {error && <div className="text-[10px] text-red-500 font-bold">{error}</div>}
+      
+      <button 
+        type="submit" 
+        className="mt-1.5 w-full bg-[#128C7E] hover:bg-[#075E54] text-white py-2 rounded-lg text-xs font-bold shadow-sm transition-all text-center flex items-center justify-center gap-1.5 cursor-pointer"
+      >
+        <Check size={14} strokeWidth={3} /> Submit Booking Form
+      </button>
+    </form>
+  );
+};
+
 const WhatsAppPhone = ({ type }: { type: string }) => {
   const config = demoConfigs[type as keyof typeof demoConfigs] || demoConfigs.salon;
-  const [messages, setMessages] = useState<{ id: number; sender: 'user' | 'bot' | 'staff'; text: string; options?: string[]; isConversion?: boolean }[]>([]);
-  const [messageQueue, setMessageQueue] = useState<{ sender: 'bot' | 'staff'; text: string; options?: string[]; isConversion?: boolean }[]>([]);
+  const isGym = type === 'gym';
+
+  // State Management for Gym click-to-WhatsApp Funnel
+  const [igAdActive, setIgAdActive] = useState(isGym);
+  const [gymSelectedGoal, setGymSelectedGoal] = useState("");
+  const [gymSelectedTimeline, setGymSelectedTimeline] = useState("");
+  const [showGymForm, setShowGymForm] = useState(false);
+  const [gymLeadName, setGymLeadName] = useState("");
+  const [gymLeadPhone, setGymLeadPhone] = useState("");
+  const [gymLeadDate, setGymLeadDate] = useState("");
+
+  const [messages, setMessages] = useState<{ 
+    id: number; 
+    sender: 'user' | 'bot' | 'staff'; 
+    text: string; 
+    options?: string[]; 
+    isConversion?: boolean;
+    isCrmEntry?: boolean;
+    isSalesNotification?: boolean;
+    isGymFormBubble?: boolean;
+    isGymConfirmationDone?: boolean;
+  }[]>([]);
+
+  const [messageQueue, setMessageQueue] = useState<{ 
+    sender: 'bot' | 'staff'; 
+    text: string; 
+    options?: string[]; 
+    isConversion?: boolean;
+    isCrmEntry?: boolean;
+    isSalesNotification?: boolean;
+    isGymFormBubble?: boolean;
+    isGymConfirmationDone?: boolean;
+  }[]>([]);
+
   const [isTyping, setIsTyping] = useState(false);
   const [hasFollowedUp, setHasFollowedUp] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -1585,7 +1817,9 @@ const WhatsAppPhone = ({ type }: { type: string }) => {
       const nextMessage = messageQueue[0];
       const timer = setTimeout(() => {
         setIsTyping(true);
-        const typingDuration = Math.min(Math.max(nextMessage.text.length * 15, 800), 1600);
+        // Realistic simulation typing delays
+        const durationFactor = nextMessage.isCrmEntry || nextMessage.isSalesNotification ? 10 : 15;
+        const typingDuration = Math.min(Math.max(nextMessage.text.length * durationFactor, 700), 1500);
         
         const typingTimer = setTimeout(() => {
           setIsTyping(false);
@@ -1594,29 +1828,34 @@ const WhatsAppPhone = ({ type }: { type: string }) => {
             sender: nextMessage.sender,
             text: nextMessage.text,
             options: nextMessage.options,
-            isConversion: nextMessage.isConversion
+            isConversion: nextMessage.isConversion,
+            isCrmEntry: nextMessage.isCrmEntry,
+            isSalesNotification: nextMessage.isSalesNotification,
+            isGymFormBubble: nextMessage.isGymFormBubble,
+            isGymConfirmationDone: nextMessage.isGymConfirmationDone
           }]);
           setMessageQueue(prev => prev.slice(1));
 
-          if (nextMessage.isConversion && !hasFollowedUp) {
+          // Global conversion follow-up logic for general industries
+          if (!isGym && nextMessage.isConversion && !hasFollowedUp) {
              setHasFollowedUp(true);
-             setTimeout(() => {
+              setTimeout(() => {
                 setMessageQueue(prev => [...prev, {
                   sender: 'bot',
                   text: "Ready to automate your business? Let's chat on WhatsApp to get started! 👇",
                   options: ["Chat on WhatsApp"],
                   isConversion: true
                 }]);
-             }, 3000);
+              }, 3000);
           }
         }, typingDuration);
         
         return () => clearTimeout(typingTimer);
-      }, 500);
+      }, 400);
       
       return () => clearTimeout(timer);
     }
-  }, [messageQueue, isTyping, hasFollowedUp]);
+  }, [messageQueue, isTyping, hasFollowedUp, isGym]);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -1627,19 +1866,107 @@ const WhatsAppPhone = ({ type }: { type: string }) => {
     }
   }, [messages, isTyping]);
 
-  const addToQueue = (msgs: { sender: 'bot' | 'staff'; text: string; options?: string[]; isConversion?: boolean }[]) => {
+  const addToQueue = (msgs: { 
+    sender: 'bot' | 'staff'; 
+    text: string; 
+    options?: string[]; 
+    isConversion?: boolean;
+    isCrmEntry?: boolean;
+    isSalesNotification?: boolean;
+    isGymFormBubble?: boolean;
+    isGymConfirmationDone?: boolean;
+  }[]) => {
     setMessageQueue(prev => [...prev, ...msgs]);
   };
 
-  const startDemo = () => {
-    setMessages([]);
+  const handleIgCtaClick = () => {
+    setIgAdActive(false);
+    setMessages([
+      {
+        id: Date.now(),
+        sender: 'user' as const,
+        text: 'hello! Can I get more info on Gym packages?'
+      }
+    ]);
     setMessageQueue([]);
     setHasFollowedUp(false);
-    addToQueue([{ sender: 'bot', text: config.welcome, options: config.firstOptions }]);
+    
+    // Welcome Message (Step 2)
+    addToQueue([{
+      sender: 'bot' as const,
+      text: `🏋️ Welcome to ONE REP MAX Fitness Hub\n\nReady to transform your physique and level up your fitness journey?\n\nTrain with expert guidance, premium equipment, and result-driven programs built for real transformation.\n\nHow can we help you today?`,
+      options: ["Membership Plans", "Book Free Trial", "Program Details", "Personal Training", "Talk to Support"]
+    }]);
+  };
+
+  const startDemo = () => {
+    if (isGym) {
+      setIgAdActive(true);
+      setMessages([]);
+      setMessageQueue([]);
+      setGymSelectedGoal("");
+      setGymSelectedTimeline("");
+      setGymLeadName("");
+      setGymLeadPhone("");
+      setGymLeadDate("");
+      setShowGymForm(false);
+    } else {
+      setMessages([]);
+      setMessageQueue([]);
+      setHasFollowedUp(false);
+      addToQueue([{ sender: 'bot', text: config.welcome, options: config.firstOptions }]);
+    }
+  };
+
+  const handleFormSubmit = (data: { name: string; phone: string; date: string; goal: string }) => {
+    setGymLeadName(data.name);
+    setGymLeadPhone(data.phone);
+    setGymLeadDate(data.date);
+    setGymSelectedGoal(data.goal);
+    setShowGymForm(false);
+
+    // Render submitted values as user's response in chat
+    const userSummaryMsg = {
+      id: Date.now(),
+      sender: 'user' as const,
+      text: `👤 Contact Details Submitted:\n\nName: ${data.name}\nPhone: ${data.phone}\nGoal: ${data.goal}\nPreferred Date: ${data.date}`
+    };
+
+    setMessages(prev => {
+      // Remove options & active flags from previous messages to avoid double submissions
+      const updatedPrev = prev.map(m => m.isGymFormBubble ? { ...m, isGymFormBubble: false, options: undefined } : m);
+      return [...updatedPrev, userSummaryMsg];
+    });
+
+    // CRM capture entry message (Step 7)
+    addToQueue([
+      {
+        sender: 'bot' as const,
+        text: `✅ Lead Captured\n\nSource:\nInstagram Click-to-WhatsApp Ad\n\nInterest:\nGym Membership\n\nStatus:\nNew Lead\n\nLead Added to CRM Successfully`,
+        isCrmEntry: true
+      },
+      // Sales Notification (Step 8)
+      {
+        sender: 'staff' as const,
+        text: `📢 New Lead Received\n\nName: ${data.name}\n\nPhone: ${data.phone}\n\nGoal: ${data.goal}\n\nPreferred Visit Date: ${data.date}\n\nSource:\nInstagram Ad\n\nPriority:\nHigh`,
+        isSalesNotification: true
+      },
+      // Confirmation (Step 9)
+      {
+        sender: 'staff' as const,
+        text: `✅ Your free trial request has been submitted successfully.\n\nOur fitness consultant will contact you shortly to confirm your visit.\n\nWe are excited to help you begin your transformation journey.`,
+        isGymConfirmationDone: true
+      }
+    ]);
   };
 
   const handleOptionClick = (option: string) => {
     if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+
+    if (option === "Restart Ad Funnel") {
+      startDemo();
+      return;
+    }
 
     if (option === "Yes, Book Free Call" || option === "Chat on WhatsApp") {
       window.open(`https://wa.me/917410711563?text=Hi%20I%20want%20to%20automate%20my%20WhatsApp%20leads%20for%20my%20${type}%20business`, '_blank');
@@ -1649,57 +1976,136 @@ const WhatsAppPhone = ({ type }: { type: string }) => {
     const userMsg = { id: Date.now(), sender: 'user' as const, text: option };
     setMessages(prev => [...prev.map(m => ({ ...m, options: undefined })), userMsg]);
 
-    const nextMessages: { sender: 'bot' | 'staff'; text: string; options?: string[]; isConversion?: boolean }[] = [];
+    const nextMessages: { 
+      sender: 'bot' | 'staff'; 
+      text: string; 
+      options?: string[]; 
+      isConversion?: boolean;
+      isCrmEntry?: boolean;
+      isSalesNotification?: boolean;
+      isGymFormBubble?: boolean;
+      isGymConfirmationDone?: boolean;
+    }[] = [];
 
-    if (config.flows && config.flows[option]) {
-      nextMessages.push(...config.flows[option]);
+    if (isGym) {
+      if (option === "Membership Plans") {
+        // Step 3
+        nextMessages.push({
+          sender: 'bot',
+          text: `🔥 Membership Plans\n\n• 1 Month – ₹700\n• 3 Months – ₹1500\n• 6 Months – ₹2400\n• 1 Year – ₹4500\n\nBenefits:\n\n✅ Beginner Friendly\n✅ Expert Trainer Support\n✅ Locker & Changing Room\n✅ Parking Available`,
+          options: ["Book Free Trial", "Talk to Support"]
+        });
+      } else if (option === "Program Details") {
+        // Step 4
+        nextMessages.push({
+          sender: 'bot',
+          text: `🔥 Available Programs\n\n• Fat Loss Program\n• Muscle Gain Program\n• Body Transformation\n• Strength Training`,
+          options: ["Personal Training", "Book Free Trial"]
+        });
+      } else if (option === "Personal Training") {
+        nextMessages.push({
+          sender: 'staff',
+          text: `Hey! Coach Amit here. 🏋️\n\nOur personal training programs guarantee peak structural strength and targeted body composition transformation.\n\nReady to do a 1-on-1 trial assessment workout?`,
+          options: ["Book Free Trial", "Talk to Support"]
+        });
+      } else if (option === "Talk to Support") {
+        nextMessages.push({
+          sender: 'bot',
+          text: `Connecting you to staff helpline... ☎️`
+        });
+        nextMessages.push({
+          sender: 'staff',
+          text: `Hey! Neha from the front desk here. 😊 How can I assist you with your fitness goals? I highly recommend starting with a Free Trial Workout!`,
+          options: ["Book Free Trial", "Membership Plans"]
+        });
+      } else if (option === "Book Free Trial") {
+        // Direct Lead Capture Form Bubble right inside WhatsApp chat
+        nextMessages.push({
+          sender: 'bot',
+          text: `Great choice! Please fill out your visit card details below to reserve your FREE workout trial session. 👇`
+        });
+        nextMessages.push({
+          sender: 'bot',
+          text: `lead_capture_form`,
+          isGymFormBubble: true
+        });
+      } else {
+        nextMessages.push({
+          sender: 'bot',
+          text: `Noted! Let me hook you up with one of our coaches shortly. 🚀`,
+          isConversion: true
+        });
+      }
     } else {
-      if (type === 'salon') {
-        if (option === "Book Appointment" || option === "Pricing") {
-          nextMessages.push({ sender: 'bot', text: "Let me check available slots... 📅" });
-          nextMessages.push({ sender: 'staff', text: "Hi! I'm Priya. We have a slot open at 5 PM today. Should I book it?", options: ["Yes, Book Now", "Talk to Staff"] });
-        } else if (option === "Yes, Book Now") {
-          nextMessages.push({ sender: 'staff', text: "Perfect! I've reserved the 5 PM slot for you. See you soon! ✨", isConversion: true });
-        }
-      } else if (type === 'gym') {
-        if (option === "Join Membership") {
-          nextMessages.push({ sender: 'bot', text: "Awesome choice! Muscle building starts here. 💪" });
-          nextMessages.push({ sender: 'staff', text: "Hey! Coach Amit here. We have a 20% discount on Annual plans this week. Interested?", options: ["Yes, Tell me more", "View Pricing"] });
-        } else if (option === "Yes, Tell me more") {
-          nextMessages.push({ sender: 'staff', text: "Annual plans include 2 free sessions with me! Want me to reserve a spot?", isConversion: true });
+      // Standard Industries routing
+      if (config.flows && config.flows[option]) {
+        nextMessages.push(...config.flows[option]);
+      } else {
+        if (type === 'salon') {
+          if (option === "Book Appointment" || option === "Pricing") {
+            nextMessages.push({ sender: 'bot', text: "Let me check available slots... 📅" });
+            nextMessages.push({ sender: 'staff', text: "Hi! I'm Priya. We have a slot open at 5 PM today. Should I book it?", options: ["Yes, Book Now", "Talk to Staff"] });
+          } else if (option === "Yes, Book Now") {
+            nextMessages.push({ sender: 'staff', text: "Perfect! I've reserved the 5 PM slot for you. See you soon! ✨", isConversion: true });
+          }
         }
       }
     }
     
     if (nextMessages.length > 0) {
       addToQueue(nextMessages);
-    } else if (option !== "Talk to Staff") {
+    } else if (option !== "Talk to Staff" && !isGym) {
       addToQueue([{ sender: 'bot', text: "Noted! One of our experts will get back to you shortly. 🚀", isConversion: true }]);
     }
 
-    if (option === "Talk to Staff") {
+    if (option === "Talk to Staff" && !isGym) {
       addToQueue([{ sender: 'staff', text: "Hi! I'm here. How can I help you today? 😊" }]);
     }
   };
 
+  // If in Gym mode and Instagram ad is active
+  if (isGym && igAdActive) {
+    return (
+      <div className="w-full h-full relative overflow-hidden bg-white select-none">
+        <InstagramAdPreview onCtaClick={handleIgCtaClick} />
+      </div>
+    );
+  }
+
   return (
-    <div className="w-full h-full flex flex-col bg-[#E5DDD5] select-none text-left">
-      <div className="bg-[#075E54] p-4 pt-10 flex items-center gap-3 text-white shadow-md relative z-20">
-        <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white font-bold overflow-hidden border border-white/20 flex-shrink-0">
-          <img src={config.image} alt={config.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-        </div>
-        <div>
-          <div className="text-xs font-bold flex items-center gap-1.5 leading-tight">
-            {config.name}
-            <ShieldCheck size={12} className="text-white/70" />
+    <div className="w-full h-full flex flex-col bg-[#E5DDD5] select-none text-left relative overflow-hidden">
+      {/* WhatsApp Header */}
+      <div className="bg-[#075E54] p-4 pt-10 flex items-center justify-between text-white shadow-md relative z-20 flex-shrink-0">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white font-bold overflow-hidden border border-white/20 flex-shrink-0">
+            <img src={config.image} alt={config.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
           </div>
-          <div className="text-[9px] flex items-center gap-1 opacity-80 leading-tight mt-0.5">
-            <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
-            Online
+          <div>
+            <div className="text-xs font-bold flex items-center gap-1.5 leading-tight">
+              {config.name}
+              <ShieldCheck size={12} className="text-white/70 fill-current" />
+            </div>
+            <div className="text-[9px] flex items-center gap-1 opacity-80 leading-tight mt-0.5">
+              <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
+              Online
+            </div>
           </div>
         </div>
+
+        {/* Small subtle restart button */}
+        <button 
+          onClick={startDemo}
+          className="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 active:bg-white/30 transition-all text-[9.5px] font-black uppercase tracking-wider px-2.5 py-1 rounded-md text-white/95 border border-white/15 cursor-pointer select-none"
+          title="Restart Simulator"
+        >
+          <svg className="w-3 h-3 fill-none stroke-current" viewBox="0 0 24 24" strokeWidth="2.5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+          </svg>
+          <span>Restart</span>
+        </button>
       </div>
 
+      {/* WhatsApp Chat view */}
       <div ref={scrollRef} className="flex-1 p-4 overflow-y-auto flex flex-col gap-3 custom-scrollbar relative z-10" style={{ backgroundImage: 'url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png")', backgroundSize: '400px' }}>
         {messages.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center text-center p-6 opacity-40 bg-white/40 backdrop-blur-[2px] rounded-3xl m-2 border border-white/30">
@@ -1712,18 +2118,95 @@ const WhatsAppPhone = ({ type }: { type: string }) => {
           <>
             {messages.map((m) => (
               <div key={m.id} className="flex flex-col gap-2">
-                <motion.div initial={{ opacity: 0, scale: 0.95, y: 10 }} animate={{ opacity: 1, scale: 1, y: 0 }} className={`max-w-[85%] p-3 rounded-2xl shadow-sm text-sm relative group ${m.sender === 'user' ? 'bg-[#DCF8C6] self-end rounded-tr-none' : m.sender === 'staff' ? 'bg-white border border-border-light self-start rounded-tl-none' : 'bg-white self-start rounded-tl-none text-primary-text'}`}>
-                  {m.sender === 'staff' && <div className="text-[10px] font-bold text-primary mb-1 flex items-center gap-1.5"><ShieldCheck size={12}/> Verified Business Account</div>}
-                  <p className="whitespace-pre-line leading-relaxed">{m.text}</p>
-                  <div className="text-[9px] text-secondary-text/50 text-right mt-1.5 flex items-center justify-end gap-1">
-                    {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                    {m.sender === 'user' && <Check size={10} className="text-blue-500" />}
-                  </div>
-                </motion.div>
+                {/* Check for personalized custom card views */}
+                {m.isCrmEntry ? (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.95, y: 15 }} 
+                    animate={{ opacity: 1, scale: 1, y: 0 }} 
+                    className="w-[85%] bg-emerald-50 border border-emerald-200 self-start p-4 rounded-2xl rounded-tl-none shadow-sm flex flex-col gap-2 text-slate-800"
+                  >
+                    <div className="text-xs font-bold text-emerald-800 flex items-center gap-1.5 underline-offset-1">
+                      <Database size={15} className="text-emerald-500 fill-emerald-100" />
+                      CRM Entry Log
+                    </div>
+                    
+                    <div className="text-[11px] font-sans flex flex-col gap-2 mt-1">
+                      <div className="text-emerald-600 font-extrabold uppercase text-[10px] bg-emerald-100/50 px-2.5 py-1 rounded-md border border-emerald-200 w-fit">
+                        ✅ Lead Captured Successfully
+                      </div>
+                      <div className="mt-1 flex flex-col gap-1.5 font-medium text-slate-700">
+                        <div><strong className="text-slate-800">Source:</strong> Instagram Click-to-WhatsApp Ad</div>
+                        <div><strong className="text-slate-800">Interest:</strong> Gym Membership Trial</div>
+                        <div><strong className="text-slate-800">Status:</strong> New Prospect (Unassigned)</div>
+                      </div>
+                    </div>
+                    
+                    <div className="text-[9px] text-slate-400 text-right mt-1.5">
+                      {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </div>
+                  </motion.div>
+                ) : m.isSalesNotification ? (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.95, y: 15 }} 
+                    animate={{ opacity: 1, scale: 1, y: 0 }} 
+                    className="w-[85%] bg-orange-50 border border-orange-200 self-start p-4 rounded-2xl rounded-tl-none shadow-sm flex flex-col gap-2 text-slate-800"
+                  >
+                    <div className="text-xs font-bold text-orange-850 flex items-center gap-1.5">
+                      <Bell size={15} className="text-orange-500 fill-orange-200 animate-bounce" />
+                      Sales Team Notification Simulator
+                    </div>
+                    
+                    <div className="text-[11px] flex flex-col gap-1 mt-1 font-medium text-slate-700">
+                      <div className="text-red-600 font-extrabold uppercase text-[10px] bg-red-100/50 px-2.5 py-1 rounded-md border border-red-200 w-fit mb-1.5 flex items-center gap-1">
+                        📢 New Lead Received
+                      </div>
+                      <div><strong className="text-slate-800">Name:</strong> {gymLeadName}</div>
+                      <div><strong className="text-slate-800">Phone:</strong> {gymLeadPhone}</div>
+                      <div><strong className="text-slate-800">Goal:</strong> {gymSelectedGoal || 'General Fitness'}</div>
+                      <div><strong className="text-slate-800">Preferred Date:</strong> {gymLeadDate}</div>
+                      <div><strong className="text-slate-800">Source:</strong> Instagram Ad (Click-to-WhatsApp)</div>
+                      <div><strong className="text-slate-800">Priority:</strong> <span className="bg-red-500 text-white font-extrabold text-[8.5px] px-2 py-0.5 rounded-full inline-block">HIGH PRIORITY</span></div>
+                    </div>
+                    
+                    <div className="text-[9px] text-slate-400 text-right mt-1.5">
+                      {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </div>
+                  </motion.div>
+                ) : (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.95, y: 10 }} 
+                    animate={{ opacity: 1, scale: 1, y: 0 }} 
+                    className={`max-w-[85%] p-3 rounded-2xl shadow-sm text-sm relative group ${m.sender === 'user' ? 'bg-[#DCF8C6] self-end rounded-tr-none text-slate-850' : m.sender === 'staff' ? 'bg-white border border-border-light self-start rounded-tl-none text-slate-800' : 'bg-white self-start rounded-tl-none text-primary-text'}`}
+                  >
+                    {m.sender === 'staff' && <div className="text-[9.5px] font-bold text-[#128C7E] mb-1 flex items-center gap-1.5"><ShieldCheck size={11} className="text-emerald-500 fill-emerald-100" /> Verified Business Account</div>}
+                    
+                    {m.isGymFormBubble ? (
+                      <GymForm onSubmit={handleFormSubmit} />
+                    ) : (
+                      <p className="whitespace-pre-line leading-relaxed">{m.text}</p>
+                    )}
+
+                    {!m.isGymFormBubble && (
+                      <div className="text-[8.5px] text-secondary-text/50 text-right mt-1.5 flex items-center justify-end gap-1">
+                        {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        {m.sender === 'user' && <Check size={10} className="text-blue-500" />}
+                      </div>
+                    )}
+                  </motion.div>
+                )}
+
+                {/* Show Options Block */}
                 {m.options && (
                   <div className="flex flex-col gap-2 pt-1 items-start">
                     {m.options.map((opt, idx) => (
-                      <motion.button key={opt} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.1 }} onClick={() => handleOptionClick(opt)} className="bg-white text-primary-text border border-border-light px-5 py-3 rounded-2xl text-xs font-bold hover:bg-bg transition-all shadow-md active:scale-95 text-left w-fit max-w-[240px]">
+                      <motion.button 
+                        key={opt} 
+                        initial={{ opacity: 0, x: -10 }} 
+                        animate={{ opacity: 1, x: 0 }} 
+                        transition={{ delay: idx * 0.08 }} 
+                        onClick={() => handleOptionClick(opt)} 
+                        className="bg-white text-primary-text border border-border-light px-5 py-3 rounded-2xl text-xs font-bold hover:bg-bg transition-all shadow-md active:scale-95 text-left w-fit max-w-[245px] cursor-pointer hover:border-emerald-400"
+                      >
                         {opt}
                       </motion.button>
                     ))}
@@ -1731,27 +2214,41 @@ const WhatsAppPhone = ({ type }: { type: string }) => {
                 )}
               </div>
             ))}
+
             {isTyping && (
-              <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} className="bg-white self-start rounded-2xl rounded-tl-none p-4 shadow-sm flex gap-1.5">
-                <div className="w-1.5 h-1.5 bg-border-light rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-                <div className="w-1.5 h-1.5 bg-border-light rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-                <div className="w-1.5 h-1.5 bg-border-light rounded-full animate-bounce"></div>
+              <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} className="bg-white self-start rounded-2xl rounded-tl-none px-4 py-3 shadow-sm flex gap-1.5">
+                <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+                <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></div>
               </motion.div>
             )}
           </>
         )}
       </div>
 
-      <div className="p-4 bg-[#F0F2F5] border-t border-border-light relative z-20">
+      {/* Input / Control Footer */}
+      <div className="p-4 bg-[#F0F2F5] border-t border-border-light relative z-20 flex-shrink-0">
         {messages.length === 0 ? (
-          <button onClick={startDemo} className="w-full bg-primary text-white py-4 rounded-2xl font-bold hover:bg-primary/90 transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 group cursor-pointer">
+          <button 
+            onClick={startDemo} 
+            className="w-full bg-primary text-white py-4 rounded-2xl font-bold hover:bg-primary/90 transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 group cursor-pointer"
+          >
             Start Live Demo
             <Bot size={18} className="group-hover:rotate-12 transition-transform" />
           </button>
         ) : (
           <div className="flex items-center gap-2">
-             <div className="flex-1 bg-white p-3 rounded-2xl shadow-inner text-secondary-text/30 text-sm px-4 flex items-center justify-between"><span>Type a message...</span><Zap size={14} className="opacity-20" /></div>
-             <div onClick={() => { setMessages([]); setHasFollowedUp(false); }} className="p-3 bg-white text-secondary-text/50 hover:text-red-500 rounded-2xl cursor-pointer transition-all shadow-sm active:scale-90"><X size={20} /></div>
+             <div className="flex-1 bg-white p-3 rounded-2xl shadow-inner text-secondary-text/30 text-sm px-4 flex items-center justify-between">
+               <span>Type a message...</span>
+               <Zap size={14} className="opacity-20 animate-pulse" />
+             </div>
+             <div 
+               onClick={startDemo} 
+               className="p-3 bg-white text-secondary-text/50 hover:text-red-500 rounded-2xl cursor-pointer transition-all shadow-sm active:scale-90"
+               title="Reset & Start Over"
+             >
+               <X size={20} />
+             </div>
           </div>
         )}
       </div>
