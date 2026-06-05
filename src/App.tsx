@@ -1249,21 +1249,21 @@ const Home = () => {
       {/* Contact Section */}
       <section className="py-24 bg-white" id="contact">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="bg-primary rounded-[3rem] overflow-hidden relative shadow-2xl shadow-primary/20">
+          <div className="bg-primary rounded-3xl md:rounded-[3rem] overflow-hidden relative shadow-2xl shadow-primary/20">
             <div className="absolute inset-0 bg-gradient-to-br from-primary to-primary/80 opacity-90 -z-10"></div>
             <div className="grid md:grid-cols-2">
-              <div className="p-12 md:p-20 text-white flex flex-col justify-center">
-                <h2 className="text-4xl md:text-6xl font-display font-bold mb-8 leading-tight">Ready to win <br/>back your time?</h2>
+              <div className="p-6 sm:p-12 md:p-20 text-white flex flex-col justify-center">
+                <h2 className="text-3xl md:text-6xl font-display font-bold mb-8 leading-tight">Ready to win <br/>back your time?</h2>
                 <div className="space-y-6 mb-12">
-                   <a href="tel:+917410711563" className="flex items-center gap-4 text-xl font-bold hover:text-white transition-colors">
-                      <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center">
-                        <Phone size={24} />
+                   <a href="tel:+917410711563" className="flex items-center gap-4 text-base md:text-xl font-bold hover:text-white transition-colors">
+                      <div className="w-10 h-10 md:w-12 md:h-12 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0">
+                        <Phone size={20} className="md:w-6 md:h-6" />
                       </div>
                       +91 7410711563
                    </a>
-                   <a href="mailto:info@remorix.in" className="flex items-center gap-4 text-xl font-bold hover:text-white transition-colors">
-                      <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center">
-                        <Mail size={24} />
+                   <a href="mailto:info@remorix.in" className="flex items-center gap-4 text-base md:text-xl font-bold hover:text-white transition-colors">
+                      <div className="w-10 h-10 md:w-12 md:h-12 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0">
+                        <Mail size={20} className="md:w-6 md:h-6" />
                       </div>
                       info@remorix.in
                    </a>
@@ -1273,21 +1273,21 @@ const Home = () => {
                     href="https://wa.me/917410711563?text=Hi%20I%20want%20to%20automate%20my%20WhatsApp%20leads" 
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-white text-primary px-8 py-5 rounded-2xl font-bold text-lg hover:bg-white/90 transition-colors flex items-center gap-2 cursor-pointer"
+                    className="bg-white text-primary px-6 md:px-8 py-4 md:py-5 rounded-2xl font-bold text-base md:text-lg hover:bg-white/90 transition-colors flex items-center gap-2 cursor-pointer w-full sm:w-auto justify-center"
                     id="contact-whatsapp"
                   >
-                    <MessageSquare size={20} className="fill-primary" />
+                    <MessageSquare size={18} className="fill-primary" />
                     Chat on WhatsApp
                   </a>
                 </div>
               </div>
 
               {/* Contact Form */}
-              <div className="bg-black/5 p-12 md:p-20 backdrop-blur-sm border-l border-white/10">
+              <div className="bg-black/5 p-6 sm:p-12 md:p-20 backdrop-blur-sm border-t md:border-t-0 md:border-l border-white/10">
                 <AnimatePresence mode="wait">
                   <div className="mb-8 text-center md:text-left">
-                    <h3 className="text-2xl font-bold text-white mb-4">Start converting more WhatsApp leads into customers today.</h3>
-                    <p className="text-white/80">Setup takes less than 24 hours. Limited onboarding slots available this month.</p>
+                    <h3 className="text-xl md:text-2xl font-bold text-white mb-4">Start converting more WhatsApp leads into customers today.</h3>
+                    <p className="text-white/85 text-sm md:text-base">Setup takes less than 24 hours. Limited onboarding slots available this month.</p>
                   </div>
                   {!formSubmitted ? (
                     <motion.form 
@@ -1300,42 +1300,42 @@ const Home = () => {
                       onSubmit={handleFormSubmit}
                     >
                       <div className="flex flex-col gap-2">
-                        <label className="text-white text-sm font-bold opacity-80 pl-1 uppercase tracking-wider">Your Name</label>
+                        <label className="text-white text-xs md:text-sm font-bold opacity-80 pl-1 uppercase tracking-wider">Your Name</label>
                         <input 
                           name="name"
                           type="text" 
                           required
                           placeholder="e.g. Rahul Sharma" 
-                          className="bg-white/10 border border-white/20 rounded-2xl p-5 text-white placeholder:text-white/30 focus:outline-none focus:border-white transition-colors transition-shadow"
+                          className="bg-white/10 border border-white/20 rounded-2xl py-4 px-5 md:p-5 text-white placeholder:text-white/30 focus:outline-none focus:border-white transition-colors transition-shadow text-sm md:text-base"
                           id="form-name"
                         />
                       </div>
                        <div className="flex flex-col gap-2">
-                        <label className="text-white text-sm font-bold opacity-80 pl-1 uppercase tracking-wider">Business Phone</label>
+                        <label className="text-white text-xs md:text-sm font-bold opacity-80 pl-1 uppercase tracking-wider">Business Phone</label>
                         <input 
                           name="phone"
                           type="tel" 
                           required
                           placeholder="+91 00000 00000" 
-                          className="bg-white/10 border border-white/20 rounded-2xl p-5 text-white placeholder:text-white/30 focus:outline-none focus:border-white transition-colors"
+                          className="bg-white/10 border border-white/20 rounded-2xl py-4 px-5 md:p-5 text-white placeholder:text-white/30 focus:outline-none focus:border-white transition-colors text-sm md:text-base"
                           id="form-phone"
                         />
                       </div>
                       <div className="flex flex-col gap-2">
-                        <label className="text-white text-sm font-bold opacity-80 pl-1 uppercase tracking-wider">Business Type</label>
+                        <label className="text-white text-xs md:text-sm font-bold opacity-80 pl-1 uppercase tracking-wider">Business Type</label>
                         <input 
                           name="business"
                           type="text" 
                           required
                           placeholder="e.g. Yoga Gym, Dental Clinic" 
-                          className="bg-white/10 border border-white/20 rounded-2xl p-5 text-white placeholder:text-white/30 focus:outline-none focus:border-white transition-colors"
+                          className="bg-white/10 border border-white/20 rounded-2xl py-4 px-5 md:p-5 text-white placeholder:text-white/30 focus:outline-none focus:border-white transition-colors text-sm md:text-base"
                           id="form-type"
                         />
                       </div>
                       <button 
                         type="submit" 
                         disabled={isSubmitting}
-                        className="bg-white text-primary w-full py-5 rounded-2xl font-bold text-xl hover:bg-slate-50 transition-colors shadow-lg shadow-black/10 mt-4 active:scale-95 cursor-pointer disabled:opacity-50"
+                        className="bg-white text-primary w-full py-4 md:py-5 rounded-2xl font-bold text-lg md:text-xl hover:bg-slate-50 transition-colors shadow-lg shadow-black/10 mt-4 active:scale-95 cursor-pointer disabled:opacity-50"
                       >
                         {isSubmitting ? "Saving..." : "Save My Spot"}
                       </button>
@@ -3071,7 +3071,7 @@ const IndustryDemo = ({ type }: { type: string }) => {
         <p className="text-secondary-text text-lg">See how Remorix automates {type} leads instantly.</p>
       </div>
 
-      <div className="w-full max-w-[380px] h-[720px] bg-[#E5DDD5] rounded-[3rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] border-[12px] border-primary-text overflow-hidden flex flex-col relative z-10 transition-transform hover:scale-[1.01] duration-500 pb-0">
+      <div className="w-full max-w-[380px] h-[720px] scale-[0.8] xs:scale-[0.9] sm:scale-100 origin-center my-[-40px] xs:my-[-15px] sm:my-0 bg-[#E5DDD5] rounded-[3rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] border-[12px] border-primary-text overflow-hidden flex flex-col relative z-10 transition-transform hover:scale-[1.01] sm:hover:scale-[1.01] duration-500 pb-0">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-6 bg-primary-text rounded-b-2xl z-30"></div>
         <div className="absolute top-2 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-black/20 rounded-full z-30 opacity-40"></div>
         <WhatsAppPhone type={type} />
@@ -3249,8 +3249,8 @@ const IndustryPage = ({ type }: { type: string }) => {
           </div>
 
           {/* Side Visualization / Simulation Frame */}
-          <div className="lg:col-span-5 flex justify-center w-full" id="live-demo-interactive">
-            <div className="scale-90 md:scale-95 lg:scale-100 origin-center">
+          <div className="lg:col-span-5 flex justify-center w-full overflow-hidden" id="live-demo-interactive">
+            <div className="scale-[0.8] xs:scale-90 md:scale-95 lg:scale-100 origin-center my-[-40px] xs:my-0">
               <div className="text-sm font-bold text-slate-400 mb-4 uppercase tracking-widest text-center flex items-center gap-2 justify-center">
                 <span className="w-2.5 h-2.5 bg-green-500 rounded-full animate-ping"></span>
                 Interactive Sandbox Simulator
