@@ -1143,8 +1143,7 @@ const Home = () => {
                       "Lead capture automation",
                       "Lead qualification flow",
                       "WhatsApp-based sales funnel",
-                      "Abandoned inquiry follow-ups",
-                      "AI follow-up system"
+                      "Abandoned inquiry follow-ups"
                     ].map((item, idx) => (
                       <li key={idx} className="flex items-center gap-3 text-sm font-bold text-primary-text">
                         <Check size={16} className="text-primary flex-shrink-0" strokeWidth={3} />
