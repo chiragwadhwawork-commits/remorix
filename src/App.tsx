@@ -31,8 +31,7 @@ import {
   Ticket,
   Database,
   Bell,
-  Send,
-  Sparkles
+  Send
 } from 'lucide-react';
 
 // --- Components ---
@@ -299,60 +298,384 @@ const Navbar = () => {
 };
 
 const WhatsAppDemo = () => {
-  const [messages, setMessages] = useState<{ sender: 'user' | 'bot' | 'staff'; text: string; time: string }[]>([]);
+  interface DemoMessage {
+    sender: 'user' | 'bot' | 'staff';
+    text: string;
+    time: string;
+    options?: string[];
+    attachment?: {
+      name: string;
+      type: 'pdf' | 'image';
+      size: string;
+    };
+  }
+
+  const [messages, setMessages] = useState<DemoMessage[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const [step, setStep] = useState(0);
+  const [isInteractive, setIsInteractive] = useState(false);
+  const [expectingInput, setExpectingInput] = useState<'name' | ''>('');
+  const [customInput, setCustomInput] = useState('');
+  const scrollRef = useRef<HTMLDivElement>(null);
 
-  const demoSteps = [
-    { sender: 'user', text: 'Hi, available for deep cleaning tomorrow?', time: '10:00 AM', delay: 1000 },
-    { sender: 'bot', text: 'Hi! Yes, we have a slot at 10 AM. Would you like to book it?', time: '10:00 AM', delay: 800 },
-    { sender: 'user', text: 'Yes, please book it for me.', time: '10:01 AM', delay: 1500 },
-    { sender: 'bot', text: 'Great! Confirming with our team...', time: '10:01 AM', delay: 800 },
-    { sender: 'staff', text: 'Hi, I am Rahul. Your deep cleaning slot is confirmed for 10 AM tomorrow! ✅', time: '10:02 AM', delay: 2000 },
-  ];
-
+  // Auto scroll
   useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({
+        top: scrollRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
+  }, [messages, isTyping]);
+
+  // Autoplay loop
+  useEffect(() => {
+    if (isInteractive) return;
+
     let timer: NodeJS.Timeout;
-    if (step < demoSteps.length) {
-      const current = demoSteps[step];
-      timer = setTimeout(() => {
-        if (current.sender === 'user') {
-          setMessages(prev => [...prev, current]);
-          setStep(s => s + 1);
-        } else {
+    const playAutoplay = async () => {
+      // Step 0: Welcome Bot Message
+      if (step === 0) {
+        setIsTyping(true);
+        timer = setTimeout(() => {
+          setIsTyping(false);
+          setMessages([
+            {
+              sender: 'bot',
+              text: "Welcome to Apex Coaching Institute! 🎓\n\nInteractive helpdesk for Boards, JEE/NEET & Foundation programs. How can we guide your student's path today?",
+              time: '04:00 PM',
+              options: ["📚 View Courses & Fees", "📄 Get Syllabus PDF", "📅 Book Free Trial"]
+            }
+          ]);
+          setStep(1);
+        }, 1200);
+      }
+      // Step 1: Select "📚 View Courses & Fees"
+      else if (step === 1) {
+        timer = setTimeout(() => {
+          setMessages(prev => {
+            const updated = prev.map(m => ({ ...m, options: undefined }));
+            return [...updated, { sender: 'user', text: "📚 View Courses & Fees", time: '04:01 PM' }];
+          });
           setIsTyping(true);
-          const typingTimer = setTimeout(() => {
+          
+          const replyTimer = setTimeout(() => {
             setIsTyping(false);
-            setMessages(prev => [...prev, current]);
-            setStep(s => s + 1);
+            setMessages(prev => [
+              ...prev,
+              {
+                sender: 'bot',
+                text: "Excellent! We offer target-oriented courses guided by top rank-holding educators. Which level are you looking for?",
+                time: '04:01 PM',
+                options: ["🧪 Class 11-12 (JEE/NEET Prep)", "🏫 Class 8-10 Foundation Prep"]
+              }
+            ]);
+            setStep(2);
           }, 1500);
-          return () => clearTimeout(typingTimer);
-        }
-      }, current.delay);
-    } else {
-      timer = setTimeout(() => {
+          return () => clearTimeout(replyTimer);
+        }, 3500);
+      }
+      // Step 2: Select "🧪 Class 11-12 (JEE/NEET Prep)"
+      else if (step === 2) {
+        timer = setTimeout(() => {
+          setMessages(prev => {
+            const updated = prev.map(m => ({ ...m, options: undefined }));
+            return [...updated, { sender: 'user', text: "🧪 Class 11-12 (JEE/NEET Prep)", time: '04:02 PM' }];
+          });
+          setIsTyping(true);
+
+          const replyTimer = setTimeout(() => {
+            setIsTyping(false);
+            setMessages(prev => [
+              ...prev,
+              {
+                sender: 'bot',
+                text: "Great choice! Our premium JEE/NEET program features 1-on-1 mentoring, daily practice papers (DPPs), and weekly AI-powered mock tests. 🚀\n\nHere is our latest curriculum guide:",
+                time: '04:02 PM',
+                attachment: { name: "Apex_JEE_NEET_Curriculum_2026.pdf", type: "pdf", size: "3.4 MB" }
+              }
+            ]);
+
+            const followUpTimer = setTimeout(() => {
+              setIsTyping(true);
+              const followUpReplyTimer = setTimeout(() => {
+                setIsTyping(false);
+                setMessages(prev => [
+                  ...prev,
+                  {
+                    sender: 'bot',
+                    text: "Would you like to reserve a Free Live Demo Masterclass for this Sunday?",
+                    time: '04:02 PM',
+                    options: ["📅 Yes, Book Free Seat", "📞 Call Counselor"]
+                  }
+                ]);
+                setStep(3);
+              }, 1200);
+              return () => clearTimeout(followUpReplyTimer);
+            }, 1500);
+            return () => clearTimeout(followUpTimer);
+
+          }, 1800);
+          return () => clearTimeout(replyTimer);
+        }, 4000);
+      }
+      // Step 3: Select "📅 Yes, Book Free Seat"
+      else if (step === 3) {
+        timer = setTimeout(() => {
+          setMessages(prev => {
+            const updated = prev.map(m => ({ ...m, options: undefined }));
+            return [...updated, { sender: 'user', text: "📅 Yes, Book Free Seat", time: '04:03 PM' }];
+          });
+          setIsTyping(true);
+
+          const replyTimer = setTimeout(() => {
+            setIsTyping(false);
+            setMessages(prev => [
+              ...prev,
+              {
+                sender: 'bot',
+                text: "Awesome! Setting up your booking. Which subject focus would you prefer for the trial?",
+                time: '04:03 PM',
+                options: ["⚛️ Physics (Rotational Mechanics)", "🧪 Chemistry (Organic Magic)", "🧮 Mathematics (Calculus Simplified)"]
+              }
+            ]);
+            setStep(4);
+          }, 1500);
+          return () => clearTimeout(replyTimer);
+        }, 4000);
+      }
+      // Step 4: Select "⚛️ Physics (Rotational Mechanics)"
+      else if (step === 4) {
+        timer = setTimeout(() => {
+          setMessages(prev => {
+            const updated = prev.map(m => ({ ...m, options: undefined }));
+            return [...updated, { sender: 'user', text: "⚛️ Physics (Rotational Mechanics)", time: '04:04 PM' }];
+          });
+          setIsTyping(true);
+
+          const replyTimer = setTimeout(() => {
+            setIsTyping(false);
+            setMessages(prev => [
+              ...prev,
+              {
+                sender: 'staff',
+                text: "Hi! I am Neha, Chief Admission Counselor at Apex! 🎓\n\nYour seat is provisionally reserved for Sunday's 4:00 PM Physics Masterclass! Our mentor will explain difficult concepts live with digital visualizations.\n\nI am sending your entry pass and session link shortly! ✅",
+                time: '04:04 PM'
+              }
+            ]);
+            setStep(5);
+          }, 2000);
+          return () => clearTimeout(replyTimer);
+        }, 4000);
+      }
+      // Step 5: Wait, then Loop Back
+      else if (step === 5) {
+        timer = setTimeout(() => {
+          setMessages([]);
+          setStep(0);
+        }, 8000);
+      }
+    };
+
+    playAutoplay();
+    return () => clearTimeout(timer);
+  }, [step, isInteractive]);
+
+  // Option Click Handler
+  const handleOptionClick = (opt: string) => {
+    setIsInteractive(true);
+    setMessages(prev => {
+      const updated = prev.map(m => ({ ...m, options: undefined }));
+      return [...updated, { sender: 'user', text: opt, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }];
+    });
+    setIsTyping(true);
+
+    setTimeout(() => {
+      setIsTyping(false);
+      const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      if (opt === "📚 View Courses & Fees" || opt === "📚 View Courses") {
+        setMessages(prev => [
+          ...prev,
+          {
+            sender: 'bot',
+            text: "Excellent! We offer target-oriented courses guided by top rank-holding educators. Which level are you looking for?",
+            time: currentTime,
+            options: ["🧪 Class 11-12 (JEE/NEET Prep)", "🏫 Class 8-10 Foundation Prep"]
+          }
+        ]);
+      } else if (opt === "🧪 Class 11-12 (JEE/NEET Prep)") {
+        setMessages(prev => [
+          ...prev,
+          {
+            sender: 'bot',
+            text: "Great choice! Our premium JEE/NEET program features 1-on-1 mentoring, daily practice papers (DPPs), and weekly AI-powered mock tests. 🚀\n\nHere is our latest curriculum guide:",
+            time: currentTime,
+            attachment: { name: "Apex_JEE_NEET_Curriculum_2026.pdf", type: "pdf", size: "3.4 MB" }
+          }
+        ]);
+        setTimeout(() => {
+          setIsTyping(true);
+          setTimeout(() => {
+            setIsTyping(false);
+            setMessages(prev => [
+              ...prev,
+              {
+                sender: 'bot',
+                text: "Would you like to reserve a Free Live Demo Masterclass for this Sunday?",
+                time: currentTime,
+                options: ["📅 Yes, Book Free Seat", "📞 Call Counselor"]
+              }
+            ]);
+          }, 1200);
+        }, 1500);
+      } else if (opt === "🏫 Class 8-10 Foundation Prep") {
+        setMessages(prev => [
+          ...prev,
+          {
+            sender: 'bot',
+            text: "Perfect for building a strong foundation in Mathematics & Science! Preparing students for Boards, NTSE, and Olympiads early on. 📈\n\nHere is our curriculum and success prospectus:",
+            time: currentTime,
+            attachment: { name: "Foundation_Class8_10_Prospectus.pdf", type: "pdf", size: "2.1 MB" }
+          }
+        ]);
+        setTimeout(() => {
+          setIsTyping(true);
+          setTimeout(() => {
+            setIsTyping(false);
+            setMessages(prev => [
+              ...prev,
+              {
+                sender: 'bot',
+                text: "Would you like to reserve a Free Trial class with our star faculty?",
+                time: currentTime,
+                options: ["📅 Yes, Book Free Seat", "📞 Call Counselor"]
+              }
+            ]);
+          }, 1200);
+        }, 1500);
+      } else if (opt === "📄 Get Syllabus PDF" || opt === "📄 Download Brochure") {
+        setMessages(prev => [
+          ...prev,
+          {
+            sender: 'bot',
+            text: "Understood! Sending you the complete curriculum guide & fee breakups for academic session 2026-27. 📥",
+            time: currentTime,
+            attachment: { name: "Apex_Full_Prospectus_2026.pdf", type: "pdf", size: "4.5 MB" }
+          }
+        ]);
+        setTimeout(() => {
+          setIsTyping(true);
+          setTimeout(() => {
+            setIsTyping(false);
+            setMessages(prev => [
+              ...prev,
+              {
+                sender: 'bot',
+                text: "Would you like to reserve a Free Live Demo Class?",
+                time: currentTime,
+                options: ["📅 Yes, Book Free Seat", "📞 Call Counselor"]
+              }
+            ]);
+          }, 1200);
+        }, 1500);
+      } else if (opt === "📅 Book Free Trial" || opt === "📅 Yes, Book Free Seat") {
+        setMessages(prev => [
+          ...prev,
+          {
+            sender: 'bot',
+            text: "Awesome! Setting up your booking. Which subject focus would you prefer for the trial?",
+            time: currentTime,
+            options: ["⚛️ Physics (Rotational Mechanics)", "🧪 Chemistry (Organic Magic)", "🧮 Mathematics (Calculus Simplified)"]
+          }
+        ]);
+      } else if (
+        opt === "⚛️ Physics (Rotational Mechanics)" ||
+        opt === "🧪 Chemistry (Organic Magic)" ||
+        opt === "🧮 Mathematics (Calculus Simplified)"
+      ) {
+        setMessages(prev => [
+          ...prev,
+          {
+            sender: 'bot',
+            text: "Wonderful selection! To personalize your entry pass, please type the student's *Name* and *Class* below. 👇",
+            time: currentTime
+          }
+        ]);
+        setExpectingInput('name');
+      } else if (opt === "📞 Call Counselor" || opt === "📞 Talk to Counselor") {
+        setMessages(prev => [
+          ...prev,
+          {
+            sender: 'bot',
+            text: "No problem! One of our Senior Academic Counselors will call you in 10 minutes at this number to guide you. Have a great day! 📞",
+            time: currentTime,
+            options: ["🔄 Restart Chat"]
+          }
+        ]);
+      } else if (opt === "🔄 Restart Chat") {
+        setIsInteractive(false);
+        setExpectingInput('');
         setMessages([]);
         setStep(0);
-      }, 6000);
-    }
-    return () => clearTimeout(timer);
-  }, [step]);
+      }
+    }, 1000);
+  };
+
+  // Custom Input Submit Handler
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (!customInput.trim()) return;
+
+    const userInput = customInput.trim();
+    setCustomInput("");
+    setIsInteractive(true);
+
+    const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    setMessages(prev => {
+      const updated = prev.map(m => ({ ...m, options: undefined }));
+      return [...updated, { sender: 'user', text: userInput, time: currentTime }];
+    });
+    setIsTyping(true);
+
+    setTimeout(() => {
+      setIsTyping(false);
+      if (expectingInput === 'name') {
+        setMessages(prev => [
+          ...prev,
+          {
+            sender: 'staff',
+            text: `Thanks for sharing, *${userInput}*! Your free trial class slot has been officially confirmed! 🎉\n\n📅 Date: This Sunday\n⏰ Time: 4:00 PM\n📍 Place: Zoom Live Classroom\n\nI have sent your student login code and join link to your phone. See you in class! ✅`,
+            time: currentTime,
+            options: ["🔄 Restart Chat"]
+          }
+        ]);
+        setExpectingInput('');
+      } else {
+        setMessages(prev => [
+          ...prev,
+          {
+            sender: 'bot',
+            text: `Got your message! Let's get you back on track. What would you like to explore?`,
+            time: currentTime,
+            options: ["📚 View Courses & Fees", "📄 Get Syllabus PDF", "📅 Book Free Trial"]
+          }
+        ]);
+      }
+    }, 1200);
+  };
 
   return (
     <div className="bg-[#E5DDD5] rounded-3xl overflow-hidden shadow-2xl border-8 border-slate-900 w-full max-w-[340px] mx-auto aspect-[9/16] relative flex flex-col">
       {/* Header */}
-      <div className="bg-[#075E54] p-3 pt-11 pb-3 flex items-center gap-3 text-white relative z-20 flex-shrink-0 shadow-md">
-        <div className="w-9 h-9 rounded-full overflow-hidden border border-white/20 flex-shrink-0 bg-white/10 shadow-sm">
-          <img 
-            src="/src/assets/images/sparkle_clean_logo_1782542178408.jpg" 
-            alt="SparkleClean Co. Logo" 
-            className="w-full h-full object-cover"
-            referrerPolicy="no-referrer"
-          />
+      <div className="bg-[#075E54] px-4 pb-4 pt-8 flex items-center gap-3 text-white">
+        <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-[#075E54] shrink-0 shadow-sm">
+          <GraduationCap size={18} className="stroke-[2.5]" />
         </div>
-        <div className="flex-1 min-w-0">
-          <div className="text-sm font-bold leading-none mb-0.5 truncate">SparkleClean Co.</div>
-          <div className="text-[10px] flex items-center gap-1 opacity-90 leading-none">
+        <div>
+          <div className="text-sm font-bold">Apex Classes</div>
+          <div className="text-[10px] flex items-center gap-1">
             <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
             Online
           </div>
@@ -360,27 +683,73 @@ const WhatsAppDemo = () => {
       </div>
 
       {/* Chat Area */}
-      <div className="flex-1 p-4 overflow-y-auto flex flex-col gap-3 custom-scrollbar">
+      <div 
+        ref={scrollRef} 
+        className="flex-1 p-4 overflow-y-auto flex flex-col gap-3 custom-scrollbar relative z-10"
+        style={{ backgroundImage: 'url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png")', backgroundSize: '400px' }}
+      >
         {messages.map((m, idx) => (
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9, x: m.sender === 'user' ? 20 : -20 }}
-            animate={{ opacity: 1, scale: 1, x: 0 }}
-            key={idx}
-            className={`max-w-[85%] p-2.5 rounded-xl shadow-sm text-sm relative ${
-              m.sender === 'user' 
-                ? 'bg-[#DCF8C6] self-end rounded-tr-none' 
-                : m.sender === 'staff'
-                ? 'bg-blue-50 border border-blue-100 self-start rounded-tl-none'
-                : 'bg-white self-start rounded-tl-none text-slate-800'
-            }`}
-          >
-            {m.sender === 'staff' && <div className="text-[8px] font-bold text-blue-600 mb-1">Business Verified</div>}
-            <p className="whitespace-pre-line text-[13px]">{m.text}</p>
-            <div className="text-[9px] text-slate-400 text-right mt-1">{m.time}</div>
-          </motion.div>
+          <div key={idx} className="flex flex-col gap-2">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, x: m.sender === 'user' ? 20 : -20 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              className={`max-w-[85%] p-2.5 rounded-xl shadow-sm text-sm relative ${
+                m.sender === 'user' 
+                  ? 'bg-[#DCF8C6] self-end rounded-tr-none' 
+                  : m.sender === 'staff'
+                  ? 'bg-blue-50 border border-blue-100 self-start rounded-tl-none'
+                  : 'bg-white self-start rounded-tl-none text-slate-800'
+              }`}
+            >
+              {m.sender === 'staff' && (
+                <div className="text-[8px] font-bold text-blue-600 mb-1 flex items-center gap-0.5">
+                  <span className="w-2.5 h-2.5 bg-blue-100 rounded-full flex items-center justify-center text-[6px]">✓</span>
+                  <span>Verified Academy Agent</span>
+                </div>
+              )}
+              <p className="whitespace-pre-line text-[13px] leading-relaxed">{m.text}</p>
+              
+              {m.attachment && (
+                <div className="mt-2 bg-black/5 rounded-lg p-2.5 flex items-center gap-3 border border-black/10">
+                  <div className="w-8 h-8 bg-rose-500 rounded flex items-center justify-center text-white font-bold text-[9px] shrink-0">
+                    PDF
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-[11px] font-semibold truncate text-slate-800">{m.attachment.name}</div>
+                    <div className="text-[9px] text-slate-500">{m.attachment.size}</div>
+                  </div>
+                  <div className="text-emerald-600 shrink-0">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                  </div>
+                </div>
+              )}
+
+              <div className="text-[8px] text-slate-400 text-right mt-1">{m.time}</div>
+            </motion.div>
+
+            {/* Quick reply buttons (rendered right below the message) */}
+            {m.options && (
+              <div className="flex flex-col gap-1.5 mt-0.5 items-start">
+                {m.options.map((opt) => (
+                  <motion.button 
+                    key={opt} 
+                    initial={{ opacity: 0, x: -10 }} 
+                    animate={{ opacity: 1, x: 0 }} 
+                    onClick={() => handleOptionClick(opt)} 
+                    className="bg-white text-emerald-800 hover:text-white border border-emerald-500/20 hover:bg-emerald-600 px-3.5 py-1.5 rounded-full text-[11px] font-bold transition-all shadow-sm active:scale-95 text-left w-fit max-w-[245px] cursor-pointer hover:border-emerald-600"
+                  >
+                    {opt}
+                  </motion.button>
+                ))}
+              </div>
+            )}
+          </div>
         ))}
+
         {isTyping && (
-          <div className="bg-white self-start rounded-xl rounded-tl-none p-2 shadow-sm flex gap-1">
+          <div className="bg-white self-start rounded-xl rounded-tl-none p-2 shadow-sm flex gap-1 z-10">
             <div className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce"></div>
             <div className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce [animation-delay:0.2s]"></div>
             <div className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce [animation-delay:0.4s]"></div>
@@ -388,23 +757,25 @@ const WhatsAppDemo = () => {
         )}
       </div>
 
-      <div className="p-3 bg-white/50 border-t border-slate-200">
-         <div className="bg-white rounded-full px-4 py-2 text-slate-400 text-xs shadow-inner">Type a message...</div>
-      </div>
+      {/* Input Form */}
+      <form onSubmit={handleSubmit} className="p-3 bg-white/90 border-t border-slate-200 flex gap-2 items-center relative z-20">
+         <input 
+           type="text" 
+           value={customInput}
+           onChange={(e) => setCustomInput(e.target.value)}
+           placeholder={expectingInput ? "Type student's Name..." : "Type a message..."} 
+           className="flex-1 bg-white border border-slate-200 rounded-full px-4 py-2 text-xs focus:outline-none focus:border-emerald-500 shadow-inner"
+         />
+         <button 
+           type="submit" 
+           disabled={!customInput.trim()} 
+           className={`p-2 rounded-full flex items-center justify-center transition-all ${customInput.trim() ? 'bg-emerald-600 text-white active:scale-90' : 'bg-slate-100 text-slate-300'}`}
+         >
+           <Send size={12} />
+         </button>
+      </form>
       
-      {/* Real-looking front-facing camera and speaker notch */}
-      <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-24 h-4 bg-black rounded-full z-30 flex items-center justify-between px-3.5 shadow-inner border border-white/5">
-        {/* Speaker Slit */}
-        <div className="w-8 h-1 bg-zinc-800 rounded-full opacity-60"></div>
-        {/* Camera Lens */}
-        <div className="w-2.5 h-2.5 rounded-full bg-zinc-900 flex items-center justify-center relative overflow-hidden border border-zinc-800/80">
-          <div className="w-1.5 h-1.5 rounded-full bg-slate-950 flex items-center justify-center">
-            <div className="w-1 h-1 rounded-full bg-indigo-950 relative">
-              <div className="absolute top-0.5 left-0.5 w-0.5 h-0.5 rounded-full bg-cyan-400 opacity-90 animate-pulse"></div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-14 h-3 bg-slate-900 rounded-full z-30"></div>
     </div>
   );
 };
@@ -2924,7 +3295,7 @@ const WhatsAppPhone = ({ type }: { type: string }) => {
   return (
     <div className="w-full h-full flex flex-col bg-[#E5DDD5] select-none text-left relative overflow-hidden">
       {/* WhatsApp Header */}
-      <div className="bg-[#075E54] p-3 px-4 pt-12 flex items-center justify-between text-white shadow-md relative z-20 flex-shrink-0">
+      <div className="bg-[#075E54] p-4 pt-10 flex items-center justify-between text-white shadow-md relative z-20 flex-shrink-0">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white font-bold overflow-hidden border border-white/20 flex-shrink-0">
             <img src={config.image} alt={config.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
@@ -3258,17 +3629,8 @@ const IndustryDemo = ({ type }: { type: string }) => {
       </div>
 
       <div className="w-full max-w-[380px] h-[720px] scale-[0.8] xs:scale-[0.9] sm:scale-100 origin-center my-[-40px] xs:my-[-15px] sm:my-0 bg-[#E5DDD5] rounded-[3rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] border-[12px] border-primary-text overflow-hidden flex flex-col relative z-10 transition-transform hover:scale-[1.01] sm:hover:scale-[1.01] duration-500 pb-0">
-        {/* Dynamic Island with speaker slit & glossy front camera lens */}
-        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-32 h-6 bg-slate-950 rounded-full z-30 flex items-center justify-between px-4 shadow-lg border border-white/10">
-          <div className="w-12 h-1 bg-zinc-800 rounded-full opacity-60"></div>
-          <div className="w-3 h-3 rounded-full bg-zinc-900 flex items-center justify-center relative overflow-hidden border border-zinc-800/80">
-            <div className="w-2 h-2 rounded-full bg-slate-950 flex items-center justify-center">
-              <div className="w-1.5 h-1.5 rounded-full bg-indigo-950 relative">
-                <div className="absolute top-0.5 left-0.5 w-0.5 h-0.5 rounded-full bg-cyan-400 opacity-90 animate-pulse"></div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-6 bg-primary-text rounded-b-2xl z-30"></div>
+        <div className="absolute top-2 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-black/20 rounded-full z-30 opacity-40"></div>
         <WhatsAppPhone type={type} />
       </div>
       
@@ -3451,17 +3813,6 @@ const IndustryPage = ({ type }: { type: string }) => {
                 Interactive Sandbox Simulator
               </div>
               <div className="w-[360px] h-[680px] bg-[#E5DDD5] rounded-[3rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.25)] border-[12px] border-slate-800 overflow-hidden flex flex-col relative">
-                {/* Dynamic Island with speaker slit & glossy front camera lens */}
-                <div className="absolute top-3 left-1/2 -translate-x-1/2 w-32 h-6 bg-slate-950 rounded-full z-30 flex items-center justify-between px-4 shadow-lg border border-white/10">
-                  <div className="w-12 h-1 bg-zinc-800 rounded-full opacity-60"></div>
-                  <div className="w-3 h-3 rounded-full bg-zinc-900 flex items-center justify-center relative overflow-hidden border border-zinc-800/80">
-                    <div className="w-2 h-2 rounded-full bg-slate-950 flex items-center justify-center">
-                      <div className="w-1.5 h-1.5 rounded-full bg-indigo-950 relative">
-                        <div className="absolute top-0.5 left-0.5 w-0.5 h-0.5 rounded-full bg-cyan-400 opacity-90 animate-pulse"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
                 <WhatsAppPhone type={type} />
               </div>
             </div>
