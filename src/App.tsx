@@ -30,7 +30,9 @@ import {
   Compass,
   Ticket,
   Database,
-  Bell
+  Bell,
+  Send,
+  Sparkles
 } from 'lucide-react';
 
 // --- Components ---
@@ -131,7 +133,7 @@ const Navbar = () => {
             Home
           </a>
 
-          {/* Solutions Dropdown */}
+          {/* Categories Dropdown */}
           <div 
             className="relative"
             onMouseEnter={() => setIsSolutionsOpen(true)}
@@ -142,7 +144,7 @@ const Navbar = () => {
                 isSolutionsOpen ? 'text-primary' : 'text-secondary-text hover:text-primary'
               }`}
             >
-              Solutions
+              Categories
               <ChevronDown size={14} className={`transition-transform duration-350 ${isSolutionsOpen ? 'rotate-180 text-primary' : ''}`} />
             </button>
 
@@ -230,13 +232,13 @@ const Navbar = () => {
                 Home
               </a>
 
-              {/* Mobile Solutions Section */}
+              {/* Mobile Categories Section */}
               <div className="border-b border-slate-50 pb-2">
                 <button 
                   onClick={() => setIsMobileSolutionsOpen(!isMobileSolutionsOpen)}
                   className="flex items-center justify-between w-full text-lg font-semibold text-slate-800 py-2"
                 >
-                  Solutions
+                  Categories
                   <ChevronDown size={20} className={`transition-transform duration-300 ${isMobileSolutionsOpen ? 'rotate-180 text-primary' : 'text-slate-400'}`} />
                 </button>
                 
@@ -339,11 +341,18 @@ const WhatsAppDemo = () => {
   return (
     <div className="bg-[#E5DDD5] rounded-3xl overflow-hidden shadow-2xl border-8 border-slate-900 w-full max-w-[340px] mx-auto aspect-[9/16] relative flex flex-col">
       {/* Header */}
-      <div className="bg-[#075E54] p-4 flex items-center gap-3 text-white">
-        <Logo variant="icon" className="scale-75 -ml-1" />
-        <div>
-          <div className="text-sm font-bold">Remorix Automation</div>
-          <div className="text-[10px] flex items-center gap-1">
+      <div className="bg-[#075E54] p-3 pt-11 pb-3 flex items-center gap-3 text-white relative z-20 flex-shrink-0 shadow-md">
+        <div className="w-9 h-9 rounded-full overflow-hidden border border-white/20 flex-shrink-0 bg-white/10 shadow-sm">
+          <img 
+            src="/src/assets/images/sparkle_clean_logo_1782542178408.jpg" 
+            alt="SparkleClean Co. Logo" 
+            className="w-full h-full object-cover"
+            referrerPolicy="no-referrer"
+          />
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="text-sm font-bold leading-none mb-0.5 truncate">SparkleClean Co.</div>
+          <div className="text-[10px] flex items-center gap-1 opacity-90 leading-none">
             <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
             Online
           </div>
@@ -383,7 +392,19 @@ const WhatsAppDemo = () => {
          <div className="bg-white rounded-full px-4 py-2 text-slate-400 text-xs shadow-inner">Type a message...</div>
       </div>
       
-      <div className="absolute top-2 left-1/2 -translate-x-1/2 w-20 h-4 bg-slate-900 rounded-full"></div>
+      {/* Real-looking front-facing camera and speaker notch */}
+      <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-24 h-4 bg-black rounded-full z-30 flex items-center justify-between px-3.5 shadow-inner border border-white/5">
+        {/* Speaker Slit */}
+        <div className="w-8 h-1 bg-zinc-800 rounded-full opacity-60"></div>
+        {/* Camera Lens */}
+        <div className="w-2.5 h-2.5 rounded-full bg-zinc-900 flex items-center justify-center relative overflow-hidden border border-zinc-800/80">
+          <div className="w-1.5 h-1.5 rounded-full bg-slate-950 flex items-center justify-center">
+            <div className="w-1 h-1 rounded-full bg-indigo-950 relative">
+              <div className="absolute top-0.5 left-0.5 w-0.5 h-0.5 rounded-full bg-cyan-400 opacity-90 animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
@@ -2086,6 +2107,27 @@ const WhatsAppPhone = ({ type }: { type: string }) => {
   const isEdu = type === 'education';
   const isHealth = type === 'healthcare';
 
+  const [customInput, setCustomInput] = useState("");
+
+  const playDing = () => {
+    try {
+      const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(800, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.1);
+      gain.gain.setValueAtTime(0.08, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.15);
+    } catch (e) {
+      // Ignore audio blocks
+    }
+  };
+
   // State Management for Gym click-to-WhatsApp Funnel
   const [igAdActive, setIgAdActive] = useState(true);
   const [gymSelectedGoal, setGymSelectedGoal] = useState("");
@@ -2213,6 +2255,15 @@ const WhatsAppPhone = ({ type }: { type: string }) => {
       });
     }
   }, [messages, isTyping]);
+
+  useEffect(() => {
+    if (messages.length > 0) {
+      const lastMsg = messages[messages.length - 1];
+      if (lastMsg && (lastMsg.sender === 'bot' || lastMsg.sender === 'staff')) {
+        playDing();
+      }
+    }
+  }, [messages]);
 
   const addToQueue = (msgs: { 
     sender: 'bot' | 'staff'; 
@@ -2748,6 +2799,119 @@ const WhatsAppPhone = ({ type }: { type: string }) => {
     }
   };
 
+  const handleCustomSend = (text: string) => {
+    if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+
+    const userMsg = { id: Date.now(), sender: 'user' as const, text };
+    setMessages(prev => [...prev.map(m => ({ ...m, options: undefined })), userMsg]);
+    setCustomInput("");
+    setMessageQueue([]);
+
+    const lowerText = text.toLowerCase();
+    let replyText = "";
+    let options: string[] = [];
+
+    setIsTyping(true);
+
+    setTimeout(() => {
+      setIsTyping(false);
+
+      if (lowerText.includes("price") || lowerText.includes("pricing") || lowerText.includes("cost") || lowerText.includes("how much") || lowerText.includes("plans") || lowerText.includes("packages") || lowerText.includes("rates") || lowerText.includes("fee")) {
+        if (isGym) {
+          replyText = `🔥 Gym Membership Plans:\n\n• 1 Month – ₹700\n• 3 Months – ₹1500\n• 6 Months – ₹2400\n• 1 Year – ₹4500\n\nAll plans include beginner training support, lockers, and clean changing rooms!`;
+          options = ["Book Free Trial", "Talk to Support"];
+        } else if (isEdu) {
+          replyText = `📚 *Standard Fee Configurations:*\n\n• Tech focus tracks start at ₹3,500/month with full internship assistance, certified code reviews, and lifetime resource library access.`;
+          options = ["📅 Book Counseling", "Go back to Main Menu"];
+        } else if (isHealth) {
+          replyText = `🏥 *City Care Pricing:*\n\nStandard doctor consults start at ₹499 (Online) or ₹799 (Offline at clinic). Instant e-prescription and follow-up reviews included.`;
+          options = ["📅 Book Appointment", "Go back to Healthcare Menu"];
+        } else if (type === 'salon') {
+          replyText = `💇‍♀️ *Glow & Grace Hair & Spa Services:*\n\n• Hair Cut & Wash – ₹399\n• Professional HydraFacial – ₹1,499\n• Hair Color & Styling – from ₹1,200\n\nBook now to claim a FREE head massage!`;
+          options = ["Book Appointment", "Talk to Staff"];
+        } else if (type === 'realestate') {
+          replyText = `🏢 *Skyline Properties Catalog:*\n\nPremium units start at ₹85 Lakhs. Luxury penthouses from ₹1.8 Cr in downtown locations. Complete catalog can be shared!`;
+          options = ["Yes, Book Free Call", "Talk to Staff"];
+        } else {
+          replyText = `Here are our custom business automation package configurations. We design custom done-for-you WhatsApp flows starting at ₹3,000/month. Let's design one for you!`;
+          options = ["Yes, Book Free Call", "Talk to Staff"];
+        }
+      } else if (lowerText.includes("book") || lowerText.includes("trial") || lowerText.includes("appointment") || lowerText.includes("reserve") || lowerText.includes("slot") || lowerText.includes("schedule") || lowerText.includes("register")) {
+        if (isGym) {
+          replyText = "Great choice! Please fill out your visit card details below to reserve your FREE workout trial session. 👇";
+          setMessages(prev => [...prev, { id: Date.now(), sender: 'bot', text: replyText }]);
+          setTimeout(() => {
+            setMessages(prev => [...prev, { id: Date.now() + 1, sender: 'bot', text: 'lead_capture_form', isGymFormBubble: true }]);
+          }, 600);
+          return;
+        } else if (isEdu) {
+          replyText = "Perfect! Please specify your academic contact details in the card below to lock your counselor session slot. 👇";
+          setMessages(prev => [...prev, { id: Date.now(), sender: 'bot', text: replyText }]);
+          setTimeout(() => {
+            setMessages(prev => [...prev, { id: Date.now() + 1, sender: 'bot', text: 'lead_capture_form', isEduFormBubble: true }]);
+          }, 600);
+          return;
+        } else if (isHealth) {
+          replyText = "Wonderful decision! Let's get your medical details down in our patient register. Please fill the clinic form card below to secure your instant slot 👇";
+          setMessages(prev => [...prev, { id: Date.now(), sender: 'bot', text: replyText }]);
+          setTimeout(() => {
+            setMessages(prev => [...prev, { id: Date.now() + 1, sender: 'bot', text: 'lead_capture_form', isHealthFormBubble: true }]);
+          }, 600);
+          return;
+        } else if (type === 'salon') {
+          replyText = "Let me check available stylist slots... 📅";
+          setMessages(prev => [...prev, { id: Date.now(), sender: 'bot', text: replyText }]);
+          setTimeout(() => {
+            setIsTyping(true);
+            setTimeout(() => {
+              setIsTyping(false);
+              setMessages(prev => [...prev, { id: Date.now() + 2, sender: 'staff', text: "Hi! I'm Priya. We have a slot open at 5 PM today. Should I book it?", options: ["Yes, Book Now", "Talk to Staff"] }]);
+            }, 1000);
+          }, 500);
+          return;
+        } else {
+          replyText = `Fantastic! We would love to set up this exact automation flow for your business. Let's schedule an onboarding call to activate this!`;
+          options = ["Yes, Book Free Call", "Restart Ad Funnel"];
+        }
+      } else if (lowerText.includes("hello") || lowerText.includes("hi") || lowerText.includes("hey") || lowerText.includes("start") || lowerText.includes("menu")) {
+        replyText = config.welcome;
+        options = config.firstOptions;
+      } else if (lowerText.includes("support") || lowerText.includes("help") || lowerText.includes("agent") || lowerText.includes("person") || lowerText.includes("human") || lowerText.includes("talk") || lowerText.includes("staff")) {
+        if (isGym) {
+          replyText = `Hey! Neha from the front desk here. 😊 How can I assist you with your fitness goals? I highly recommend starting with a Free Trial Workout!`;
+          options = ["Book Free Trial", "Membership Plans"];
+        } else if (isEdu) {
+          replyText = `Hey! Simran from admissions office here. 😊 I can help you select the ideal tech focus track.\n\nPlease drop your details in the card below so I can review your background and call you! 👇`;
+          setMessages(prev => [...prev, { id: Date.now(), sender: 'staff', text: replyText }]);
+          setTimeout(() => {
+            setMessages(prev => [...prev, { id: Date.now() + 1, sender: 'bot', text: 'lead_capture_form', isEduFormBubble: true }]);
+          }, 600);
+          return;
+        } else if (isHealth) {
+          replyText = `Hey! Nurse Anjali here. 😊 I can help you select the ideal specialist.\n\nPlease describe your symptoms or fill the clinic form below to lock your slot! 👇`;
+          setMessages(prev => [...prev, { id: Date.now(), sender: 'staff', text: replyText }]);
+          setTimeout(() => {
+            setMessages(prev => [...prev, { id: Date.now() + 1, sender: 'bot', text: 'lead_capture_form', isHealthFormBubble: true }]);
+          }, 600);
+          return;
+        } else {
+          replyText = `Hi! I'm here. How can I help you today? 😊`;
+          options = ["Restart Ad Funnel"];
+        }
+      } else {
+        replyText = `Thanks for your inquiry: "${text}".\n\nOur done-for-you system has instantly captured your message! In a live production setup, this AI chatbot qualifies leads, registers appointments in your calendar, and updates your CRM. Let's talk to set it up!`;
+        options = ["Yes, Book Free Call", "Restart Ad Funnel"];
+      }
+
+      setMessages(prev => [...prev, {
+        id: Date.now(),
+        sender: (lowerText.includes("support") || lowerText.includes("agent") || lowerText.includes("human") || lowerText.includes("talk") || lowerText.includes("staff")) ? 'staff' : 'bot',
+        text: replyText,
+        options: options
+      }]);
+    }, 1200);
+  };
+
   // If Instagram ad is active
   if (igAdActive) {
     return (
@@ -2760,7 +2924,7 @@ const WhatsAppPhone = ({ type }: { type: string }) => {
   return (
     <div className="w-full h-full flex flex-col bg-[#E5DDD5] select-none text-left relative overflow-hidden">
       {/* WhatsApp Header */}
-      <div className="bg-[#075E54] p-4 pt-10 flex items-center justify-between text-white shadow-md relative z-20 flex-shrink-0">
+      <div className="bg-[#075E54] p-3 px-4 pt-12 flex items-center justify-between text-white shadow-md relative z-20 flex-shrink-0">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white font-bold overflow-hidden border border-white/20 flex-shrink-0">
             <img src={config.image} alt={config.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
@@ -3033,10 +3197,33 @@ const WhatsAppPhone = ({ type }: { type: string }) => {
           </button>
         ) : (
           <div className="flex items-center gap-2">
-             <div className="flex-1 bg-white p-3 rounded-2xl shadow-inner text-secondary-text/30 text-sm px-4 flex items-center justify-between">
-               <span>Type a message...</span>
-               <Zap size={14} className="opacity-20 animate-pulse" />
-             </div>
+             <form 
+               onSubmit={(e) => {
+                 e.preventDefault();
+                 if (!customInput.trim()) return;
+                 handleCustomSend(customInput.trim());
+               }}
+               className="flex-1 flex gap-2"
+             >
+               <div className="flex-1 bg-white p-1 px-4 rounded-2xl shadow-inner text-sm flex items-center justify-between border border-border-light focus-within:border-primary transition-all">
+                 <input 
+                   type="text" 
+                   value={customInput}
+                   onChange={(e) => setCustomInput(e.target.value)}
+                   placeholder="Type a message..."
+                   className="w-full bg-transparent py-2.5 focus:outline-none text-slate-800 placeholder:text-secondary-text/30 font-medium"
+                 />
+                 <Zap size={14} className="opacity-20 animate-pulse text-primary flex-shrink-0" />
+               </div>
+               <button 
+                 type="submit" 
+                 disabled={!customInput.trim()}
+                 className={`p-3 rounded-2xl flex items-center justify-center transition-all shadow-sm active:scale-90 flex-shrink-0 cursor-pointer ${customInput.trim() ? 'bg-[#128C7E] text-white hover:bg-[#075E54]' : 'bg-white text-secondary-text/30'}`}
+                 title="Send Message"
+               >
+                 <Send size={18} />
+               </button>
+             </form>
              <div 
                onClick={startDemo} 
                className="p-3 bg-white text-secondary-text/50 hover:text-red-500 rounded-2xl cursor-pointer transition-all shadow-sm active:scale-90"
@@ -3071,8 +3258,17 @@ const IndustryDemo = ({ type }: { type: string }) => {
       </div>
 
       <div className="w-full max-w-[380px] h-[720px] scale-[0.8] xs:scale-[0.9] sm:scale-100 origin-center my-[-40px] xs:my-[-15px] sm:my-0 bg-[#E5DDD5] rounded-[3rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] border-[12px] border-primary-text overflow-hidden flex flex-col relative z-10 transition-transform hover:scale-[1.01] sm:hover:scale-[1.01] duration-500 pb-0">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-6 bg-primary-text rounded-b-2xl z-30"></div>
-        <div className="absolute top-2 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-black/20 rounded-full z-30 opacity-40"></div>
+        {/* Dynamic Island with speaker slit & glossy front camera lens */}
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-32 h-6 bg-slate-950 rounded-full z-30 flex items-center justify-between px-4 shadow-lg border border-white/10">
+          <div className="w-12 h-1 bg-zinc-800 rounded-full opacity-60"></div>
+          <div className="w-3 h-3 rounded-full bg-zinc-900 flex items-center justify-center relative overflow-hidden border border-zinc-800/80">
+            <div className="w-2 h-2 rounded-full bg-slate-950 flex items-center justify-center">
+              <div className="w-1.5 h-1.5 rounded-full bg-indigo-950 relative">
+                <div className="absolute top-0.5 left-0.5 w-0.5 h-0.5 rounded-full bg-cyan-400 opacity-90 animate-pulse"></div>
+              </div>
+            </div>
+          </div>
+        </div>
         <WhatsAppPhone type={type} />
       </div>
       
@@ -3255,6 +3451,17 @@ const IndustryPage = ({ type }: { type: string }) => {
                 Interactive Sandbox Simulator
               </div>
               <div className="w-[360px] h-[680px] bg-[#E5DDD5] rounded-[3rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.25)] border-[12px] border-slate-800 overflow-hidden flex flex-col relative">
+                {/* Dynamic Island with speaker slit & glossy front camera lens */}
+                <div className="absolute top-3 left-1/2 -translate-x-1/2 w-32 h-6 bg-slate-950 rounded-full z-30 flex items-center justify-between px-4 shadow-lg border border-white/10">
+                  <div className="w-12 h-1 bg-zinc-800 rounded-full opacity-60"></div>
+                  <div className="w-3 h-3 rounded-full bg-zinc-900 flex items-center justify-center relative overflow-hidden border border-zinc-800/80">
+                    <div className="w-2 h-2 rounded-full bg-slate-950 flex items-center justify-center">
+                      <div className="w-1.5 h-1.5 rounded-full bg-indigo-950 relative">
+                        <div className="absolute top-0.5 left-0.5 w-0.5 h-0.5 rounded-full bg-cyan-400 opacity-90 animate-pulse"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <WhatsAppPhone type={type} />
               </div>
             </div>
@@ -3301,7 +3508,7 @@ export default function App() {
         <Route path="/healthcare-demo" element={<IndustryDemo type="healthcare" />} />
         <Route path="/education-demo" element={<IndustryDemo type="education" />} />
         
-        {/* Solutions Dynamic Industry Pages */}
+        {/* Categories Dynamic Industry Pages */}
         <Route path="/industries/gym-fitness" element={<IndustryPage type="gym" />} />
         <Route path="/industries/healthcare" element={<IndustryPage type="healthcare" />} />
         <Route path="/industries/education-edtech" element={<IndustryPage type="education" />} />
